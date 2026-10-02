@@ -1,5 +1,16 @@
 # Runtime third-party notices
 
+## Bundled interface fonts
+
+Geist and Geist Mono are supplied by the pinned `@fontsource-variable/geist`
+and `@fontsource-variable/geist-mono` 5.3.0 packages. Their font files are
+bundled into the renderer assets for offline use. The original SIL Open Font
+License 1.1 notices are included unchanged at
+`resources/licenses/GEIST-LICENSE.txt` and
+`resources/licenses/GEIST-MONO-LICENSE.txt` inside the application archive.
+
+## Media runtime
+
 The application invokes these executables as separate child processes. It does
 not link its Electron or Python application code against FFmpeg libraries.
 Versions and original download SHA-256 values are fixed in
