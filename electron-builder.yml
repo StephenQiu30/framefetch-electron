@@ -1,0 +1,46 @@
+appId: com.stephenqiu.framefetch.desktop
+productName: FrameFetch
+asar: true
+npmRebuild: false
+directories:
+  output: release
+files:
+  - out/**
+  - package.json
+beforePack: scripts/before-pack.mjs
+afterPack: scripts/after-pack.mjs
+afterSign: scripts/after-sign.mjs
+artifactName: FrameFetch-${version}-${os}-${arch}.${ext}
+mac:
+  icon: resources/icons/icon.icns
+  target:
+    - target: dmg
+  category: public.app-category.video
+  minimumSystemVersion: '14.0'
+  identity: null
+  hardenedRuntime: true
+  notarize: false
+  signIgnore:
+    - /Contents/Resources/runtime(?:/|$)
+  extraResources:
+    - from: resources/runtime/darwin-${arch}
+      to: runtime
+      filter: ['**/*']
+dmg:
+  sign: false
+win:
+  icon: resources/icons/icon.ico
+  target:
+    - target: nsis
+  signExecutable: false
+  requestedExecutionLevel: asInvoker
+  extraResources:
+    - from: resources/runtime/win32-${arch}
+      to: runtime
+      filter: ['**/*']
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: false
+  allowToChangeInstallationDirectory: true
+  deleteAppDataOnUninstall: false

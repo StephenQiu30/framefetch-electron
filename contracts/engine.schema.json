@@ -1,0 +1,846 @@
+{
+  "$defs": {
+    "AnalysisInput": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "provider_id": {
+          "title": "Provider Id",
+          "type": "string"
+        },
+        "skill": {
+          "enum": [
+            "comprehensive",
+            "visual-shots",
+            "highlights",
+            "video-to-article",
+            "screenplay-analysis"
+          ],
+          "title": "Skill",
+          "type": "string"
+        },
+        "api_key": {
+          "maxLength": 8192,
+          "minLength": 1,
+          "title": "Api Key",
+          "type": "string"
+        },
+        "expected_provider_base_url": {
+          "maxLength": 2048,
+          "minLength": 1,
+          "title": "Expected Provider Base Url",
+          "type": "string"
+        },
+        "operation_id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Operation Id"
+        }
+      },
+      "required": [
+        "asset_id",
+        "provider_id",
+        "skill",
+        "api_key",
+        "expected_provider_base_url"
+      ],
+      "title": "AnalysisInput",
+      "type": "object"
+    },
+    "Asset": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "video",
+            "document"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "size_bytes": {
+          "title": "Size Bytes",
+          "type": "integer"
+        },
+        "sha256": {
+          "title": "Sha256",
+          "type": "string"
+        },
+        "duration_seconds": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Duration Seconds"
+        },
+        "width": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Width"
+        },
+        "height": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Height"
+        },
+        "created_at": {
+          "title": "Created At",
+          "type": "string"
+        },
+        "availability": {
+          "default": "available",
+          "enum": [
+            "available",
+            "missing",
+            "changed"
+          ],
+          "title": "Availability",
+          "type": "string"
+        },
+        "text_preview": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text Preview"
+        },
+        "mode": {
+          "default": "reference",
+          "enum": [
+            "reference",
+            "copy"
+          ],
+          "title": "Mode",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "title",
+        "size_bytes",
+        "sha256",
+        "created_at"
+      ],
+      "title": "Asset",
+      "type": "object"
+    },
+    "Capabilities": {
+      "additionalProperties": false,
+      "properties": {
+        "import_video": {
+          "title": "Import Video",
+          "type": "boolean"
+        },
+        "import_document": {
+          "title": "Import Document",
+          "type": "boolean"
+        },
+        "download": {
+          "title": "Download",
+          "type": "boolean"
+        },
+        "analysis": {
+          "title": "Analysis",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "import_video",
+        "import_document",
+        "download",
+        "analysis"
+      ],
+      "title": "Capabilities",
+      "type": "object"
+    },
+    "DownloadInput": {
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "maxLength": 4096,
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        },
+        "format_id": {
+          "anyOf": [
+            {
+              "maxLength": 64,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Format Id"
+        },
+        "height": {
+          "anyOf": [
+            {
+              "maximum": 4320,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Height"
+        },
+        "container": {
+          "anyOf": [
+            {
+              "enum": [
+                "mp4",
+                "webm",
+                "mkv"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Container"
+        },
+        "operation_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Operation Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "url",
+        "operation_id"
+      ],
+      "title": "DownloadInput",
+      "type": "object"
+    },
+    "EngineHello": {
+      "additionalProperties": false,
+      "properties": {
+        "protocol_version": {
+          "const": "1",
+          "default": "1",
+          "title": "Protocol Version",
+          "type": "string"
+        },
+        "engine_version": {
+          "default": "0.1.0",
+          "title": "Engine Version",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "capabilities": {
+          "$ref": "#/$defs/Capabilities"
+        },
+        "resources": {
+          "$ref": "#/$defs/Resources"
+        }
+      },
+      "required": [
+        "capabilities",
+        "resources"
+      ],
+      "title": "EngineHello",
+      "type": "object"
+    },
+    "ImportInput": {
+      "additionalProperties": false,
+      "properties": {
+        "source_path": {
+          "maxLength": 32768,
+          "minLength": 1,
+          "title": "Source Path",
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "reference",
+            "copy"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "operation_id": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Operation Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_path",
+        "mode",
+        "operation_id"
+      ],
+      "title": "ImportInput",
+      "type": "object"
+    },
+    "Inspection": {
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "platform": {
+          "enum": [
+            "youtube",
+            "bilibili",
+            "unsupported"
+          ],
+          "title": "Platform",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "duration_seconds": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Duration Seconds"
+        },
+        "formats": {
+          "items": {
+            "$ref": "#/$defs/VideoFormat"
+          },
+          "title": "Formats",
+          "type": "array"
+        },
+        "can_download": {
+          "title": "Can Download",
+          "type": "boolean"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "url",
+        "platform",
+        "title",
+        "formats",
+        "can_download"
+      ],
+      "title": "Inspection",
+      "type": "object"
+    },
+    "Provider": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "base_url": {
+          "title": "Base Url",
+          "type": "string"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "vision": {
+          "title": "Vision",
+          "type": "boolean"
+        },
+        "key_set": {
+          "default": false,
+          "title": "Key Set",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "base_url",
+        "model",
+        "vision"
+      ],
+      "title": "Provider",
+      "type": "object"
+    },
+    "ProviderInput": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "anyOf": [
+            {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Id"
+        },
+        "label": {
+          "maxLength": 128,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "base_url": {
+          "maxLength": 2048,
+          "minLength": 1,
+          "title": "Base Url",
+          "type": "string"
+        },
+        "model": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Model",
+          "type": "string"
+        },
+        "vision": {
+          "title": "Vision",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "label",
+        "base_url",
+        "model",
+        "vision"
+      ],
+      "title": "ProviderInput",
+      "type": "object"
+    },
+    "Report": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "status": {
+          "const": "succeeded",
+          "default": "succeeded",
+          "title": "Status",
+          "type": "string"
+        },
+        "provider_label": {
+          "title": "Provider Label",
+          "type": "string"
+        },
+        "model": {
+          "title": "Model",
+          "type": "string"
+        },
+        "skill": {
+          "enum": [
+            "comprehensive",
+            "visual-shots",
+            "highlights",
+            "video-to-article",
+            "screenplay-analysis"
+          ],
+          "title": "Skill",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "summary": {
+          "title": "Summary",
+          "type": "string"
+        },
+        "markdown": {
+          "title": "Markdown",
+          "type": "string"
+        },
+        "created_at": {
+          "title": "Created At",
+          "type": "string"
+        },
+        "source_sha256": {
+          "title": "Source Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "asset_id",
+        "provider_label",
+        "model",
+        "skill",
+        "title",
+        "summary",
+        "markdown",
+        "created_at",
+        "source_sha256"
+      ],
+      "title": "Report",
+      "type": "object"
+    },
+    "Resources": {
+      "additionalProperties": false,
+      "properties": {
+        "ffmpeg": {
+          "title": "Ffmpeg",
+          "type": "boolean"
+        },
+        "ffprobe": {
+          "title": "Ffprobe",
+          "type": "boolean"
+        },
+        "yt_dlp": {
+          "title": "Yt Dlp",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "ffmpeg",
+        "ffprobe",
+        "yt_dlp"
+      ],
+      "title": "Resources",
+      "type": "object"
+    },
+    "Task": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "import_video",
+            "import_document",
+            "download",
+            "analysis",
+            "export_report"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "queued",
+            "running",
+            "cancelling",
+            "cancelled",
+            "succeeded",
+            "failed",
+            "interrupted",
+            "needs_attention"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "stage": {
+          "title": "Stage",
+          "type": "string"
+        },
+        "progress": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Progress"
+        },
+        "message": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Message"
+        },
+        "asset_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Asset Id"
+        },
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error Code"
+        },
+        "created_at": {
+          "title": "Created At",
+          "type": "string"
+        },
+        "updated_at": {
+          "title": "Updated At",
+          "type": "string"
+        },
+        "revision": {
+          "title": "Revision",
+          "type": "integer"
+        },
+        "attempt": {
+          "default": 0,
+          "title": "Attempt",
+          "type": "integer"
+        },
+        "attempt_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attempt Id"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "status",
+        "stage",
+        "created_at",
+        "updated_at",
+        "revision"
+      ],
+      "title": "Task",
+      "type": "object"
+    },
+    "VideoFormat": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "height": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Height"
+        },
+        "width": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Width"
+        },
+        "video_codec": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Video Codec"
+        },
+        "audio_codec": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Audio Codec"
+        },
+        "ext": {
+          "title": "Ext",
+          "type": "string"
+        },
+        "filesize_bytes": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Filesize Bytes"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "ext"
+      ],
+      "title": "VideoFormat",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "hello": {
+      "$ref": "#/$defs/EngineHello"
+    },
+    "asset": {
+      "$ref": "#/$defs/Asset"
+    },
+    "task": {
+      "$ref": "#/$defs/Task"
+    },
+    "inspection": {
+      "$ref": "#/$defs/Inspection"
+    },
+    "format": {
+      "$ref": "#/$defs/VideoFormat"
+    },
+    "provider": {
+      "$ref": "#/$defs/Provider"
+    },
+    "report": {
+      "$ref": "#/$defs/Report"
+    },
+    "import_input": {
+      "$ref": "#/$defs/ImportInput"
+    },
+    "download_input": {
+      "$ref": "#/$defs/DownloadInput"
+    },
+    "provider_input": {
+      "$ref": "#/$defs/ProviderInput"
+    },
+    "analysis_input": {
+      "$ref": "#/$defs/AnalysisInput"
+    }
+  },
+  "required": [
+    "hello",
+    "asset",
+    "task",
+    "inspection",
+    "format",
+    "provider",
+    "report",
+    "import_input",
+    "download_input",
+    "provider_input",
+    "analysis_input"
+  ],
+  "title": "EngineContract",
+  "type": "object"
+}
