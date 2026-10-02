@@ -3,6 +3,8 @@
 本文件只适用于 `video-electron`。用户已于2026-10-02授权开始实现规划中的独立桌面端。
 
 - 本项目是独立Electron产品，不修改或在运行/构建时导入相邻server/app仓库。
+- 界面遵循根目录design.md；它与frontend.css、官方Radix/shadcn组件和Logo一起作为frontend本地快照维护。使用统一主题token、Geist字体、Phosphor图标、无边框表格及页面布局，不另造按钮/输入框/弹窗基础实现。
+- 构建前执行frontend:check离线验证；显式对齐上游及品牌的方法见resources/FRONTEND_BASELINE.md。业务字段、状态、时间和报告保持同一展示语义，数据仍由本机引擎持有，不引入服务端记录或假数据。
 - main负责原生授权、凭据和引擎监督；renderer只通过窄preload接口交互；Python引擎拥有SQLite业务事实。
 - 长时间媒体操作不能阻塞main；stdout只用于JSON-RPC；任务结果/事件必须校验当前attempt，取消终态不能被迟到成功覆盖。
 - Python契约导出JSON Schema，TypeScript业务DTO由schema生成；不得手写平行业务DTO。

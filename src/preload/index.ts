@@ -7,7 +7,7 @@ const desktop: DesktopAPI = {
   getRuntime: () => invoke('getRuntime'),
   getSettings: () => invoke('getSettings'),
   chooseLibrary: () => invoke('chooseLibrary'),
-  chooseAndImport: (mode) => invoke('chooseAndImport', mode),
+  chooseAndImport: (mode, kind) => invoke('chooseAndImport', mode, kind),
   importDropped: (files, mode) => {
     if (!Array.isArray(files) || !files.length || files.length > 100)
       return Promise.reject(new Error('拖放文件无效'));

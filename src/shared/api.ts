@@ -39,7 +39,7 @@ export interface DesktopAPI {
   getRuntime(): Promise<RuntimeState>;
   getSettings(): Promise<AppSettings>;
   chooseLibrary(): Promise<AppSettings | null>;
-  chooseAndImport(mode: ImportMode): Promise<Task[]>;
+  chooseAndImport(mode: ImportMode, kind?: 'video' | 'document'): Promise<Task[]>;
   importDropped(files: File[], mode: ImportMode): Promise<Task[]>;
   getAssets(): Promise<Asset[]>;
   getTasks(): Promise<Task[]>;

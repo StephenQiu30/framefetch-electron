@@ -1,8 +1,16 @@
 import { useEffect, useState } from 'react';
 import type { ProviderInput } from '../../shared/api';
 import type { Provider } from '../../shared/generated';
-import { Button, Dialog, Field } from '../components/ui';
+import { Button, Checkbox, Dialog, Field, Input } from '../components/ui';
 import { errorMessage } from '../lib/format';
+
+function normalizedEndpoint(value: string): string {
+  try {
+    return new URL(value.trim()).href.replace(/\/+$/, '');
+  } catch {
+    return value.trim();
+  }
+}
 
 export function ProviderDialog({
   open,
@@ -32,17 +40,22 @@ export function ProviderDialog({
       setError(null);
     } else setKey('');
   }, [open, provider]);
+  const endpointChanged =
+    !!provider && normalizedEndpoint(baseUrl) !== normalizedEndpoint(provider.base_url);
+  const keyRequired = !provider?.key_set || endpointChanged;
   return (
     <Dialog
       open={open}
-      onOpenChange={onOpenChange}
-      title={provider ? '编辑模型服务' : '添加模型服务'}
-      description="使用自己的兼容 Chat Completions API。密钥由本机系统保护，不进入媒体或报告。"
+      onOpenChange={(nextOpen) => {
+        if (!busy) onOpenChange(nextOpen);
+      }}
+      title={provider ? '编辑 AI 服务' : '新增 AI 服务'}
+      description="使用自己的 OpenAI 兼容 API。保存后仅显示凭据状态，不会再次返回 API Key 明文。"
     >
       <form
         className="provider-form"
-        onSubmit={async (e) => {
-          e.preventDefault();
+        onSubmit={async (event) => {
+          event.preventDefault();
           setError(null);
           setBusy(true);
           try {
@@ -55,73 +68,91 @@ export function ProviderDialog({
               ...(key.trim() ? { api_key: key.trim() } : {}),
             });
             onOpenChange(false);
-          } catch (err) {
-            setError(errorMessage(err));
+          } catch (saveError) {
+            setError(errorMessage(saveError));
           } finally {
             setKey('');
             setBusy(false);
           }
         }}
       >
-        <Field label="名称">
-          <input
+        <Field label="显示名称">
+          <Input
             value={label}
-            onChange={(e) => setLabel(e.target.value)}
-            placeholder="例如：我的模型服务"
+            onChange={(event) => setLabel(event.target.value)}
+            placeholder="例如：我的 AI 服务"
             required
-            maxLength={100}
+            disabled={busy}
+            maxLength={120}
           />
         </Field>
-        <Field label="API 地址" hint="填写包含 /v1 的服务根地址；云端服务使用 HTTPS。">
-          <input
+        <Field label="API Base URL" hint="填写服务根地址（例如包含 /v1）；公网地址必须使用 HTTPS。">
+          <Input
             value={baseUrl}
-            onChange={(e) => setBaseUrl(e.target.value)}
+            onChange={(event) => setBaseUrl(event.target.value)}
             placeholder="https://example.com/v1"
             type="url"
             required
-            autoComplete="off"
+            disabled={busy}
+            maxLength={2048}
+            autoCapitalize="none"
+            autoComplete="url"
           />
         </Field>
-        <Field label="模型名称">
-          <input
+        <Field label="模型" hint="视频分析要求模型支持图像输入和结构化输出。">
+          <Input
             value={model}
-            onChange={(e) => setModel(e.target.value)}
-            placeholder="服务中可用的模型 ID"
+            onChange={(event) => setModel(event.target.value)}
+            placeholder="填写服务支持的模型 ID"
             required
+            disabled={busy}
             maxLength={200}
           />
         </Field>
         <Field
           label="API Key"
           hint={
-            provider?.key_set
-              ? '地址保持不变时，留空保留现有密钥；更换地址需要重新输入。'
-              : '仅在你主动发起分析时发送给配置的模型服务。'
+            endpointChanged
+              ? 'API Base URL 已变化，请重新输入 API Key。'
+              : provider?.key_set
+                ? '已配置；留空表示不修改。更换服务地址时需要重新输入。'
+                : '仅在你主动发起分析时发送给配置的 AI 服务。'
           }
         >
-          <input
+          <Input
             value={key}
-            onChange={(e) => setKey(e.target.value)}
+            onChange={(event) => setKey(event.target.value)}
             type="password"
             autoComplete="new-password"
-            placeholder={provider?.key_set ? '已配置 · 留空保持' : '输入你的 API Key'}
+            required={keyRequired}
+            disabled={busy}
+            maxLength={8192}
+            placeholder={keyRequired ? '填写服务凭据' : '已配置；留空表示不修改'}
           />
         </Field>
-        <label className="checkbox-field">
-          <input type="checkbox" checked={vision} onChange={(e) => setVision(e.target.checked)} />
-          <span>这个模型可以接收图像，用于视频分析</span>
-        </label>
+        <Field label="支持图像输入" hint="视频分析需要图像输入能力；纯文本模型可以用于剧本分析。">
+          <Checkbox
+            checked={vision}
+            onCheckedChange={(checked) => setVision(checked === true)}
+            disabled={busy}
+          />
+        </Field>
         {error && (
           <p className="field-error" role="alert">
             {error}
           </p>
         )}
         <div className="dialog-actions">
-          <Button variant="secondary" disabled={busy} onClick={() => onOpenChange(false)}>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={busy}
+            onClick={() => onOpenChange(false)}
+          >
             取消
           </Button>
           <Button type="submit" disabled={busy}>
-            {busy ? '正在保存…' : '保存服务'}
+            {busy ? '正在保存…' : '保存配置'}
           </Button>
         </div>
       </form>

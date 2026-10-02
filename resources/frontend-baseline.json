@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "authority": "video-server/design.md",
+  "foundation": [
+    {
+      "source": "design.md",
+      "path": "design.md",
+      "sourceSha256": "5fd98f98adb1be7be8146cf11556692ce493aa266114b7522ee34a3cdba6f1f8",
+      "sha256": "5fd98f98adb1be7be8146cf11556692ce493aa266114b7522ee34a3cdba6f1f8"
+    },
+    {
+      "source": "frontend/src/app/globals.css",
+      "path": "src/renderer/frontend.css",
+      "sourceSha256": "e5c2686d5a828fd58e1c10dde18ff0823c23c2c5e3327191337cfa3d97f06bd7",
+      "sha256": "e5c2686d5a828fd58e1c10dde18ff0823c23c2c5e3327191337cfa3d97f06bd7"
+    }
+  ],
+  "components": [
+    {
+      "source": "frontend/src/components/ui/alert-dialog.tsx",
+      "path": "src/renderer/components/ui/alert-dialog.tsx",
+      "adaptation": "Formatting only; the existing frontend component is reused.",
+      "sourceSha256": "06f2e63521349a92de58ded6b793f1b1b159f4aa53cb084c83cfaa4b06772efd",
+      "sha256": "88c0f30b7d52cd7731d0c5688b53d4aac52c279bd92454c2bc255053beecf961"
+    },
+    {
+      "source": "frontend/src/components/ui/badge.tsx",
+      "path": "src/renderer/components/ui/badge.tsx",
+      "adaptation": "Formatting only; the existing frontend component is reused.",
+      "sourceSha256": "531efdece6cebd1c3e5a443c0b2fefeaad526f742e04924a57ed67487d5b125c",
+      "sha256": "39894f4c2da6dde93948b52ff0336080adc7f3becdf5a3d74b2073952632b7bf"
+    },
+    {
+      "source": "frontend/src/components/ui/button.tsx",
+      "path": "src/renderer/components/ui/button.tsx",
+      "adaptation": "Formatting only; the existing frontend component is reused.",
+      "sourceSha256": "98e0e3fd264a301c5bedb41ce6adbcf72a70768f1e9d7d8c948a64327cbb884e",
+      "sha256": "98e0e3fd264a301c5bedb41ce6adbcf72a70768f1e9d7d8c948a64327cbb884e"
+    },
+    {
+      "source": "frontend/src/components/ui/checkbox.tsx",
+      "path": "src/renderer/components/ui/checkbox.tsx",
+      "adaptation": "Formatting only; the existing frontend component is reused.",
+      "sourceSha256": "447b4d9d56e18baa7fad9bb25949cc554a45b776b1755949057931fc166e02ad",
+      "sha256": "0b628474247cefa3020c8ba103a6c83fee86af9e9b5154db50bf2651b9504d71"
+    },
+    {
+      "source": "frontend/src/components/ui/dialog.tsx",
+      "path": "src/renderer/components/ui/dialog.tsx",
+      "adaptation": "The accessible close label is translated to Chinese.",
+      "sourceSha256": "840efa10a774de14350089695a308362b47a3a9b694d6f9e9893d32587b95683",
+      "sha256": "ba47ff7850652c0aac16296cd0fdb9c1a10f1f5d7bc6f0b63c1b35c5c8d2aa1c"
+    },
+    {
+      "source": "frontend/src/components/ui/dropdown-menu.tsx",
+      "path": "src/renderer/components/ui/dropdown-menu.tsx",
+      "adaptation": "Formatting only; the existing frontend component is reused.",
+      "sourceSha256": "28e81dbe4c69f8f8129d93b567574429fc88e749282f6e4c19e668c8c0fd7e37",
+      "sha256": "272d692388815f898113838cdda2845f0b18dbc7a48afba0e357fffa751ba0e5"
+    },
+    {
+      "source": "frontend/src/components/ui/empty.tsx",
+      "path": "src/renderer/components/ui/empty.tsx",
+      "adaptation": "Formatting only; the existing frontend component is reused.",
+      "sourceSha256": "31d10dc0add17e54068606c35cd8fe0e2004aec1d2740f45e470aa2bd7d5f73c",
+      "sha256": "8aadb06e72843ab1636778bf6376704132a16570530311f4e5008da96cae49a0"
+    },
+    {
+      "source": "frontend/src/components/ui/field.tsx",
+      "path": "src/renderer/components/ui/field.tsx",
+      "adaptation": "Formatting only; the existing frontend component is reused.",
+      "sourceSha256": "a90daaa6de6cd26775037588a970fae9456a5465b35dc8c949dc259018b6ef73",
+      "sha256": "2dcae322babd0001a03fd5164517ac9e8853627b5208f6e68d31a0f038ddd42f"
+    },
+    {
+      "source": "frontend/src/components/ui/input.tsx",
+      "path": "src/renderer/components/ui/input.tsx",
+      "adaptation": "Formatting only; the existing frontend component is reused.",
+      "sourceSha256": "70d4978de36356de053f3e515ffd232f7274d0b92ca46271b07ccec59848a194",
+      "sha256": "70d4978de36356de053f3e515ffd232f7274d0b92ca46271b07ccec59848a194"
+    },
+    {
+      "source": "frontend/src/components/ui/label.tsx",
+      "path": "src/renderer/components/ui/label.tsx",
+      "adaptation": "Formatting only; the existing frontend component is reused.",
+      "sourceSha256": "0ee00f0f3f5e1e3423bad13c082141b94cc45d6ac3e2e303a94fe62ca8275fd9",
+      "sha256": "f5fe1570d18817d457d87055ace997876641b590e1b6717fe03f7da7a8c9cda4"
+    },
+    {
+      "source": "frontend/src/components/ui/navigation-menu.tsx",
+      "path": "src/renderer/components/ui/navigation-menu.tsx",
+      "adaptation": "Formatting only; the existing frontend component is reused.",
+      "sourceSha256": "b9467d3c2bdb2e9f5331eccbf72827c8de5a298f6c2b69cc9388146bc65084e8",
+      "sha256": "b8af003124e19c95fdc0e083b114849690f247ab9966d10ba15a673641c8848b"
+    },
+    {
+      "source": "frontend/src/components/ui/pagination.tsx",
+      "path": "src/renderer/components/ui/pagination.tsx",
+      "adaptation": "Formatting only; the existing frontend component is reused.",
+      "sourceSha256": "38678164a5fb323a5626a95f8611ef4a3fc4a1acbb1c65d04cd37878a31e0108",
+      "sha256": "6d4d2959b53cf13e45570144d81619ce8fb5878ee6980c8234c6675bb71cb225"
+    },
+    {
+      "source": "frontend/src/components/ui/progress.tsx",
+      "path": "src/renderer/components/ui/progress.tsx",
+      "adaptation": "Formatting only; the existing frontend component is reused.",
+      "sourceSha256": "78d977f31d51e231ecd088effb5aca1e91c3074872611ed14e2050a7cd8fd694",
+      "sha256": "78d977f31d51e231ecd088effb5aca1e91c3074872611ed14e2050a7cd8fd694"
+    },
+    {
+      "source": "frontend/src/components/ui/select.tsx",
+      "path": "src/renderer/components/ui/select.tsx",
+      "adaptation": "Formatting only; the existing frontend component is reused.",
+      "sourceSha256": "c448d88e1b2a2d83dfed64cc52f98064f60b9315bac3e6028a4a066afde2a0eb",
+      "sha256": "add146e192ba7b703f8bddf214fa8a41821acbcc46678f7c9cd1faf7388e3fdf"
+    },
+    {
+      "source": "frontend/src/components/ui/separator.tsx",
+      "path": "src/renderer/components/ui/separator.tsx",
+      "adaptation": "Formatting only; the existing frontend component is reused.",
+      "sourceSha256": "0027f3fb09eed60f3a416bab0ead9718ceeaf435f4cd881f4d82ad2bca0322e0",
+      "sha256": "0027f3fb09eed60f3a416bab0ead9718ceeaf435f4cd881f4d82ad2bca0322e0"
+    },
+    {
+      "source": "frontend/src/components/ui/skeleton.tsx",
+      "path": "src/renderer/components/ui/skeleton.tsx",
+      "adaptation": "Formatting only; the existing frontend component is reused.",
+      "sourceSha256": "9071aa0ad41b9f06ead0a092d5d37b3b97e4cb9981b52576c370b2be0b1fe134",
+      "sha256": "9071aa0ad41b9f06ead0a092d5d37b3b97e4cb9981b52576c370b2be0b1fe134"
+    },
+    {
+      "source": "frontend/src/components/ui/sonner.tsx",
+      "path": "src/renderer/components/ui/sonner.tsx",
+      "adaptation": "The desktop passes its local theme explicitly; no Next.js theme runtime is imported.",
+      "sourceSha256": "6b74ca8393342cbf48ec0ad1ec5408fb4e6044c7cafdc3683f1922ad9161e5fd",
+      "sha256": "17693661090272c6c7880cdd0fad5c7042bca7f299b9a3b10c3c71c07da94999"
+    },
+    {
+      "source": "frontend/src/components/ui/table.tsx",
+      "path": "src/renderer/components/ui/table.tsx",
+      "adaptation": "Formatting only; the existing frontend component is reused.",
+      "sourceSha256": "b3c97a1b6d788e170314af341833cbf9c1aba5714adaf1976d65e50659e12007",
+      "sha256": "843515b1a014f44f3cdbf7ee8e880e25cb8eb7fd66194d3d1951e00826581a53"
+    },
+    {
+      "source": "frontend/src/components/ui/tabs.tsx",
+      "path": "src/renderer/components/ui/tabs.tsx",
+      "adaptation": "Formatting only; the existing frontend component is reused.",
+      "sourceSha256": "7177b6be29efe0d2c955dffb9b32516d96ad34e53dd2c98c42c60901e6b6669c",
+      "sha256": "a77cce82df8541721228e50aa51d6107353af91d9f3fc8cf77b994788a12fbf0"
+    }
+  ]
+}

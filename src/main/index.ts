@@ -9,6 +9,7 @@ import {
   BrowserWindow,
   dialog,
   ipcMain,
+  nativeImage,
   protocol,
   safeStorage,
   session,
@@ -60,6 +61,10 @@ else
 
 async function bootstrap(): Promise<void> {
   await app.whenReady();
+  if (!app.isPackaged && process.platform === 'darwin')
+    app.dock?.setIcon(
+      nativeImage.createFromPath(join(app.getAppPath(), 'resources/icons/icon-512.png')),
+    );
   const dataDir = app.getPath('userData');
   await mkdir(dataDir, { recursive: true, mode: 0o700 });
   const settingsFile = join(dataDir, 'settings.json');
@@ -145,11 +150,12 @@ async function bootstrap(): Promise<void> {
   const window = new BrowserWindow({
     width: 1260,
     height: 840,
-    minWidth: 960,
-    minHeight: 640,
+    minWidth: 390,
+    minHeight: 560,
     show: false,
-    title: '帧取 · 本地工作站',
-    backgroundColor: '#f7f7f5',
+    title: '帧取 · FrameFetch',
+    backgroundColor: '#ffffff',
+    icon: app.isPackaged ? undefined : join(app.getAppPath(), 'resources/icons/icon-512.png'),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: true,
@@ -244,6 +250,7 @@ async function bootstrap(): Promise<void> {
     getTasks: 0,
     getProviders: 0,
     getReports: 0,
+    chooseAndImport: 2,
     importDropped: 2,
     mediaUrl: 2,
     exportReport: 2,
@@ -301,15 +308,33 @@ async function bootstrap(): Promise<void> {
       changingLibrary = false;
     }
   });
-  handle('chooseAndImport', async (value) => {
+  handle('chooseAndImport', async (value, selectedKind) => {
     const importMode = mode(value);
+    if (selectedKind !== undefined && selectedKind !== 'video' && selectedKind !== 'document')
+      throw new Error('导入类型无效');
+    const extensions =
+      selectedKind === 'video'
+        ? ['mp4']
+        : selectedKind === 'document'
+          ? ['txt', 'md', 'fountain', 'docx', 'pdf']
+          : ['mp4', 'txt', 'md', 'fountain', 'docx', 'pdf'];
     const selected = await dialog.showOpenDialog(window, {
-      title: '导入视频或文档',
+      title:
+        selectedKind === 'video'
+          ? '导入本地视频'
+          : selectedKind === 'document'
+            ? '导入剧本文档'
+            : '导入视频或文档',
       properties: ['openFile', 'multiSelections'],
       filters: [
         {
-          name: '视频和文档',
-          extensions: ['mp4', 'txt', 'md', 'fountain', 'docx', 'pdf'],
+          name:
+            selectedKind === 'video'
+              ? '本地视频'
+              : selectedKind === 'document'
+                ? '剧本文档'
+                : '视频和文档',
+          extensions,
         },
       ],
     });

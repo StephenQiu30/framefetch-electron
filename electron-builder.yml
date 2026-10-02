@@ -7,6 +7,9 @@ directories:
 files:
   - out/**
   - package.json
+  - resources/THIRD_PARTY_NOTICES.md
+  - resources/licenses/GEIST-LICENSE.txt
+  - resources/licenses/GEIST-MONO-LICENSE.txt
 beforePack: scripts/before-pack.mjs
 afterPack: scripts/after-pack.mjs
 afterSign: scripts/after-sign.mjs
