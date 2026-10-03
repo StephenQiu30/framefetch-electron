@@ -1,0 +1,49 @@
+// @ts-ignore
+/* eslint-disable */
+import { request, type RequestOptions } from "@/lib/request";
+
+/** 解析媒体信息 校验公开媒体地址并返回可供选择的语义下载格式。 POST /api/inspections */
+export async function inspectMedia(
+  body: API.InspectionRequest,
+  options?: RequestOptions
+) {
+  return request<API.ApiResponseInspectionResponse_>("/api/inspections", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 查询媒体解析结果 查询当前登录用户拥有的媒体解析结果。 GET /api/inspections/${param0} */
+export async function getInspection(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getInspectionParams,
+  options?: RequestOptions
+) {
+  const { inspection_id: param0, ...queryParams } = params;
+  return request<API.ApiResponseInspectionResponse_>(
+    `/api/inspections/${param0}`,
+    {
+      method: "GET",
+      params: { ...queryParams },
+      ...(options || {}),
+    }
+  );
+}
+
+/** 读取持久化媒体封面 读取当前用户拥有且存储在私有对象存储中的媒体封面。 GET /api/inspections/${param0}/thumbnail */
+export async function getInspectionThumbnail(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getInspectionThumbnailParams,
+  options?: RequestOptions
+) {
+  const { inspection_id: param0, ...queryParams } = params;
+  return request<Blob>(`/api/inspections/${param0}/thumbnail`, {
+    method: "GET",
+    params: { ...queryParams },
+    ...(options || {}),
+  });
+}

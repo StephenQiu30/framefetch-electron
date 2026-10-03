@@ -1,291 +1,511 @@
-import { mkdir, mkdtemp, rm, stat, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { createServer, type IncomingMessage, type Server } from 'node:http';
+import type { Socket } from 'node:net';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { _electron, type ElectronApplication, expect, type Page, test } from '@playwright/test';
-import { playableFixture } from './fixture';
 
 const project = path.resolve(__dirname, '../..');
 const executable = process.env.FRAMEFETCH_E2E_EXECUTABLE;
+const uploadId = '11111111-1111-4111-8111-111111111111';
+const fileBytes = Buffer.from('FrameFetch transport download\n');
+const uploadBytes = 'FrameFetch transport upload bytes';
+let workspace: string;
 let profile: string;
-let videoPath: string;
-let documentPath: string;
+let backend: Server;
+let storage: Server;
+let backendUrl: string;
+let storageUrl: string;
+let issuedTarget: string;
 let application: ElectronApplication;
 let page: Page;
+const requests: Array<{
+  method: string;
+  path: string;
+  origin?: string;
+  cookie?: string;
+  body: string;
+}> = [];
+const uploads: Array<{ path: string; cookie?: string; authorization?: string; body: string }> = [];
+const sockets = new Set<Socket>();
+const handshakes: Array<{ origin?: string; cookie?: string }> = [];
 
-async function launch() {
+async function bodyText(request: IncomingMessage): Promise<string> {
+  const chunks: Buffer[] = [];
+  for await (const chunk of request) chunks.push(Buffer.from(chunk));
+  return Buffer.concat(chunks).toString('utf8');
+}
+
+async function listen(server: Server): Promise<string> {
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const address = server.address();
+  if (!address || typeof address === 'string') throw new Error('Missing probe address');
+  return `http://127.0.0.1:${address.port}/`;
+}
+
+async function launch(origin = backendUrl, useSavedConnection = false): Promise<void> {
   const environment = Object.fromEntries(
     Object.entries(process.env).filter(
       (entry): entry is [string, string] => typeof entry[1] === 'string',
     ),
   );
   delete environment.ELECTRON_RUN_AS_NODE;
+  delete environment.FRAMEFETCH_BACKEND_URL;
+  delete environment.FRAMEFETCH_FRONTEND_URL;
   if (executable) environment.PATH = '';
-  else {
-    environment.FRAMEFETCH_USER_DATA_DIR = profile;
-    environment.FRAMEFETCH_RESOURCE_DIR = path.join(
-      project,
-      'resources/runtime',
-      `${process.platform}-${process.arch}`,
-    );
-  }
+  const args = [
+    `--user-data-dir=${profile}`,
+    ...(useSavedConnection ? [] : [`--backend-url=${origin}`]),
+  ];
   application = await _electron.launch({
-    ...(executable
-      ? { executablePath: executable, args: [`--user-data-dir=${profile}`] }
-      : { args: [project] }),
+    ...(executable ? { executablePath: executable, args } : { args: [project, ...args] }),
     env: environment,
     timeout: 30000,
   });
   page = await application.firstWindow();
-  await expect(page.getByText('本地工作站已就绪', { exact: true })).toBeVisible({ timeout: 30000 });
+  await expect(page.locator('body')).toHaveAttribute('data-design', 'borderless', {
+    timeout: 30000,
+  });
+  await page.waitForLoadState('domcontentloaded');
 }
 
-async function manage(name: string) {
-  await page.getByRole('button', { name: '管理', exact: true }).click();
-  await page.getByRole('menuitem', { name, exact: true }).click();
+async function menu(id: string): Promise<void> {
+  await application.evaluate(({ Menu }, selected) => {
+    const item = Menu.getApplicationMenu()?.getMenuItemById(selected);
+    if (!item) throw new Error(`Missing native menu: ${selected}`);
+    item.click();
+  }, id);
 }
 
-async function selectFile(filePath: string) {
-  await application.evaluate(({ dialog }, selected) => {
-    dialog.showOpenDialog = async () => ({ canceled: false, filePaths: [selected] });
-  }, filePath);
-}
-
+// These ephemeral servers verify the HTTP transport. They do not implement
+// product business behavior, seed records, or stand in for backend acceptance.
 test.beforeAll(async () => {
-  profile = await mkdtemp(path.join(tmpdir(), 'framefetch-e2e-'));
-  const fixtures = path.join(profile, 'fixtures');
-  await mkdir(fixtures);
-  documentPath = path.join(fixtures, '剧本 中文.txt');
-  await writeFile(documentPath, '第一场：海边\n人物：小明\n小明：今天的故事从这里开始。\n');
-  videoPath = process.env.FRAMEFETCH_E2E_VIDEO_FILE
-    ? path.resolve(process.env.FRAMEFETCH_E2E_VIDEO_FILE)
-    : path.join(fixtures, '演示 空格.mp4');
-  if (!process.env.FRAMEFETCH_E2E_VIDEO_FILE) await writeFile(videoPath, playableFixture());
-  await stat(videoPath); // A real playable H264/AAC fixture is required; no success based on skipped playback.
+  workspace = await mkdtemp(path.join(tmpdir(), 'framefetch-transport-e2e-'));
+  storage = createServer(async (request, response) => {
+    uploads.push({
+      path: request.url ?? '/',
+      cookie: request.headers.cookie,
+      authorization: request.headers.authorization,
+      body: await bodyText(request),
+    });
+    response.writeHead(200, { ETag: '0123456789abcdef0123456789abcdef' });
+    response.end();
+  });
+  storageUrl = await listen(storage);
+  issuedTarget = `${storageUrl}bucket/probe?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Signature=${'a'.repeat(64)}`;
+  backend = createServer(async (request, response) => {
+    const selected = new URL(request.url ?? '/', backendUrl);
+    const body = await bodyText(request);
+    requests.push({
+      method: request.method ?? 'GET',
+      path: selected.pathname,
+      origin: request.headers.origin,
+      cookie: request.headers.cookie,
+      body,
+    });
+    response.setHeader('Cache-Control', 'no-store');
+    response.setHeader('Content-Type', 'application/json');
+    if (selected.pathname === '/api/auth/me') {
+      response.writeHead(401);
+      response.end(
+        JSON.stringify({ code: 'unauthenticated', message: 'Unauthenticated', data: null }),
+      );
+    } else if (selected.pathname === '/api/_desktop-probe/echo') {
+      response.end(
+        JSON.stringify({
+          method: request.method,
+          query: selected.search,
+          body,
+          origin: request.headers.origin,
+          referer: request.headers.referer ?? null,
+        }),
+      );
+    } else if (selected.pathname === '/api/_desktop-probe/session') {
+      response.setHeader(
+        'Set-Cookie',
+        'shell_probe=retained; Path=/; HttpOnly; SameSite=Lax; Max-Age=3600',
+      );
+      response.end(JSON.stringify({ stored: true }));
+    } else if (selected.pathname === '/api/_desktop-probe/cookie') {
+      response.end(JSON.stringify({ cookie: request.headers.cookie ?? '' }));
+    } else if (selected.pathname === '/api/_desktop-probe/file') {
+      const range = request.headers.range;
+      const selectedBytes = range === 'bytes=0-8' ? fileBytes.subarray(0, 9) : fileBytes;
+      response.setHeader('Content-Type', 'application/octet-stream');
+      response.setHeader('Content-Disposition', 'attachment; filename="probe-download.txt"');
+      response.setHeader('Accept-Ranges', 'bytes');
+      response.setHeader('Content-Length', selectedBytes.length);
+      if (range) response.setHeader('Content-Range', `bytes 0-8/${fileBytes.length}`);
+      response.writeHead(range ? 206 : 200);
+      response.end(request.method === 'HEAD' ? undefined : selectedBytes);
+    } else if (selected.pathname === '/api/_desktop-probe/redirect') {
+      response.writeHead(302, { Location: `${storageUrl}untrusted-redirect` });
+      response.end();
+    } else if (selected.pathname === `/api/media-imports/${uploadId}/upload-sessions`) {
+      response.end(
+        JSON.stringify({
+          code: 'success',
+          message: 'OK',
+          data: {
+            resource_id: uploadId,
+            expires_at: new Date(Date.now() + 300000).toISOString(),
+            parts: [{ part_number: 1, url: issuedTarget }],
+            part_count: 1,
+            part_size_bytes: 5242880,
+            max_concurrency: 1,
+          },
+        }),
+      );
+    } else {
+      response.writeHead(404);
+      response.end(JSON.stringify({ error: 'Backend root must never provide desktop UI' }));
+    }
+  });
+  backend.on('upgrade', (request, socket) => {
+    const peer = socket as Socket;
+    sockets.add(peer);
+    peer.once('close', () => sockets.delete(peer));
+    if (
+      request.url !== '/api/ws/tasks' ||
+      typeof request.headers['sec-websocket-key'] !== 'string'
+    ) {
+      peer.destroy();
+      return;
+    }
+    handshakes.push({ origin: request.headers.origin, cookie: request.headers.cookie });
+    const accept = createHash('sha1')
+      .update(`${request.headers['sec-websocket-key']}258EAFA5-E914-47DA-95CA-C5AB0DC85B11`)
+      .digest('base64');
+    peer.write(
+      `HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: ${accept}\r\n\r\n`,
+    );
+    const message = Buffer.from(JSON.stringify({ type: 'transport.probe' }));
+    peer.write(Buffer.concat([Buffer.from([0x81, message.length]), message]));
+    peer.on('data', () => {});
+  });
+  backendUrl = await listen(backend);
+});
+
+test.beforeEach(async () => {
+  profile = await mkdtemp(path.join(workspace, 'profile-'));
+  requests.length = 0;
+  uploads.length = 0;
+  handshakes.length = 0;
+  await launch();
+});
+
+test.afterEach(async () => {
+  if (application) await application.close();
+  for (const socket of sockets) socket.destroy();
 });
 
 test.afterAll(async () => {
-  if (application) await application.close();
+  for (const socket of sockets) socket.destroy();
+  await Promise.all(
+    [backend, storage].map(
+      (server) => new Promise<void>((resolve) => server.close(() => resolve())),
+    ),
+  );
+  await rm(workspace, { recursive: true, force: true });
 });
 
-test('native import, constrained playback, document reading and restart persistence', async () => {
-  await launch();
-  await expect(page.locator('h1')).toContainText('把素材，带回本地。');
-  const security = await page.evaluate(() => ({
-    node: typeof (globalThis as unknown as { require?: unknown }).require,
-    pathReader: 'readFile' in window.desktop,
-    keyReader: 'getApiKey' in window.desktop,
-  }));
-  expect(security).toEqual({ node: 'undefined', pathReader: false, keyReader: false });
-
-  await page.getByRole('tab', { name: '本地视频', exact: true }).click();
-  await selectFile(videoPath);
-  await page.getByRole('button', { name: '导入视频', exact: true }).click();
-  await expect(page.getByText('已完成', { exact: true })).toBeVisible({ timeout: 30000 });
-  await manage('文件管理');
-  await page.getByRole('button', { name: /演示 空格.mp4/ }).click();
-  const player = page.locator('video');
-  await expect(player).toBeVisible();
-  await expect
-    .poll(() =>
-      player.evaluate((element) => {
-        const video = element as HTMLVideoElement;
-        return { ready: video.readyState, width: video.videoWidth, duration: video.duration };
-      }),
-    )
-    .toMatchObject({ width: 320, duration: 2 });
-  await player.evaluate(async (element) => {
-    const video = element as HTMLVideoElement;
-    await video.play();
+test('bundled frontend loads at the API origin with no Node, preload or remote page dependency', async () => {
+  expect(new URL(page.url()).origin).toBe(new URL(backendUrl).origin);
+  await expect(page.locator('body')).not.toContainText(
+    'Backend root must never provide desktop UI',
+  );
+  const renderer = await page.evaluate(() => {
+    const globals = window as unknown as {
+      require?: unknown;
+      process?: unknown;
+      desktop?: unknown;
+    };
+    return {
+      require: typeof globals.require,
+      process: typeof globals.process,
+      desktop: typeof globals.desktop,
+      secure: window.isSecureContext,
+      locks: !!navigator.locks,
+    };
   });
-  await expect
-    .poll(() => player.evaluate((element) => (element as HTMLVideoElement).currentTime))
-    .toBeGreaterThan(0);
-  await player.evaluate((element) => {
-    const video = element as HTMLVideoElement;
-    video.pause();
-    video.currentTime = 1.5;
+  expect(renderer).toEqual({
+    require: 'undefined',
+    process: 'undefined',
+    desktop: 'undefined',
+    secure: true,
+    locks: true,
   });
-  await expect
-    .poll(() => player.evaluate((element) => (element as HTMLVideoElement).currentTime))
-    .toBeGreaterThan(1);
-  await expect(player).toHaveAttribute('src', /^framefetch-media:\/\//);
-
-  await page.getByRole('button', { name: '首页', exact: true }).click();
-  await page.getByRole('tab', { name: '剧本文档', exact: true }).click();
-  await page.getByLabel('导入方式', { exact: true }).click();
-  await page.getByRole('option', { name: '复制到文件目录', exact: true }).click();
-  await page.getByRole('button', { name: '剧本文档', exact: true }).click();
-  await selectFile(documentPath);
-  await page.getByRole('button', { name: '导入文档', exact: true }).click();
-  await page.getByRole('button', { name: '剧本文档', exact: true }).click();
-  await expect(page.getByRole('button', { name: /剧本 中文.txt/ })).toBeVisible({ timeout: 30000 });
-  await rm(documentPath);
-  await page.getByRole('button', { name: /剧本 中文.txt/ }).click();
-  await expect(page.locator('.document-preview')).toContainText('今天的故事从这里开始');
-  await manage('设置');
-  await expect(page.getByText('未就绪', { exact: true })).toHaveCount(0);
-  await page.screenshot({
-    path: path.join(
-      project,
-      '.artifacts',
-      executable ? 'packaged-settings.png' : 'desktop-settings.png',
-    ),
-  });
-
-  const dataPath = await application.evaluate(({ app }) => app.getPath('userData'));
-  expect(dataPath).toBe(profile);
-  await application.close();
-  await launch();
-  await manage('文件管理');
-  await expect(page.getByRole('button', { name: /演示 空格.mp4/ })).toBeVisible();
-  await expect
-    .poll(() =>
-      page
-        .locator('.thumbnail img')
-        .evaluate((element) => (element as HTMLImageElement).naturalWidth),
-    )
-    .toBeGreaterThan(0);
-  await page.screenshot({
-    path: path.join(
-      project,
-      '.artifacts',
-      executable ? 'packaged-library.png' : 'desktop-library.png',
-    ),
-  });
-  await page.getByRole('button', { name: '剧本文档', exact: true }).click();
-  await expect(page.getByRole('button', { name: /剧本 中文.txt/ })).toBeVisible();
-});
-
-test('frontend brand, responsive layout, native controls, focus and local pagination', async () => {
-  // An explicit desktop preference takes precedence over the legacy theme key.
-  await page.evaluate(() => {
-    localStorage.setItem('theme', 'dark');
-    localStorage.setItem('framegrab-theme', 'light');
-  });
-  await page.reload();
-  await expect(page.getByRole('button', { name: '切换深色主题', exact: true })).toBeVisible();
-  await expect(
-    page.getByRole('heading', { name: '把素材，带回本地。', exact: true }),
-  ).toBeVisible();
+  expect(requests.every((request) => /^\/(api|health)(\/|$)/.test(request.path))).toBe(true);
+  await page.goto(`${backendUrl}user/login/`);
+  await expect(page.getByRole('heading', { name: '欢迎回来', exact: true })).toBeVisible();
+  await menu('back');
+  await expect.poll(() => new URL(page.url()).pathname).toBe('/');
+  await page.goto(`${backendUrl}user/login/`);
+  await menu('home');
+  await expect.poll(() => new URL(page.url()).pathname).toBe('/');
+  await menu('reconnect');
   await expect(page.locator('body')).toHaveAttribute('data-design', 'borderless');
-  await expect(page.getByLabel('视频链接', { exact: true })).toBeEnabled();
-  await expect(page.getByRole('button', { name: '帧取首页' }).locator('img')).toHaveAttribute(
-    'src',
-    /logo-/,
-  );
-  await page.evaluate(() => document.fonts.ready);
-  const fontFaces = await page.evaluate(() =>
-    Array.from(document.fonts).map((face) => ({ family: face.family, status: face.status })),
-  );
-  expect(fontFaces.some((face) => face.family === 'Geist' && face.status === 'loaded')).toBe(true);
-  const input = page.getByLabel('视频链接', { exact: true });
-  expect(await input.evaluate((element) => element.getBoundingClientRect().height)).toBe(56);
-  expect(
-    await page
-      .getByRole('button', { name: '解析媒体', exact: true })
-      .evaluate((element) => element.getBoundingClientRect().height),
-  ).toBe(56);
+  expect(requests.every((request) => /^\/(api|health)(\/|$)/.test(request.path))).toBe(true);
+});
 
-  await manage('AI 服务');
-  const add = page.getByRole('button', { name: '新增 AI 服务', exact: true });
-  await add.click();
-  await expect(page.getByRole('dialog')).toBeVisible();
-  await expect(page.getByLabel('API Base URL', { exact: true })).toBeVisible();
-  await page.keyboard.press('Escape');
-  await expect(page.getByRole('dialog')).toHaveCount(0);
-  await expect(add).toBeFocused();
-
-  // Import real isolated documents to exercise pagination without inventing product records.
-  const files = await Promise.all(
-    Array.from({ length: 11 }, async (_, index) => {
-      const file = path.join(profile, 'fixtures', `分页剧本 ${index}.txt`);
-      await writeFile(file, `第一场 海边\n人物 小明\n真实本地文档 ${index}`);
-      return file;
-    }),
-  );
-  await application.evaluate(({ dialog }, selected) => {
-    dialog.showOpenDialog = async () => ({ canceled: false, filePaths: selected });
-  }, files);
-  await page.getByRole('button', { name: '剧本文档', exact: true }).click();
-  await page.getByRole('button', { name: '导入文档', exact: true }).click();
-  await expect
-    .poll(
-      () =>
-        page.evaluate(
-          async () =>
-            (await window.desktop.getAssets()).filter((asset) => asset.kind === 'document').length,
-        ),
-      { timeout: 30000 },
-    )
-    .toBe(12);
-  await page.getByRole('button', { name: '剧本文档', exact: true }).click();
-  await expect(page.locator('tbody tr')).toHaveCount(10);
-  await page.getByRole('button', { name: '下一页', exact: true }).click();
-  await expect(page.locator('tbody tr')).toHaveCount(2);
-  await page.getByLabel('剧本文档分页每页条数', { exact: true }).click();
-  await page.getByRole('option', { name: '每页 20 条', exact: true }).click();
-  await expect(page.locator('tbody tr')).toHaveCount(12);
-  expect(
-    await page
-      .locator('tbody tr')
-      .first()
-      .evaluate((element) => getComputedStyle(element).borderBottomWidth),
-  ).toBe('0px');
-
-  for (const width of [1260, 900, 390]) {
-    await application.evaluate(({ BrowserWindow }, value) => {
-      const window = BrowserWindow.getAllWindows()[0];
-      window.setContentSize(value, 760);
-    }, width);
-    for (const dark of [false, true]) {
-      const expected = dark ? '切换浅色主题' : '切换深色主题';
-      if (!(await page.getByRole('button', { name: expected, exact: true }).count())) {
-        await page
-          .getByRole('button', { name: dark ? '切换深色主题' : '切换浅色主题', exact: true })
-          .click();
-      }
-      await expect
-        .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth))
-        .toBe(true);
-      if (width < 1024) {
-        await page.getByRole('button', { name: '打开导航菜单', exact: true }).click();
-        await page.getByRole('menuitem', { name: '首页', exact: true }).click();
-      } else await page.getByRole('button', { name: '首页', exact: true }).click();
-      await expect(
-        page.getByRole('heading', { name: '把素材，带回本地。', exact: true }),
-      ).toBeVisible();
-      await expect
-        .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth))
-        .toBe(true);
-      await page.getByRole('tab', { name: '链接解析', exact: true }).focus();
-      await page.keyboard.press('ArrowRight');
-      await expect(page.getByRole('tab', { name: '本地视频', exact: true })).toHaveAttribute(
-        'aria-selected',
-        'true',
-      );
-      await expect
-        .poll(() =>
-          page.getByRole('tab', { name: '本地视频', exact: true }).evaluate((element) => {
-            const style = getComputedStyle(element);
-            return style.color === getComputedStyle(document.body).color;
-          }),
-        )
-        .toBe(true);
-      expect(
-        await page.evaluate(() => getComputedStyle(document.documentElement).colorScheme),
-      ).toBe(dark ? 'dark' : 'light');
-      await page.screenshot({
-        path: path.join(
-          project,
-          '.artifacts',
-          `aligned-home-${width}${dark ? '-dark.png' : '-light.png'}`,
-        ),
-      });
-      await manage('AI 服务');
-      await expect(page.getByRole('heading', { name: 'AI 服务', exact: true })).toBeVisible();
-      await expect
-        .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth))
-        .toBe(true);
+test('same-origin API preserves method, query, body and response without allowing foreign redirects', async () => {
+  const result = await page.evaluate(async () => {
+    const response = await fetch('/api/_desktop-probe/echo?query=preserved', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{"transport":"probe"}',
+    });
+    return { status: response.status, data: await response.json() };
+  });
+  expect(result).toEqual({
+    status: 200,
+    data: {
+      method: 'POST',
+      query: '?query=preserved',
+      body: '{"transport":"probe"}',
+      origin: new URL(backendUrl).origin,
+      referer: null,
+    },
+  });
+  const redirect = await page.evaluate(async () => {
+    try {
+      return (await fetch('/api/_desktop-probe/redirect')).status;
+    } catch {
+      return 0;
     }
-  }
+  });
+  expect(redirect).not.toBe(200);
+  expect(uploads).toHaveLength(0);
+  const foreign = await page.evaluate(async (target) => {
+    try {
+      return (await fetch(target)).status;
+    } catch {
+      return 0;
+    }
+  }, `${storageUrl}foreign-request`);
+  expect(foreign).not.toBe(200);
+  expect(uploads).toHaveLength(0);
+  await page.evaluate((target) => {
+    window.location.href = target;
+  }, storageUrl);
+  await expect.poll(() => new URL(page.url()).origin).toBe(new URL(backendUrl).origin);
+  expect(uploads).toHaveLength(0);
+});
+
+test('HttpOnly service cookies persist across restart and WebSocket keeps the service origin', async () => {
+  const retained = path.join(profile, 'legacy-data.keep');
+  await writeFile(retained, 'Existing user files stay untouched.');
+  await page.evaluate(async () => {
+    await fetch('/api/_desktop-probe/session', { method: 'POST' });
+  });
+  expect(await page.evaluate(() => document.cookie)).not.toContain('shell_probe');
+  await application.evaluate(({ BrowserWindow }) =>
+    BrowserWindow.getAllWindows()[0].webContents.session.cookies.flushStore(),
+  );
+  await application.close();
+  await launch(backendUrl, true);
+  const cookie = await page.evaluate(async () =>
+    (await fetch('/api/_desktop-probe/cookie')).json(),
+  );
+  expect(cookie.cookie).toContain('shell_probe=retained');
+  expect(await page.evaluate(() => document.cookie)).not.toContain('shell_probe');
+  const config = JSON.parse(await readFile(path.join(profile, 'connection.json'), 'utf8'));
+  expect(config).toEqual({ backend_url: backendUrl });
+  expect(await readFile(retained, 'utf8')).toBe('Existing user files stay untouched.');
+  const message = await page.evaluate(
+    async () =>
+      new Promise<string>((resolve, reject) => {
+        const endpoint = new URL('/api/ws/tasks', window.location.origin);
+        endpoint.protocol = endpoint.protocol === 'https:' ? 'wss:' : 'ws:';
+        const socket = new WebSocket(endpoint);
+        const timer = window.setTimeout(() => {
+          socket.close();
+          reject(new Error('Probe socket timeout'));
+        }, 5000);
+        socket.onmessage = (event) => {
+          window.clearTimeout(timer);
+          socket.close();
+          resolve(event.data);
+        };
+        socket.onerror = () => {
+          window.clearTimeout(timer);
+          reject(new Error('Probe socket failed'));
+        };
+      }),
+  );
+  expect(JSON.parse(message)).toEqual({ type: 'transport.probe' });
+  expect(handshakes).toEqual([
+    { origin: new URL(backendUrl).origin, cookie: 'shell_probe=retained' },
+  ]);
+});
+
+test('streamed files preserve HEAD and Range and use the native download save path', async () => {
+  const selection = await page.evaluate(async () => {
+    const head = await fetch('/api/_desktop-probe/file', { method: 'HEAD' });
+    const part = await fetch('/api/_desktop-probe/file', { headers: { Range: 'bytes=0-8' } });
+    return {
+      head: head.status,
+      length: head.headers.get('content-length'),
+      range: part.status,
+      contentRange: part.headers.get('content-range'),
+      bytes: await part.text(),
+    };
+  });
+  expect(selection).toEqual({
+    head: 200,
+    length: String(fileBytes.length),
+    range: 206,
+    contentRange: `bytes 0-8/${fileBytes.length}`,
+    bytes: fileBytes.subarray(0, 9).toString(),
+  });
+  const savePath = path.join(profile, 'download-probe.txt');
+  await application.evaluate(({ BrowserWindow }, selected) => {
+    const probe = globalThis as unknown as {
+      downloadProbe?: Promise<{ state: string; title?: string; defaultPath?: string }>;
+    };
+    probe.downloadProbe = new Promise((resolve) => {
+      BrowserWindow.getAllWindows()[0].webContents.session.once('will-download', (_event, item) => {
+        const options = item.getSaveDialogOptions();
+        item.setSavePath(selected);
+        item.once('done', (_event, state) =>
+          resolve({ state, title: options.title, defaultPath: options.defaultPath }),
+        );
+      });
+    });
+  }, savePath);
+  await page.evaluate(() => {
+    const frame = document.createElement('iframe');
+    frame.hidden = true;
+    frame.src = '/api/_desktop-probe/file';
+    document.body.append(frame);
+  });
+  const download = await application.evaluate(
+    () =>
+      (
+        globalThis as unknown as {
+          downloadProbe: Promise<{ state: string; title?: string; defaultPath?: string }>;
+        }
+      ).downloadProbe,
+  );
+  expect(download.state).toBe('completed');
+  expect(download.title).toBe('保存文件');
+  expect(path.basename(download.defaultPath ?? '')).toBe('probe-download.txt');
+  expect(await readFile(savePath)).toEqual(fileBytes);
+});
+
+test('storage upload accepts only a live signed target issued by the API and omits identity', async () => {
+  await page.evaluate(async (id) => {
+    await fetch('/api/_desktop-probe/session', { method: 'POST' });
+    const response = await fetch(`/api/media-imports/${id}/upload-sessions`, { method: 'POST' });
+    if (!response.ok) throw new Error('Upload-session transport probe failed');
+  }, uploadId);
+  const upload = await page.evaluate(
+    async ({ target, bytes }) => {
+      const response = await fetch('/storage-upload', {
+        method: 'PUT',
+        headers: {
+          'X-FrameFetch-Upload-Target': target,
+          'Content-Type': 'application/octet-stream',
+        },
+        body: bytes,
+      });
+      return { status: response.status, etag: response.headers.get('etag') };
+    },
+    { target: issuedTarget, bytes: uploadBytes },
+  );
+  expect(upload).toEqual({ status: 200, etag: '0123456789abcdef0123456789abcdef' });
+  expect(uploads).toEqual([
+    { path: new URL(issuedTarget).pathname + new URL(issuedTarget).search, body: uploadBytes },
+  ]);
+  const rejected = await page.evaluate(
+    async (target) =>
+      (
+        await fetch('/storage-upload', {
+          method: 'PUT',
+          headers: { 'X-FrameFetch-Upload-Target': target },
+          body: 'must not leave the client',
+        })
+      ).status,
+    `${storageUrl}unissued-target?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Signature=${'b'.repeat(64)}`,
+  );
+  expect(rejected).toBeGreaterThanOrEqual(400);
+  expect(uploads).toHaveLength(1);
+});
+
+test('external media requests omit service cookies and cannot forward foreign writes', async () => {
+  await page.evaluate(async () => {
+    await fetch('/api/_desktop-probe/session', { method: 'POST' });
+  });
+  await page.evaluate(
+    async (target) =>
+      new Promise<void>((resolve) => {
+        const image = document.createElement('img');
+        image.onload = image.onerror = () => {
+          image.remove();
+          resolve();
+        };
+        image.src = target;
+        document.body.append(image);
+      }),
+    `${storageUrl}external-image`,
+  );
+  expect(uploads).toHaveLength(1);
+  expect(uploads[0].cookie).toBeUndefined();
+  expect(uploads[0].authorization).toBeUndefined();
+  const denied = await page.evaluate(async (target) => {
+    try {
+      return (await fetch(target, { method: 'POST', body: 'must stay local' })).status;
+    } catch {
+      return 0;
+    }
+  }, `${storageUrl}foreign-write`);
+  expect(denied).not.toBe(200);
+  expect(uploads).toHaveLength(1);
+});
+
+test('ordinary upstream HTTPS links open through the controlled native handler only after a click', async () => {
+  await application.evaluate(({ shell }) => {
+    const probe = globalThis as unknown as { clickedExternalLinks: string[] };
+    probe.clickedExternalLinks = [];
+    shell.openExternal = async (url) => {
+      probe.clickedExternalLinks.push(url);
+    };
+  });
+  const link = page.getByRole('link', { name: 'MIT 开源', exact: true });
+  await expect(link).toBeVisible();
+  expect(await link.getAttribute('target')).toBeNull();
+  const target = await link.getAttribute('href');
+  if (!target) throw new Error('Missing upstream license link');
+  await link.click();
+  await expect
+    .poll(() =>
+      application.evaluate(
+        () => (globalThis as unknown as { clickedExternalLinks: string[] }).clickedExternalLinks,
+      ),
+    )
+    .toEqual([target]);
+  expect(new URL(page.url()).origin).toBe(new URL(backendUrl).origin);
+});
+
+test('soft Link navigation and native query History writes update the same renderer document', async () => {
+  await page.evaluate(() => {
+    (window as unknown as { adapterDocumentProbe: string }).adapterDocumentProbe = 'retained';
+  });
+  await page.getByRole('link', { name: '登录', exact: true }).click();
+  await expect(page.getByRole('heading', { name: '欢迎回来', exact: true })).toBeVisible();
+  expect(new URL(page.url()).pathname).toBe('/user/login');
+  await page.evaluate(() =>
+    window.history.pushState(null, '', '/user/register?redirect=%2Fdocuments'),
+  );
+  await expect(page.getByRole('heading', { name: '创建你的帧取账户', exact: true })).toBeVisible();
+  const queryLink = page.getByRole('link', { name: '返回登录', exact: true });
+  await expect(queryLink).toHaveAttribute('href', '/user/login?redirect=%2Fdocuments');
+  expect(
+    await page.evaluate(
+      () => (window as unknown as { adapterDocumentProbe: string }).adapterDocumentProbe,
+    ),
+  ).toBe('retained');
+  await page.evaluate(() => window.history.back());
+  await expect(page.getByRole('heading', { name: '欢迎回来', exact: true })).toBeVisible();
 });

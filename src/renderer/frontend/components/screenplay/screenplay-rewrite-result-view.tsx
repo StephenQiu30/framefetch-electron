@@ -1,0 +1,120 @@
+'use client';
+
+import AnalysisReportPreview from '@/components/analysis/analysis-report-preview';
+import {
+  languageLabel,
+  Metric,
+  ResultTab,
+} from '@/components/screenplay/screenplay-result-primitives';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { Tabs, TabsContent, TabsList } from '@/components/ui/tabs';
+
+const categoryLabels: Record<string, string> = {
+  character: '人物',
+  honorific: '称谓',
+  location: '地点',
+  other: '其他',
+  term: '术语',
+  title: '标题',
+};
+
+export default function ScreenplayRewriteResultView({
+  reportMarkdown,
+  result,
+}: {
+  reportMarkdown?: string | null;
+  result: API.ScreenplayRewriteResultResponse;
+}) {
+  return (
+    <Tabs className="mt-10 gap-0" defaultValue="summary">
+      <div className="grid gap-5 py-4 sm:grid-cols-3">
+        <Metric label="源场景" value={`${result.source_scene_count}`} />
+        <Metric label="输出场景" value={`${result.output_scene_count}`} />
+        <Metric
+          label="语言"
+          value={`${languageLabel(result.source_language)} → ${languageLabel(result.target_language)}`}
+        />
+      </div>
+      <div className="mt-10 overflow-x-auto">
+        <TabsList className="w-max" variant="line">
+          <ResultTab value="summary">术语与摘要</ResultTab>
+          {reportMarkdown ? (
+            <ResultTab value="report">改写正文</ResultTab>
+          ) : null}
+        </TabsList>
+      </div>
+      <TabsContent value="summary">
+        <div>
+          <h3
+            className="text-xl font-medium tracking-tight"
+            id="rewrite-glossary-title"
+          >
+            统一术语
+          </h3>
+          {result.glossary.length ? (
+            <Table className="table-borderless mt-4 text-left">
+              <TableCaption className="sr-only">
+                剧本改写统一术语表
+              </TableCaption>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="whitespace-normal">原文</TableHead>
+                  <TableHead className="whitespace-normal">统一写法</TableHead>
+                  <TableHead className="whitespace-normal">类别</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {result.glossary.map((term) => (
+                  <TableRow key={`${term.category}:${term.source}`}>
+                    <TableCell className="whitespace-normal">
+                      {term.source}
+                    </TableCell>
+                    <TableCell className="whitespace-normal">
+                      {term.target}
+                    </TableCell>
+                    <TableCell className="whitespace-normal">
+                      {categoryLabels[term.category] ?? term.category}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <p className="mt-4 py-7 text-muted-foreground">
+              本次改写没有需要单独统一的术语。
+            </p>
+          )}
+        </div>
+        <div className="mt-10 max-w-4xl">
+          <h3
+            className="text-xl font-medium tracking-tight"
+            id="rewrite-summary-title"
+          >
+            修改摘要
+          </h3>
+          <ul className="mt-4 flex flex-col gap-2 list-disc pl-5 leading-7 text-muted-foreground">
+            {result.change_summary.map((summary) => (
+              <li key={summary}>{summary}</li>
+            ))}
+          </ul>
+        </div>
+      </TabsContent>
+      {reportMarkdown ? (
+        <TabsContent value="report">
+          <p className="mb-6 max-w-3xl text-sm leading-6 text-muted-foreground">
+            以下正文由受限 AI 按源场景顺序确定性合并，仅用于改写与本地化参考。
+          </p>
+          <AnalysisReportPreview markdown={reportMarkdown} />
+        </TabsContent>
+      ) : null}
+    </Tabs>
+  );
+}

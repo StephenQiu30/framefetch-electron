@@ -1,0 +1,34 @@
+name: 功能建议
+description: 为桌面客户端提出可验证的改进
+title: '[Feature]: '
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        客户端内置页面复用 Frontend，业务接口与数据使用既有 Server。请先说明用户问题；服务端或 Web 改进提交到 video-server。
+  - type: textarea
+    id: problem
+    attributes:
+      label: 用户问题
+      description: 谁在什么场景遇到了什么问题？
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 期望行为
+      description: 描述关键状态、与现有 Frontend 的关系和可判定完成标准
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 已尝试的替代方案
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 范围确认
+      options:
+        - label: 此建议不要求建立第二业务后端或数据库，也不要求绕过 DRM、权限或安全边界。
+          required: true

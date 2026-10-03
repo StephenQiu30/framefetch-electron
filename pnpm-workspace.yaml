@@ -1,6 +1,7 @@
 allowBuilds:
   electron: true
   electron-winstaller: false
+  es5-ext: false
   esbuild: true
 minimumReleaseAgeExclude:
   - '@tanstack/query-core@5.104.1'

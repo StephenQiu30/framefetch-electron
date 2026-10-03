@@ -9,17 +9,11 @@
     "ignoreUnknown": true,
     "includes": [
       "**",
-      "!src/shared/generated.ts",
-      "!src/renderer/frontend.css",
-      "!contracts",
-      "!resources/runtime",
-      "!resources/staging",
-      "!resources/licenses",
-      "!engine",
       "!out",
       "!release",
       "!.artifacts",
-      "!pnpm-lock.yaml"
+      "!pnpm-lock.yaml",
+      "!src/renderer/frontend"
     ]
   },
   "formatter": {
@@ -45,26 +39,6 @@
       "source": {
         "organizeImports": "on"
       }
-    }
-  },
-  "overrides": [
-    {
-      "includes": ["src/renderer/components/ui/**"],
-      "linter": {
-        "rules": {
-          "a11y": {
-            "useSemanticElements": "off"
-          },
-          "suspicious": {
-            "noArrayIndexKey": "off"
-          }
-        }
-      }
-    }
-  ],
-  "css": {
-    "parser": {
-      "tailwindDirectives": true
     }
   }
 }

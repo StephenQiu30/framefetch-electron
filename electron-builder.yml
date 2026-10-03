@@ -5,42 +5,28 @@ npmRebuild: false
 directories:
   output: release
 files:
-  - out/**
+  - out/main/**
+  - out/renderer/**
   - package.json
-  - resources/THIRD_PARTY_NOTICES.md
-  - resources/licenses/GEIST-LICENSE.txt
-  - resources/licenses/GEIST-MONO-LICENSE.txt
-beforePack: scripts/before-pack.mjs
-afterPack: scripts/after-pack.mjs
-afterSign: scripts/after-sign.mjs
+  - resources/icons/icon-512.png
+  - resources/licenses/**
+  - '!node_modules/**'
 artifactName: FrameFetch-${version}-${os}-${arch}.${ext}
 mac:
   icon: resources/icons/icon.icns
-  target:
-    - target: dmg
+  target: [dmg]
   category: public.app-category.video
   minimumSystemVersion: '14.0'
   identity: null
   hardenedRuntime: true
   notarize: false
-  signIgnore:
-    - /Contents/Resources/runtime(?:/|$)
-  extraResources:
-    - from: resources/runtime/darwin-${arch}
-      to: runtime
-      filter: ['**/*']
 dmg:
   sign: false
 win:
   icon: resources/icons/icon.ico
-  target:
-    - target: nsis
+  target: [nsis]
   signExecutable: false
   requestedExecutionLevel: asInvoker
-  extraResources:
-    - from: resources/runtime/win32-${arch}
-      to: runtime
-      filter: ['**/*']
 nsis:
   oneClick: false
   perMachine: false
