@@ -1,59 +1,21 @@
-# Reproducible internal runtime
+# 桌面构建资源
 
-Run these commands from this project on the native target:
+`icons/` 保存正式品牌的 macOS ICNS、Windows ICO 和开发态 PNG，来源与更新规则见 [图标说明](icons/README.md)。页面 Logo 与主题 CSS 来自 Frontend 同步产物，字体使用锁定的本地字体包，随客户端构建交付。
+
+构建不下载或冻结 Python、FFmpeg、yt-dlp、Deno、模型文件或原生任务管理扩展。包内只包含 Electron 应用入口、Renderer 与实际使用的静态资源；业务能力由配置的 Server 提供。
+
+Renderer 的第三方代码由 Vite 编译进资源，安装包不重复包含 `node_modules`。构建按实际输出模块生成 `assets/third-party-licenses.txt`，字体 OFL 许可位于 `resources/licenses`；Electron 自带的 Chromium 许可随框架保留。
+
+`shadcn.json` 保存上游组件配置原文，和根 `design.md` 一同由来源同步脚本校验。界面组件先在 Frontend 的官方 registry 配置下维护，再同步到桌面端；不在桌面快照中重新生成另一套基础组件。
 
 ```sh
 pnpm install --frozen-lockfile
-pnpm contract:generate
-node scripts/prepare-runtime.mjs
-node scripts/freeze-engine.mjs
-node scripts/verify-runtime.mjs
 pnpm build
-pnpm exec electron-builder --mac --arm64 --dir --publish never
+pnpm package:dir
 ```
 
-Use `--mac --x64` on Intel macOS, or `--win --x64` on Windows. Windows first
-requires `node scripts/build-native.mjs` on a machine with Visual Studio C++
-build tools, plus MSYS2 at `C:/msys64` containing MinGW64 GCC and GNU make.
-An alternate MSYS2 installation can be passed to prepare-runtime using
-`--msys2-root <directory>`. The addon uses the project's exact Electron version.
+macOS 使用 DMG，Windows 使用 NSIS，具体目标与文件范围以 `electron-builder.yml` 为准。应在目标系统构建并验证安装后的程序，不能以开发态测试替代安装态验证。
 
-The source lock fixes FFmpeg, zlib, yt-dlp, Deno and engine build versions.
-Original archive hashes are checked before extraction. FFmpeg and zlib are
-built from source with four jobs; final tools have no Homebrew dynamic-library
-dependency. Build-machine compilers are identified in the installed build record.
-The frozen engine is copied in full, including Python dynamic libraries,
-python-docx templates and certifi data. Freeze dereferences internal symlinks;
-runtime verification rejects symlinks, unlisted files and wrong native binaries.
+默认配置生成内部未签名安装包。macOS 签名与公证、Windows 发布者签名、最低系统版本、干净安装、升级和卸载须作为实际发布验证；文档和 CI 配置不构成通过证明。卸载不得自动清除用户数据。
 
-Each OS/architecture has its own ignored `runtime/<platform>-<arch>/` directory.
-Builder copies only the selected target into its final `runtime` directory.
-Production paths are relative to `process.resourcesPath/runtime`; neither
-source checkout paths nor system Python/FFmpeg are application dependencies.
-
-`prepare-runtime --minimal` intentionally omits yt-dlp and Deno and sets download
-resource capability false. A failed download otherwise aborts preparation; it
-does not silently package a partial downloader. No browser or model weights are
-included. EJS is included by the selected official yt-dlp executable.
-
-The default build is an unsigned internal package. A future release can supply
-an explicit macOS signing identity or Windows signtool configuration: afterPack
-signs nested resources, writes the final byte hashes, and then builder signs the
-outer application. macOS signIgnore protects runtime from later mutation;
-afterSign verifies without writing. Notarization, Windows publisher identity,
-Gatekeeper and clean installation are separate unverified release gates.
-`hash-installers.mjs` writes installer hashes outside the application.
-
-Local evidence on 2026-10-02 (macOS 27.0.1 arm64): prepare, onedir freeze, resource
-hash/architecture checks, frozen engine hello/shutdown, explicit FFmpeg/ffprobe,
-Chinese/space path MP4 probe, PNG extraction and full decode all passed with
-empty PATH. yt-dlp 2026.08.19 reports bundled EJS 0.8.0 and explicit Deno 2.9.7
-without external component downloads. The runtime was approximately 220 MiB.
-FFmpeg's minimum deployment version is 14.0; running on macOS 14 has not been
-tested. Windows and Intel packages/installation have not been tested locally.
-The controller owns the final engine refresh and packaged Electron E2E evidence.
-
-Full FFmpeg/zlib corresponding source archives and licenses ship in runtime.
-The exact upstream yt-dlp consolidated licenses ship as well. Deno's MIT license
-and dependency lock are retained, with its complete V8/Rust dependency notice
-audit explicitly pending before external distribution. See THIRD_PARTY_NOTICES.md.
+历史本地引擎的忽略缓存可能留在开发工作区中，它们不属于当前源码或打包输入。不得将其中的旧媒体、凭据、用户数据或运行时重新加入安装包。

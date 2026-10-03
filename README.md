@@ -1,72 +1,87 @@
 # FrameFetch Desktop · 帧取桌面端
 
-`video-electron` 是独立 Electron 产品。安装包包含本地 Python 引擎、FFmpeg/ffprobe、yt-dlp 与 Deno；任务、媒体索引和报告保存在本机 SQLite 与文件系统。构建和运行不导入相邻 server/app，不需要 Docker、数据库服务器或部署 API。
+FrameFetch 的 Electron 客户端，支持独立构建、打包和安装。React 页面、主题、字体与品牌资源包含在安装包中，展示复用 `video-server/frontend`；登录、记录、剧本、报告和任务使用已有 Server 的接口与数据。
 
-**当前状态：0.1.0 内部测试版。** macOS arm64 已运行开发版及真正打包后的应用，验证中文路径导入、视频播放与跳转、封面、文档读取、退出及重启后的数据保留。Windows x64、macOS x64 已配置原生构建 CI，尚未在本次本机环境完成验收；正式签名、公证和外部分发仍有发布门槛。
+客户端使用配置后端的 origin，由 Electron 在独立会话中从安装包返回页面与静态资源；API、健康请求及 WebSocket 连接已有 Server。页面不由远端 Frontend 提供，不启动 Frontend 进程或本机监听端口。业务操作需要 Server 可达；桌面不提供 Python 媒体引擎、SQLite 业务库或单独的业务后端。
 
-用户已确认：目录名为 `video-electron`，首批支持 macOS + Windows，首版使用用户自备模型 API，本地模型后续可选。
+## 开发与启动
 
-已实现工作区、链接解析/下载任务、本地 MP4 导入、媒体库与播放器、TXT/Markdown/Fountain/PDF/DOCX 文档、任务取消与恢复、模型配置、五种内置分析方式、Markdown/DOCX 报告。平台和云端分析的实现及受控测试不能代替真实平台/模型服务验收。
-
-本地导入、播放、历史查询和已有报告可以离线使用；下载需要平台网络，AI 需要用户自备公网 HTTPS Chat Completions 服务，且模型支持严格 JSON Schema。视频分析还需要视觉输入。首版不读取浏览器 Cookie，不包含登录平台、DRM、本地模型、云同步和自动更新。
-
-首版视频分析基于最多12个抽帧，不含音频转写；图像证据不能代表完整音轨或逐秒内容。当前网络返回非公网fake-IP时，解析与模型配置会被拒绝，需要能得到真实公网地址的网络环境。
-
-## 开发与构建
-
-开发机使用 Node.js 24.19、pnpm 12.4.2、uv 0.11.32；原生资源固定 Python 3.12.13。终端用户无需安装这些工具。
+使用 package.json 规定的 Node.js 与 pnpm 版本：
 
 ```sh
 pnpm install --frozen-lockfile
-uv sync --project engine --frozen --group dev --python 3.12.13
-pnpm contract:generate
-pnpm runtime:prepare
-pnpm runtime:freeze
-pnpm runtime:verify
 pnpm dev
 ```
 
-首次资源准备需要网络、空间和编译时间。macOS 构建机需要 Xcode Command Line Tools；Windows 需要 MSYS2 MinGW64、make、Node 原生编译工具，并在冻结前执行 `node scripts/build-native.mjs`。开发引擎使用 uv，安装包使用冻结可执行文件；包内资源没有 Python/FFmpeg 的 PATH 回退。
+默认后端为 `http://127.0.0.1:8111/`。连接已有远端部署时指定 HTTPS 根地址：
+
+```sh
+FRAMEFETCH_BACKEND_URL=https://framefetch.example.com/ pnpm dev
+```
+
+已有构建可直接运行：
 
 ```sh
 pnpm build
-pnpm exec electron-builder --mac --arm64 --publish never
-# Intel 构建机使用 --mac --x64
-# Windows 构建机使用 --win --x64
+pnpm start
 ```
 
-制品位于 `release/`，默认是内部未签名 DMG 或完整 NSIS，配置不会自动发布。资源来源、hash、签名顺序和许可证见 [资源说明](resources/README.md) 与 [第三方声明](resources/THIRD_PARTY_NOTICES.md)。
+连接优先级为 `--backend-url=<地址>`、`FRAMEFETCH_BACKEND_URL`、应用数据目录的 `connection.json`、默认地址。配置文件只包含 `{ "backend_url": "http://127.0.0.1:8111/" }`；根地址不带账户凭据、路径、参数或片段。HTTP 仅允许本机 loopback，远端须使用 HTTPS。
 
-## 验证
+安装态可使用 `--backend-url=<地址>` 与 `--user-data-dir=<绝对目录>` 指定连接和独立应用数据目录。会话使用桌面自己的持久 Chromium Profile，按服务地址隔离，不读取浏览器已有登录材料。登录同一服务端账户后使用其既有业务数据。
+
+## 页面与接口同步
+
+界面唯一视觉标准源为 `video-server/design.md`，本仓库 [design.md](design.md) 是原文同步快照，页面来源为 `video-server/frontend`。修改上游后，在包含相邻 Server 源码的开发工作区执行：
 
 ```sh
+pnpm frontend:sync
+pnpm frontend:check
+pnpm frontend:check-upstream
+```
+
+`frontend:check` 离线校验已提交快照与 manifest hash，供独立 checkout 和 CI 使用；`frontend:check-upstream` 对照实际上游当前内容，需要相邻源码，才能证明与该 checkout 一致。两者不代替真实渲染。同步产物提交到本仓库，安装和运行不需要相邻源码或 Frontend 进程。平台接入只适配客户端路由、传输、会话与原生能力；不另画基础组件或维护第二套页面文案。来源、离线检查和其他 checkout 的同步方式见 [源码复用说明](resources/FRONTEND_BASELINE.md)。
+
+接口变化先在 `video-server/frontend` 执行 `pnpm openapi`，再同步到桌面。桌面 `openapi2ts.config.ts` 使用同一生成约定，生成到 `src/renderer/frontend/api`；在当前后端或源码导出的临时契约上检查：
+
+```sh
+pnpm openapi:check
+# 指向其他当前契约时：
+OPENAPI_SCHEMA_URL=http://127.0.0.1:8111/openapi.json pnpm openapi:check
+```
+
+生成差异须与上游同步并检查来源 hash，不手工修改 API 文件，也不提交临时 schema。
+
+数据库结构只由 `video-server/backend/sql/schema.sql` 维护。接口遵循 FastAPI 注解/Pydantic → `/openapi.json` → Swagger `/docs` → `@umijs/openapi`，客户端使用生成的请求和 `API.*` 类型，不手写 DTO、SQL 或 Swagger 副本。工程规范见 [PROJECT.md](PROJECT.md)。
+
+## 检查与打包
+
+```sh
+pnpm frontend:check
 pnpm lint
 pnpm typecheck
 pnpm test
-pnpm test:engine
-uv run --project engine --frozen ruff check engine/src engine/tests
-uv run --project engine --frozen mypy engine/src/framefetch_desktop
-pnpm contract:check
 pnpm build
-pnpm runtime:verify
 pnpm test:e2e
+pnpm package:dir
 ```
 
-E2E 在真实 Electron 中运行，用主进程测试选择器选取明确文件，renderer 没有任意路径接口。第一方 H264 夹具使 CI 无需系统编码器或远端媒体样本。测试使用临时用户目录；设置 `FRAMEFETCH_E2E_EXECUTABLE=<包内绝对可执行路径>` 验证安装态时清空 PATH。[跨平台 CI](.github/workflows/internal-build.yml) 需要手动触发；配置存在不表示 CI 已运行成功。
+在目标系统构建安装包：
 
-任务、授权及凭据默认位于系统应用数据目录。媒体库可在空库时选择，已有库迁移未实现。原生 `--user-data-dir=<绝对目录>` 可隔离工作区。API Key 由主进程保存到系统加密存储；系统保护不可用时仅当前会话保留。未知模型调用不会自动重发，用户需从素材明确重新开始分析。
+```sh
+pnpm build
+# Apple Silicon macOS
+pnpm exec electron-builder --mac --arm64 --publish never
+# Intel macOS
+pnpm exec electron-builder --mac --x64 --publish never
+# Windows x64
+pnpm exec electron-builder --win --x64 --publish never
+```
 
-## 阅读入口
+产物位于 `release/`。构建资源与签名边界见 [资源说明](resources/README.md)。自动化检查、真实服务流程和各系统安装验证分别执行；配置了 CI 或能够生成安装包不代表全部产品场景已验收。当前签名、公证与外部分发须单独验证。
 
-完整规划见 [设计索引](docs/design/README.md)：
+## 数据与贡献
 
-1. [产品定位与功能范围](docs/design/01-产品定位与功能范围.md)：独立性定义、首版范围、桌面使用流程。
-2. [本地架构与复用边界](docs/design/02-本地架构与复用边界.md)：方案比较、进程职责、技术栈、源码复用和目标目录。
-3. [任务存储与安全边界](docs/design/03-任务存储与安全边界.md)：IPC、SQLite、文件事务、取消恢复、凭据与 AI 调用。
-4. [打包分发与版本升级](docs/design/04-打包分发与版本升级.md)：离线安装包、资源、签名、公证、升级和平台差异。
-5. [实施阶段与验收](docs/design/05-实施阶段与验收.md)：分阶段任务、依赖顺序、工作量、验收和风险。
-6. [首版实施记录](docs/design/06-首版实施记录.md)：已交付内容、实际证据、独立审查和未通过的验收边界。
+业务记录保存在现有 Server；本地只维护连接偏好与浏览器会话。旧版本的本地媒体、数据库、报告及凭据文件保留原件，不自动上传或迁入 Server，也不自动删除。
 
-三个项目分别承担不同职责：`video-server` 继续提供自部署服务与 Web，`video-app` 继续作为 iOS/Android 服务端客户端，`video-electron` 独立构建与运行。桌面产品的安装和构建不得依赖相邻两个源码目录。
-
-设计中的备份迁移、完整分页、平台登录、更新、本地模型和全部跨平台发布门槛仍是后续工作。
+当前架构与验收条件见 [设计文档](docs/design/README.md)。协作规则见 [AGENTS.md](AGENTS.md)，贡献方式见 [CONTRIBUTING.md](CONTRIBUTING.md)，安全报告见 [SECURITY.md](SECURITY.md)。源码采用 [MIT](LICENSE) 许可，依赖和品牌资源保留各自适用许可。

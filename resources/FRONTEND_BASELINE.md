@@ -1,34 +1,33 @@
-# Frontend 一致性基线
+# Frontend 源码复用
 
-界面规范来自 `video-server/design.md`。桌面仓库保存同一份 `design.md`、frontend 的 `globals.css`、19 个官方 Radix/shadcn 组件，以及正式 SVG/PNG Logo。它们是本仓库的实际文件，开发、构建和运行都不需要相邻服务仓库。Geist 与 Geist Mono 使用随构建打包的字体，不请求字体 CDN。
+桌面安装包内置 React 页面，运行时不启动或加载 Next.js Frontend 服务。页面组件、交互、主题 CSS、生成 API 与品牌资源直接来自 `video-server/frontend`，保持逐字节一致。Electron 只提供框架与原生能力适配，不维护另一套业务页面。
 
-`frontend-baseline.json` 记录上游与本地 SHA-256；`icons/brand-manifest.json` 记录 Logo 和生成图标的 SHA-256。默认构建与开发启动都会检查基线，防止未经确认的公共样式或品牌漂移。
+`frontend-baseline.json` 记录上游 Git 提交、源码路径和 SHA-256。同步脚本从实际页面入口计算依赖闭包，不复制 server-only、Next 服务端代理、SEO 服务端入口或未使用的 UI 组件。上游未提交修改的实际内容同样由 SHA-256 固定，提交号只标识 checkout 基线。
 
-## 检查
-
-在本仓库运行，不依赖上游目录：
+开发者显式更新快照：
 
 ```sh
-pnpm frontend:check
-pnpm brand:check
+node scripts/sync-frontend.mjs
+# 其他源码 checkout：
+node scripts/sync-frontend.mjs --source=/absolute/path/video-server/frontend
 ```
 
-显式比较相邻服务的当前源码，不修改任何文件：
+离线检查，不依赖相邻仓库：
 
 ```sh
-pnpm frontend:sync --check --source ../video-server
-pnpm brand:sync --check --source ../video-server/frontend
+node scripts/sync-frontend.mjs --check
 ```
 
-## 更新
+本命令验证快照完整性，不声称上游没有更新。已有上游 checkout 时，额外验证实际源码：
 
 ```sh
-pnpm brand:sync --source ../video-server/frontend
-pnpm frontend:sync --source ../video-server
+node scripts/sync-frontend.mjs --check-upstream
 ```
 
-品牌更新从正式 PNG 生成 ICNS/ICO 和缩放 PNG。Frontend 更新复制规范和样式；公共组件 API 需要开发者逐项集成后登记，脚本不会自动覆盖组件。组件来源和必要适配写在 manifest 中，普通组件只允许格式差异；弹窗关闭标签使用中文，Sonner 显式接收桌面主题。
+同步命令也更新根 `design.md` 的原文快照；上游视觉事实源仍为 `video-server/design.md`。
 
-业务组件组合这些基础组件，统一顶部导航、页面标题、首页三种入口、56px 主输入、10/20/50 条分页、明暗主题、错误重试和完成提示。下载、导入、分析和导出状态使用中文展示；日期、大小、时长、文件元数据和关联报告来自本机真实记录。
+`src/renderer/frontend` 是只读快照。不要直接修改、格式化或给生成 API 添加手写 DTO；应先修改上游，再同步。`src/renderer/adapters` 只适配 `next/link`、`next/navigation`、`next/image` 和构建时 Metadata 类型；桌面入口复用上游 Provider 顺序与页面包装，省略 RSC 和 SEO 请求。字体使用项目锁定的 Geist/Geist Mono 本地字体包，保持上游字体名称与 fallback 度量。
 
-桌面不迁移 Web 下载历史、剧本或报告，不依赖部署服务。平台页只描述当前已配置的匿名线路；真实网络下载、远端模型调用和 Windows 安装仍需各自的产品验收。已生成的旧安装包需要重新构建后才会包含新的界面和图标。
+业务结构的唯一事实源为上游 `backend/sql/schema.sql`。HTTP 契约由 FastAPI 注解自动生成 `/openapi.json` 和 Swagger，再由上游 `frontend/openapi2ts.config.ts` 生成 `src/api`。桌面快照复用该生成结果，不另写 SQL、OpenAPI 文档或数据库模型。
+
+现有后端提供账户、下载、文档、报告及管理数据。Electron 的 HTTP(S) transport 返回安装包内的页面与静态资源，并将 `/api`、`/health` 请求送到配置的现有后端；本地 `/storage-upload` 原生传输只发送后端签发的预签名文件分片，不承担业务存储或服务规则。

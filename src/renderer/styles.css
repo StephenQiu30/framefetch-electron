@@ -1,108 +1,18 @@
-@import "./frontend.css";
-
+@import "./frontend/app/globals.css";
+@import "./fonts.css";
 @font-face {
-  font-family: "Geist";
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url("@fontsource-variable/geist/files/geist-latin-wght-normal.woff2") format("woff2");
+  font-family: "Geist Fallback";
+  src: local("Arial");
+  ascent-override: 95.94%;
+  descent-override: 28.16%;
+  line-gap-override: 0%;
+  size-adjust: 104.76%;
 }
 @font-face {
-  font-family: "Geist Mono";
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url("@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2")
-    format("woff2");
-}
-
-@layer utilities {
-  .spin {
-    @apply animate-spin;
-  }
-  .muted {
-    @apply text-muted-foreground;
-  }
-  .inline-actions,
-  .dialog-actions {
-    @apply flex flex-wrap items-center gap-2;
-  }
-  .dialog-actions {
-    @apply justify-end;
-  }
-  .provider-form {
-    @apply flex flex-col gap-6;
-  }
-  .field-error {
-    @apply text-sm text-destructive;
-  }
-  .asset-header {
-    @apply flex flex-wrap items-start justify-between gap-4;
-  }
-  .asset-header h1 {
-    @apply text-2xl font-medium tracking-tight sm:text-3xl;
-  }
-  .asset-detail-grid {
-    @apply grid gap-8 lg:grid-cols-2;
-  }
-  .analysis-panel {
-    @apply flex flex-col gap-6;
-  }
-  .video-container {
-    @apply aspect-video overflow-hidden rounded-lg bg-muted;
-  }
-  .video-container video {
-    @apply size-full;
-  }
-  .document-preview {
-    @apply flex min-w-0 flex-col gap-4;
-  }
-  .document-preview pre {
-    @apply whitespace-pre-wrap break-words text-sm;
-  }
-  .section-heading {
-    @apply flex flex-wrap items-center justify-between gap-4;
-  }
-  .asset-fingerprint {
-    @apply flex flex-col gap-2 py-4 text-xs text-muted-foreground;
-  }
-  .asset-fingerprint code {
-    @apply break-all font-mono;
-  }
-  .full-width {
-    @apply w-full;
-  }
-  .report-prose {
-    @apply flex max-w-none flex-col gap-4 text-sm leading-7;
-  }
-  .report-prose :is(h1, h2, h3) {
-    @apply font-medium tracking-tight;
-  }
-  .report-prose h1 {
-    @apply text-2xl;
-  }
-  .report-prose h2 {
-    @apply text-xl;
-  }
-  .report-prose h3 {
-    @apply text-base;
-  }
-  .report-prose :is(ul, ol) {
-    @apply pl-6;
-  }
-  .report-prose ul {
-    @apply list-disc;
-  }
-  .report-prose ol {
-    @apply list-decimal;
-  }
-  .report-prose pre {
-    @apply overflow-x-auto rounded-lg bg-muted p-4;
-  }
-  .report-prose table {
-    @apply w-full text-left;
-  }
-  .report-prose :is(th, td) {
-    @apply px-2 py-3;
-  }
+  font-family: "Geist Mono Fallback";
+  src: local("Arial");
+  ascent-override: 74.67%;
+  descent-override: 21.92%;
+  line-gap-override: 0%;
+  size-adjust: 134.59%;
 }

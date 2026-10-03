@@ -1,26 +1,23 @@
-name: Internal native packages
+name: Desktop checks and packages
 on:
+  push:
+    branches: [main]
+  pull_request:
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  package:
+  check:
     strategy:
       fail-fast: false
       matrix:
         include:
           - runner: macos-15
-            platform: darwin
-            arch: arm64
-            app_path: release/mac-arm64/FrameFetch.app/Contents/MacOS/FrameFetch
-          - runner: macos-15-intel
-            platform: darwin
-            arch: x64
-            app_path: release/mac/FrameFetch.app/Contents/MacOS/FrameFetch
+            target: --mac --arm64
+            executable: release/mac-arm64/FrameFetch.app/Contents/MacOS/FrameFetch
           - runner: windows-2022
-            platform: win32
-            arch: x64
-            app_path: release/win-unpacked/FrameFetch.exe
+            target: --win --x64
+            executable: release/win-unpacked/FrameFetch.exe
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v5
@@ -30,48 +27,18 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: '12.4.2'
-      - uses: astral-sh/setup-uv@v6
-        with:
-          version: '0.11.32'
-          python-version: '3.12.13'
-      - name: Assert native build architecture
-        run: node -e "if(process.platform !== '${{ matrix.platform }}' || process.arch !== '${{ matrix.arch }}') process.exit(1)"
-      - name: Install frozen dependencies
-        run: pnpm install --frozen-lockfile
-      - name: Install engine dependencies
-        run: uv sync --project engine --frozen --group dev --python 3.12.13
-      - name: Set up Windows native compiler
-        if: runner.os == 'Windows'
-        uses: msys2/setup-msys2@v2
-        with:
-          msystem: MINGW64
-          install: make mingw-w64-x86_64-gcc
-          update: false
-      - name: Build Windows Job Object module
-        if: runner.os == 'Windows'
-        run: node scripts/build-native.mjs
-      - name: Quality and contract checks
-        run: pnpm lint && pnpm typecheck && pnpm test && pnpm test:engine && uv run --project engine --frozen ruff check engine/src engine/tests && uv run --project engine --frozen mypy engine/src/framefetch_desktop && pnpm contract:check
-      - name: Prepare pinned native resources
-        run: pnpm runtime:prepare
-      - name: Freeze native Python engine
-        run: pnpm runtime:freeze
-      - name: Verify standalone runtime
-        run: pnpm runtime:verify
-      - name: Build internal installer
-        run: pnpm build && pnpm exec electron-builder --${{ runner.os == 'Windows' && 'win' || 'mac' }} --${{ matrix.arch }} --publish never
-      - name: Run packaged application E2E
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm frontend:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build
+      - run: pnpm test:e2e
+      - run: pnpm exec electron-builder ${{ matrix.target }} --publish never
+      - name: Packaged client transport tests
         env:
-          FRAMEFETCH_E2E_EXECUTABLE: ${{ github.workspace }}/${{ matrix.app_path }}
+          FRAMEFETCH_E2E_EXECUTABLE: ${{ github.workspace }}/${{ matrix.executable }}
         run: pnpm test:e2e
-      - name: Package checksums
-        run: node scripts/hash-installers.mjs
       - uses: actions/upload-artifact@v4
         with:
-          name: framefetch-internal-${{ matrix.platform }}-${{ matrix.arch }}
+          name: framefetch-${{ runner.os }}
           path: |
             release/*.dmg
             release/*.exe
-            release/installer-sha256.json
-            resources/runtime/${{ matrix.platform }}-${{ matrix.arch }}/manifest.json
           if-no-files-found: error
