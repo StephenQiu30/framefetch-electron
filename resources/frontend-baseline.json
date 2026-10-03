@@ -1,7 +1,7 @@
 {
   "version": 2,
   "repository": "https://github.com/StephenQiu30/video-server",
-  "commit": "5e2e169d1d2814eedc693f38d5360f433a97f2fa",
+  "commit": "ccb5326059a4c3de05c8042ff7126988cfa23878",
   "schemaAuthority": "backend/sql/schema.sql",
   "apiContract": "FastAPI annotations -> /openapi.json -> frontend/openapi2ts.config.ts -> src/api",
   "visualAuthority": "design.md",
@@ -173,7 +173,7 @@
     {
       "source": "src/app/globals.css",
       "target": "src/renderer/frontend/app/globals.css",
-      "sha256": "e5c2686d5a828fd58e1c10dde18ff0823c23c2c5e3327191337cfa3d97f06bd7"
+      "sha256": "c257533769c8d375c64c8392fa44f562505c2776d3f572429c38b1cf488a8ed8"
     },
     {
       "source": "src/app/guide/page.tsx",
@@ -603,7 +603,7 @@
     {
       "source": "src/components/downloads/download-history-list.tsx",
       "target": "src/renderer/frontend/components/downloads/download-history-list.tsx",
-      "sha256": "bf5946dd43a4a4dcbb14d9863bddda6b6ffcf692b4fd9b0bf4e87afcdd4016b7"
+      "sha256": "b7e2708162142beee02a2ab45592300a8445258a03afe28680bb1793f3351dd4"
     },
     {
       "source": "src/components/downloads/download-history-view.tsx",
@@ -613,7 +613,7 @@
     {
       "source": "src/components/downloads/download-job-view.tsx",
       "target": "src/renderer/frontend/components/downloads/download-job-view.tsx",
-      "sha256": "4366d7db42fa146fedbb86c1decbd5607b2e7fdff4ffc1cc41f3a8dee0fd7f98"
+      "sha256": "f3c00ebfbf6fcb1692550fad3218d40d392176e519af5175bbe6e4985e611a0c"
     },
     {
       "source": "src/components/downloads/download-route.tsx",
@@ -708,7 +708,7 @@
     {
       "source": "src/components/intake/inspection-workspace.tsx",
       "target": "src/renderer/frontend/components/intake/inspection-workspace.tsx",
-      "sha256": "f4603a672231e713c58f9309a8952f189230d6037652eeecea86afca8f4e1c76"
+      "sha256": "64e5da3b0d59173dcd2f309bfa2e5166b650cdcb0c54b0630352e2a91d31e2a1"
     },
     {
       "source": "src/components/intake/intake-control-row.tsx",
