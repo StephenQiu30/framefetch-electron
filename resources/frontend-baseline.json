@@ -1,12 +1,20 @@
 {
   "version": 2,
   "repository": "https://github.com/StephenQiu30/video-server",
-  "commit": "ccb5326059a4c3de05c8042ff7126988cfa23878",
+  "commit": "57c6084c05aa9b1f5a01ea3f728c758a5c082bb5",
   "schemaAuthority": "backend/sql/schema.sql",
   "apiContract": "FastAPI annotations -> /openapi.json -> frontend/openapi2ts.config.ts -> src/api",
   "visualAuthority": "design.md",
   "strategy": "Exact browser dependency closure. Desktop framework adapters are outside the source snapshot.",
   "externalDependencies": [
+    "@editorjs/code",
+    "@editorjs/delimiter",
+    "@editorjs/editorjs",
+    "@editorjs/header",
+    "@editorjs/inline-code",
+    "@editorjs/list",
+    "@editorjs/quote",
+    "@editorjs/table",
     "@noble/hashes",
     "@phosphor-icons/react",
     "@tanstack/react-query",
@@ -17,13 +25,13 @@
     "cmdk",
     "cn",
     "date-fns",
+    "htmlparser2",
+    "marked",
     "next-themes",
     "radix-ui",
     "react",
     "react-day-picker",
-    "react-markdown",
     "recharts",
-    "remark-gfm",
     "shadcn",
     "sonner",
     "tailwindcss",
@@ -513,7 +521,7 @@
     {
       "source": "src/components/analysis/analysis-report-preview.tsx",
       "target": "src/renderer/frontend/components/analysis/analysis-report-preview.tsx",
-      "sha256": "28063d5bcb51430d7be67952596513961e1cc53d5b019d4d7c774435363366e9"
+      "sha256": "ea91a24dbd04f40e724571c6ffb2696fe21bedb642f1724ed161aed8536b8e59"
     },
     {
       "source": "src/components/analysis/analysis-result-view.tsx",
@@ -659,6 +667,41 @@
       "source": "src/components/downloads/use-video-preview-source.ts",
       "target": "src/renderer/frontend/components/downloads/use-video-preview-source.ts",
       "sha256": "a203c6c9f42e60c014e8e2d889536b7d89c549d45ec1f591f8eadc8c7267a2b3"
+    },
+    {
+      "source": "src/components/editor/document.ts",
+      "target": "src/renderer/frontend/components/editor/document.ts",
+      "sha256": "963c63eaeecb52959943626962e3a73ca8b909e7f2b26d3470aa711c829bf9ed"
+    },
+    {
+      "source": "src/components/editor/editor.css",
+      "target": "src/renderer/frontend/components/editor/editor.css",
+      "sha256": "b1185b39400ade2d560e87e423027dfe495912235a1c5e46961a155dd4427e7f"
+    },
+    {
+      "source": "src/components/editor/editor.tsx",
+      "target": "src/renderer/frontend/components/editor/editor.tsx",
+      "sha256": "c00c1ee5fc224be0adb4cba8f5205a9f21cded7a7bea4cade24761a80619730a"
+    },
+    {
+      "source": "src/components/editor/engine.ts",
+      "target": "src/renderer/frontend/components/editor/engine.ts",
+      "sha256": "d90372e4974b870714bb835d5c2aa5e4befc0807e3e49e32479ede912f5bf4cb"
+    },
+    {
+      "source": "src/components/editor/index.ts",
+      "target": "src/renderer/frontend/components/editor/index.ts",
+      "sha256": "76038ce29bdeca2f6881ddc3f1bfd9fee2a7096ff8ed6e3dae48981fcfa5a116"
+    },
+    {
+      "source": "src/components/editor/rich-text.tsx",
+      "target": "src/renderer/frontend/components/editor/rich-text.tsx",
+      "sha256": "0dbbcab69e644138eb282d65a7f32024965ec846ea91c1773108d2a34f376271"
+    },
+    {
+      "source": "src/components/editor/viewer.tsx",
+      "target": "src/renderer/frontend/components/editor/viewer.tsx",
+      "sha256": "a863c193bad651ffbaa9ccdb3a138794802e337a5f56a650c080e0b305eea02e"
     },
     {
       "source": "src/components/intake/content-intake-hero.tsx",
@@ -1043,7 +1086,7 @@
     {
       "source": "src/components/screenplay/screenplay-document-preview.tsx",
       "target": "src/renderer/frontend/components/screenplay/screenplay-document-preview.tsx",
-      "sha256": "31d2061a88e23e0ac1541c826d8bac1f6ebb977a95d748f558b6fd9083f84aac"
+      "sha256": "2aa9cd846b55244e8903208a7fb54c5b613eb8812beeb06bd5f88ed4dbc98343"
     },
     {
       "source": "src/components/screenplay/screenplay-document-route.tsx",
@@ -1053,7 +1096,7 @@
     {
       "source": "src/components/screenplay/screenplay-document-toc.tsx",
       "target": "src/renderer/frontend/components/screenplay/screenplay-document-toc.tsx",
-      "sha256": "70264eb9a14011830d7774553e7c059f94a675ae26d6fa1f14bfd8d1364fdc07"
+      "sha256": "3cd85c55331f328c14b526d0abfdb7ee622edaf32db89601838ca8a9d942d91a"
     },
     {
       "source": "src/components/screenplay/screenplay-documents-view.tsx",

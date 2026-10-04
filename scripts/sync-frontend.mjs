@@ -190,7 +190,10 @@ function importsIn(file, contents) {
   // Match module statements, not arbitrary `from` object fields or JSX text.
   const statements =
     /^\s*(?:import\s+(?:(?:type\s+)?(?:\{[^}]*\}|\*\s+as\s+\w+|[\w$]+(?:\s*,\s*(?:\{[^}]*\}|\*\s+as\s+\w+))?)\s+from\s+)?|export\s+(?:type\s+)?(?:\{[^}]*\}|\*\s*(?:as\s+\w+)?)\s+from\s+)["']([^"']+)["']/gm;
-  return [...contents.matchAll(statements)].map((match) => match[1]);
+  const dynamicImports = /\bimport\(\s*["']([^"']+)["']\s*\)/gm;
+  return [...contents.matchAll(statements), ...contents.matchAll(dynamicImports)].map(
+    (match) => match[1],
+  );
 }
 
 async function filesWithin(directory) {
