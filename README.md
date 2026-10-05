@@ -86,7 +86,7 @@ macOS 安装态指定连接地址的示例：
 
 ### 专业方法与成果
 
-当前活动目录为 6 项内置 Skill：成片审阅、素材拆解、剧本故事审稿，以及文章、公众号和小红书文档整理。具体相容类型与默认提示词来自连接的 Server。原页面布局与调用方式保持，优化集中在方法、实际取证和产出质量；实施和真实验收见 [唯一执行计划](https://github.com/StephenQiu30/video-server/blob/main/docs/plan/PLAN-内置Skill能力整合.md)。
+当前活动目录为 6 项内置 Skill：成片审阅、素材拆解、剧本故事审稿，以及文章、公众号和小红书文档整理。具体相容类型与默认提示词来自连接的 Server。原页面布局与调用方式保持，优化集中在方法、实际取证和产出质量；实施和真实验收见 [唯一执行计划](https://github.com/StephenQiu30/video-server/blob/main/workspace/content/plan/PLAN-内置Skill能力整合.md)。
 
 视频审阅与拆解使用实际观察画面及定点复核，不能把抽样当作逐帧全片或声音核验。故事审稿围绕人物行动、跨单元因果和原文依据；文档整理保持完整原文并核对来源对应与覆盖。模型分析、整理和审校由 Server 的既有线路执行，结论仍需对照来源核查。
 
@@ -111,7 +111,7 @@ macOS 安装态指定连接地址的示例：
 5. **处理**：在原视频／剧本文档详情选择相容 Skill、输出语言和任务要求，默认提示词可编辑或恢复。等待时查询状态或取消，回执未知时先核对已有任务。
 6. **交付**：结合原文引用、时间依据和限制阅读结果，通过系统保存窗口获取 MD／DOCX。再次导出复用已保存报告。
 
-耗时任务由 Server 的 Worker 和宿主 AI Worker 执行。桌面接收任务状态更新；连接同一服务并登录同一账户后，可以从 Web、桌面或 App 继续查看业务记录。文本按真实场景、章节或无标题单元审阅，视频按实际观察位置引用。来源对应与覆盖帮助核查，不证明分析结论正确或完整声音理解。执行设计见 [Server AI 分析](https://github.com/StephenQiu30/video-server/blob/main/docs/design/09-AI分析.md)。
+耗时任务由 Server 的 Worker 和宿主 AI Worker 执行。桌面接收任务状态更新；连接同一服务并登录同一账户后，可以从 Web、桌面或 App 继续查看业务记录。文本按真实场景、章节或无标题单元审阅，视频按实际观察位置引用。来源对应与覆盖帮助核查，不证明分析结论正确或完整声音理解。执行设计见 [Server AI 分析](https://github.com/StephenQiu30/video-server/blob/main/workspace/content/design/09-AI分析.md)。
 
 ## 三个项目，一套产品
 
@@ -145,7 +145,7 @@ macOS 安装态指定连接地址的示例：
 
 ## 使用范围
 
-- 只处理已获授权的 HTTP(S) 非 DRM 素材。平台、身份与网络条件会影响实际可用性，准确状态和完整文件证据以 [Server 平台目录与验证边界](https://github.com/StephenQiu30/video-server/blob/main/docs/design/14-解析引擎.md#13-验证状态) 为准。
+- 只处理已获授权的 HTTP(S) 非 DRM 素材。平台、身份与网络条件会影响实际可用性，准确状态和完整文件证据以 [Server 平台目录与验证边界](https://github.com/StephenQiu30/video-server/blob/main/workspace/content/design/14-解析引擎.md#13-验证状态) 为准。
 - 部署者提供服务、存储、网络和模型；外部模型可能产生费用，并接收分析所需的文本或画面。
 - 当前产品覆盖素材获取、管理、内置分析与文档整理、报告交付。内容写作、剪辑、作品与母稿管理、版本确认、图卡、ASR／OCR、DRM 解密、直播录制、无限播放列表、在线协作编辑和自动平台发布不在本轮范围内。
 
