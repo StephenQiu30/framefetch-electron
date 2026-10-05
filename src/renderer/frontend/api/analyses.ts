@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { request, type RequestOptions } from "@/lib/request";
 
-/** 查询视频分析任务 查询分析进度及经过证据校验的结果。 GET /api/analyses/${param0} */
+/** 查询分析任务 查询分析进度及经过证据校验的结果。 GET /api/analyses/${param0} */
 export async function getAnalysis(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getAnalysisParams,
@@ -54,7 +54,7 @@ export async function getAnalysisHistoryRecord(
   options?: RequestOptions
 ) {
   const { analysis_id: param0, ...queryParams } = params;
-  return request<API.ApiResponseUnionVideoAnalysisHistoryRecordResponse_ScreenplayAnalysisHistoryRecordResponse_>(
+  return request<API.ApiResponseUnionVideoAnalysisHistoryRecordResponse_ScreenplayAnalysisHistoryRecordResponse_ContentCreationHistoryRecordResponse_SkillAnalysisHistoryRecordResponse_>(
     `/api/analyses/${param0}/history-record`,
     {
       method: "GET",
@@ -78,7 +78,7 @@ export async function exportAnalysisReport(
   });
 }
 
-/** 导出 Markdown 视频分析报告 导出与前端预览、DOCX 转换共用的唯一 Markdown 报告。 GET /api/analyses/${param0}/report.md */
+/** 导出 Markdown 分析报告 导出与前端预览、DOCX 转换共用的唯一 Markdown 报告。 GET /api/analyses/${param0}/report.md */
 export async function exportAnalysisMarkdown(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.exportAnalysisMarkdownParams,
@@ -92,9 +92,7 @@ export async function exportAnalysisMarkdown(
   });
 }
 
-/** 重试原视频分析任务 为同一分析任务创建下一执行代次，不改变任务资源 ID。
-
-Retry 是上一运行的无参数重放；带请求体的请求按校验错误拒绝。 POST /api/analyses/${param0}/retry */
+/** 重新执行原分析任务 POST /api/analyses/${param0}/retry */
 export async function retryAnalysis(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.retryAnalysisParams,
@@ -132,7 +130,7 @@ export async function listAnalysisRuns(
   );
 }
 
-/** 列出输入兼容的分析 Skill 按输入类型返回可选 Skill 及用户可编辑的默认提示词。 GET /api/analysis-skills */
+/** 列出输入兼容的分析 Skill GET /api/analysis-skills */
 export async function listAnalysisSkills(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.listAnalysisSkillsParams,
@@ -150,7 +148,41 @@ export async function listAnalysisSkills(
   );
 }
 
-/** 创建剧本分析或改写任务 基于已规范化的剧本文档创建异步分析或改写任务。 POST /api/documents/${param0}/analyses */
+/** 回看本次创作的原始材料 GET /api/content/analyses/${param0}/source */
+export async function getContentSource(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getContentSourceParams,
+  options?: RequestOptions
+) {
+  const { analysis_id: param0, ...queryParams } = params;
+  return request<API.ApiResponseContentSourceSet_>(
+    `/api/content/analyses/${param0}/source`,
+    {
+      method: "GET",
+      params: { ...queryParams },
+      ...(options || {}),
+    }
+  );
+}
+
+/** 只读回看已发布的历史报告 GET /api/content/analyses/${param0}/versions */
+export async function listContentVersions(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.listContentVersionsParams,
+  options?: RequestOptions
+) {
+  const { analysis_id: param0, ...queryParams } = params;
+  return request<API.ApiResponseTupleContentVersion_____>(
+    `/api/content/analyses/${param0}/versions`,
+    {
+      method: "GET",
+      params: { ...queryParams },
+      ...(options || {}),
+    }
+  );
+}
+
+/** 创建剧本分析任务 POST /api/documents/${param0}/analyses */
 export async function createDocumentAnalysis(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.createDocumentAnalysisParams,
@@ -189,7 +221,7 @@ export async function getLatestDocumentAnalysis(
   );
 }
 
-/** 创建视频分析任务 基于已完成的下载制品创建异步 AI 分析任务。 POST /api/downloads/${param0}/analyses */
+/** 创建视频分析任务 POST /api/downloads/${param0}/analyses */
 export async function createAnalysis(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.createAnalysisParams,

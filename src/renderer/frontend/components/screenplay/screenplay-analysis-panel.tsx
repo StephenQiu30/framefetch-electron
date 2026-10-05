@@ -63,7 +63,7 @@ export default function ScreenplayAnalysisPanel({
   const succeeded =
     state.job?.status === AnalysisStatusCode.Succeeded &&
     state.job.result &&
-    !isVideoAnalysisResult(state.job.result);
+    !isVideoAnalysisResult(state.job.result, state.job.input_kind);
 
   return (
     <div className="mt-14 py-12 sm:mt-16 sm:py-16">
@@ -104,10 +104,10 @@ export default function ScreenplayAnalysisPanel({
               className="text-xl font-semibold tracking-tight"
               id="screenplay-analysis-title"
             >
-              剧本分析与改写
+              文档分析
             </h2>
             <p className="mt-4 max-w-2xl leading-7 text-muted-foreground">
-              选择综合故事审稿、专项审阅或中英文改写。任务始终绑定这份规范化剧本，不会修改原文。
+              审阅故事结构、人物和对白，或整理已有文章、公众号和小红书文档。任务使用这份文档，原文保留。
             </p>
           </div>
           {state.error ? (

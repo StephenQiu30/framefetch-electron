@@ -4,7 +4,7 @@
 
 # FrameFetch Desktop
 
-**The desktop client for an open-source, self-hosted video and screenplay workstation.**
+**The desktop client for an open-source, self-hosted video analysis and document workstation.**
 
 Bring in material, understand it, and produce reports you can keep editing.<br />
 Install a client with bundled React pages, then connect to your FrameFetch Server. Web, desktop and mobile share accounts, material, jobs and reports. The Server and host AI Worker perform media processing and AI execution.
@@ -19,16 +19,16 @@ Install a client with bundled React pages, then connect to your FrameFetch Serve
 
 ![FrameFetch desktop workspace](docs/images/desktop-workspace.png)
 
-> Captured from the real Electron Renderer of FrameFetch Desktop 0.2.0 with the official logo and shared Web components. The screenshot session, records, analysis and screenplay text shown below use demo data.
+> Captured from the released FrameFetch Desktop 0.2.0 Electron Renderer. These historical screens and demo data are not acceptance evidence for the current built-in Skill scope.
 
 ## Why use FrameFetch Desktop?
 
 FrameFetch brings media acquisition, video review, screenplay coverage and report preparation into one personal workstation for creators, content researchers and developers. The desktop client suits focused work with material, long reports and screenplay documents, with system save dialogs for files and reports. The operator controls the infrastructure, storage and model configuration.
 
-- **One workspace, three inputs.** Start with an authorized media URL or share text, import a local MP4, or upload a screenplay document.
+- **One workspace, three inputs.** Start with an authorized media URL or share text, import a local MP4, or upload an existing document.
 - **Confirm before obtaining.** Inspect results and actual formats, then select resolution, container, codecs and frame rate. Galleries and bounded video collections provide ZIP artifacts containing `manifest.json` according to the platform's actual capabilities.
-- **Continue from material to analysis.** Use Server-provided Skills to read summaries, scenes, shots, highlights and visual assets, then export Markdown or DOCX reports.
-- **Read and work with screenplays.** Import supported document formats, inspect normalized text and a table of contents, then choose coverage, rewriting or language conversion.
+- **Analyze existing sources.** Select video review, material breakdown or story coverage in the original analysis form, with the existing language, default prompt and execution controls.
+- **Organize existing articles.** Select article, WeChat or Xiaohongshu organization in the original document form. Organize complete source text without adding facts or writing new copy; save results as MD/DOCX.
 - **Shared pages and data.** Web and desktop reuse business components, themes, fonts and brand assets. Sign in to the same Server account to use existing material, jobs, documents and reports.
 - **Desktop interaction.** System file selection and saving, native menus, back navigation, reconnecting, zoom/fullscreen and a separate persistent session.
 
@@ -40,19 +40,19 @@ FrameFetch brings media acquisition, video review, screenplay coverage and repor
 | Format selection | Inspect dimensions, container, video/audio codecs and frame rate, then create a job. Supported galleries and bounded collections deliver original-image/video ZIP files with `manifest.json` |
 | Local video | Select an MP4 through the system dialog, use SHA-256 verification and multipart upload with progress, then preview, manage and analyze the imported video |
 | Download history | Search, filter, paginate and select records; obtain files, retry or delete in bulk. Details show state, progress, recovery actions and media previews |
-| Video AI analysis | Choose from the shared 12 video Skills, Chinese/English output and a focus; read summaries, scenes, shots, highlights, assets, articles or general structured reports |
-| Screenplay documents | Import DOCX, text-based PDF, TXT, Markdown and Fountain; inspect metadata, extraction size, normalized text and contents before coverage or rewriting |
-| Reports and run history | Preview reports, export Markdown/DOCX, inspect processing and analysis runs for the same material, and run another analysis when needed |
+| Built-in Skills | The original configurator keeps Skill selection, Chinese/English, editable default prompts and reset. Reuse existing job state, cancellation and report actions |
+| Document organization | Use complete imported text; choose article, WeChat or Xiaohongshu organization in document details. Story coverage uses actual source units for chapters and unheaded narrative text |
+| Reports and run history | Read Skill reports, original quotes, source hashes and video timestamps; save Markdown/DOCX with the system dialog. Existing reports remain readable |
 | Providers and accounts | Read provider availability and manage username/avatar. Server administrators can access users, files, provider catalog, AI routes, analytics and operation logs |
 | Light/dark themes | Shared neutral colors, Geist typography and official component interactions, with the official logo's brand colors |
 
 ### Methods and deliverables
 
-Desktop, Web and mobile use the same Server method catalog. **12 video methods** cover visual organization, director breakdowns, editing and continuity review, article drafts and short-video packaging. **8 screenplay methods** cover story, characters, scenes, dialogue, structure, continuity and Chinese/English rewriting. Choose a method, output language and focus to examine the same material from different perspectives. See the Server's [video method catalog](https://github.com/StephenQiu30/video-server/blob/main/README.en.md#12-video-analysis-methods) and [screenplay method catalog](https://github.com/StephenQiu30/video-server/blob/main/README.en.md#8-screenplay-analysis-methods) for the complete lists.
+The active catalog has **6 built-in Skills**: video review, material breakdown, story coverage, article organization, WeChat document organization and Xiaohongshu document organization. The connected Server supplies compatible inputs and default prompts. Original page layouts and calls remain; improvements focus on methods, actual observations and output quality. Implementation and real acceptance are tracked in the [single execution plan](https://github.com/StephenQiu30/video-server/blob/main/docs/plan/PLAN-内置Skill能力整合.md) (Chinese).
 
-12/8 describes the current catalog size; it does not mean every method has completed acceptance with a real model. Available methods, model routes and results depend on the connected Server.
+Video review and breakdown use observed frames and targeted checks; sampling does not prove complete frame-by-frame or audio review. Story coverage examines character action, causality across source units and textual evidence. Document organization keeps complete source text and checks correspondence and coverage. Existing Server model routes execute analysis, organization and review; conclusions still need checking against the source.
 
-Methods produce **five result types**: visual video analysis, video articles, general structured reports, screenplay analysis and screenplay rewrites. The desktop presents content and evidence through shared result structures, with Markdown/DOCX exports for editing, review and archiving. Both formats come from the same structured result without another model call. Articles, packaging copy and rewrites remain candidates for human review and revision.
+Calls pin the actual sources, methods and hashes, then reuse original analysis APIs, typed results and history. MD/DOCX exports use stored results without another model call; historical reports remain readable.
 
 ### Current interface
 
@@ -62,18 +62,18 @@ Methods produce **five result types**: visual video analysis, video articles, ge
 
 ![Screenplay document with metadata, normalized text and table of contents](docs/images/desktop-screenplay.png)
 
-These images come from the current production build rendered in a separate Electron session; the interface was not redrawn. The demo API provides read responses only. Video analysis and screenplay documents use existing Frontend test fixtures; the analysis content and screenplay text are examples illustrating the result structures. They contain no real accounts or private material. See the [screenplay reading view](docs/images/desktop-screenplay-reader.png) for the full reader and analysis configuration.
+These historical images come from a released build rendered in a separate Electron session; the interface was not redrawn. The demo API supplies read responses, and the content uses test fixtures without real accounts or private material. See the historical [screenplay reading view](docs/images/desktop-screenplay-reader.png); the execution plan tracks current capabilities and acceptance.
 
 ## From material to report
 
-1. **Bring it in**: paste one URL or share text containing one URL for a single video, gallery or bounded collection according to the platform's actual capabilities. You can also select an MP4 or import DOCX, text-based PDF, TXT, Markdown or Fountain screenplays. WeChat official-account articles support source discovery only; current candidates have no downloadable formats. Follow the prompts for official playback or import a legally obtained file.
+1. **Bring it in**: paste one URL or share text containing one URL for a single video, gallery or bounded collection according to the platform's actual capabilities. You can also select an MP4 or import DOCX, text-based PDF, TXT, Markdown, Fountain, SRT or VTT documents. WeChat official-account articles support source discovery only; current candidates have no downloadable formats. Follow the prompts for official playback or import a legally obtained file.
 2. **Confirm**: inspect media metadata, access decisions and actual formats. Choose video quality, container, codecs and audio, or confirm gallery/collection counts and ZIP download. Explicitly refresh expired results and reconfirm changed formats.
 3. **Obtain**: the Server runs downloads/imports in the background. Desktop shows queue states, progress and results with cancellation, retry and history. A Worker verifies local video after restricted multipart upload.
-4. **Manage**: videos provide details, previews and file delivery; galleries/bounded collections deliver ZIP files with `manifest.json`; screenplays retain originals and normalized scene text. Return to records for files, previous runs and reports.
-5. **Analyze**: choose a video or screenplay Skill, Chinese/English output and a focus. Acquisition and analysis have separate states; an AI failure does not change successfully obtained material.
-6. **Deliver**: review findings alongside time evidence or screenplay scenes, then export Markdown/DOCX for further editing and handoff. Export recovery reuses existing analysis results.
+4. **Manage**: videos provide details, previews and file delivery; galleries/bounded collections deliver ZIP files with `manifest.json`; documents retain originals and extracted text. Return to records for files, previous runs and reports.
+5. **Process**: select a compatible Skill, output language and requirements in the original video/screenplay detail form. Edit or reset the default prompt. Query or cancel pending jobs; check the existing job before retrying an unknown receipt.
+6. **Deliver**: read results with source quotations, timestamps and limits, then use the system save dialog for MD/DOCX. Repeated exports reuse the stored report.
 
-The Server's Workers and host AI Worker execute lengthy tasks. Desktop receives state updates; clients connected to the same service and account can continue viewing records through their corresponding pages. Complete video supplies technical metadata, intervals and frame evidence; screenplay findings refer to normalized scenes. Evidence and source text help you verify model conclusions. See [Server AI analysis](https://github.com/StephenQiu30/video-server/blob/main/docs/design/10-AI分析.md) (Chinese) for the implementation.
+The Server's Workers and host AI Worker execute lengthy tasks. Desktop receives state updates; clients connected to the same service and account can continue viewing records. Text uses actual scenes, chapters or unheaded source units; video references actual observation times. Source correspondence and coverage help verification without proving that analytical conclusions or full audio understanding are correct. See [Server AI analysis](https://github.com/StephenQiu30/video-server/blob/main/docs/design/10-AI分析.md) (Chinese).
 
 ## Three projects, one product
 
@@ -224,7 +224,7 @@ The `v0.2.0-beta.1` installers come from the [successful CI](https://github.com/
 
 - Process authorized HTTP(S), non-DRM material. Providers, identity and network conditions affect availability. See the [Server provider scope and validation boundaries](https://github.com/StephenQiu30/video-server/blob/main/docs/design/17-解析引擎重建.md#8-平台能力与验证边界) (Chinese) for exact status and complete-file evidence.
 - The operator supplies the service, storage, network and models. External models may incur charges and receive the text or frames needed for analysis.
-- Current capabilities cover acquisition, management, analysis and reports. Articles, packaging copy and screenplay rewrites require human review. ASR/OCR, DRM decryption, live recording, unbounded playlists, collaborative editing and automatic platform publishing are outside the current scope.
+- Current capabilities cover acquisition, management, built-in analysis/document organization and reports. Content writing, editing video, project/master-draft management, version confirmation, cards, ASR/OCR, DRM decryption, live recording, unbounded playlists, collaborative editing and automatic platform publishing are outside this scope.
 
 ## Documentation and contributing
 
