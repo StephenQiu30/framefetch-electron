@@ -1,21 +1,12 @@
 # 贡献指南
 
-感谢你改进 FrameFetch Desktop。开始前请阅读 [AGENTS.md](AGENTS.md)、[PROJECT.md](PROJECT.md) 与 [当前设计](docs/design/README.md)。本仓库只维护 Electron 客户端；Server、Web 或移动端的问题分别属于它们的独立仓库。
+感谢你改进 FrameFetch Desktop。开始前请阅读 [AGENTS.md](AGENTS.md)、[PROJECT.md](PROJECT.md) 与 [验收条件](docs/design/README.md)。本仓库只维护 Electron 客户端；Server、Web 与移动端问题分别属于各自仓库。
 
-## 修改范围
+## 本地检查
 
-- `src/main/` 负责窗口、连接、会话、本地资源协议和受限原生能力。
-- `src/renderer/` 负责安装包内置 React 页面，复用 Frontend 组件、主题、文案与展示语义。界面唯一标准为 `video-server/design.md`。
-- 生成 API 只从已有 FastAPI OpenAPI 更新；不要手写 DTO、修改生成请求或复制 Server SQL。
-- `resources/icons/` 负责安装包与系统图标，`tests/` 维护实际边界验证，`docs/design/` 维护当前架构与验收条件。
+使用 `package.json` 固定的 Node.js 与 pnpm：
 
-界面同步在包含相邻 `video-server` 源码的工作区执行 `pnpm frontend:sync` 和 `pnpm frontend:check-upstream`。`pnpm frontend:check` 只离线校验已提交快照与 manifest hash，供独立 checkout 使用，不能证明最新上游一致。同步产物提交到本仓库；客户端运行不依赖相邻源码或 Frontend 进程。平台适配必须保持原有业务语义，避免新增平行基础组件或第二套文案。
-
-## 开发与验证
-
-使用 package.json 固定的 Node.js 与 pnpm，不引入 npm/yarn 锁文件：
-
-```sh
+```bash
 pnpm install --frozen-lockfile
 pnpm frontend:check
 pnpm lint
@@ -25,14 +16,29 @@ pnpm build
 pnpm test:e2e
 ```
 
-涉及构建或原生行为时运行 `pnpm package:dir` 并验证安装态。界面变更对照 Frontend 的相同主题、视口、身份与数据状态，覆盖桌面、390px、明暗主题、键盘焦点、空与错误恢复。生成接口、单元夹具、健康检查和安装包构建不能代替真实账户业务流程或各系统实际验收。
+- 同步上游界面时，在包含相邻 `video-server` 的工作区执行 `pnpm frontend:sync` 与 `pnpm frontend:check-upstream`，并提交同步产物。
+- 涉及构建或原生行为时运行 `pnpm package:dir` 并验证安装态。
+- 联调使用已运行的 Server（默认 `http://127.0.0.1:8111/`），不为客户端任务启动数据库、执行 SQL 或覆盖环境文件。
 
-联调复用现有后端服务，默认地址为 `http://127.0.0.1:8111/`。不要为客户端任务启动数据库、执行 SQL、覆盖环境文件或修改 Server 并行工作。本地媒体、Cookie、密钥、完整 URL、预签名链接、诊断日志和构建产物不得进入 Git 或公开 Issue。
+## CI
 
-## 提交与反馈
+`internal-build.yml` 在 macOS 与 Windows 上执行 `frontend:check`、lint、typecheck、test、build、e2e，并生成未签名的内部安装包。CI 产物不代表签名、公证或公开发布已通过。
 
-一个提交包含可独立说明、验证和回滚的一组改动。提交信息建议使用中文 Conventional Commits，例如 `fix(renderer): 修复平台状态窄屏布局`、`build: 更新桌面安装包配置`。作用域可省略，不使用空括号；破坏性变更以 `!` 和 `BREAKING CHANGE:` 说明影响。
+## 提交规范
 
-提交前检查 Git 状态与暂存内容，只包含当前任务并保留他人修改。没有明确授权时不推送、创建分支、发起 PR 或改写历史。交付说明列出修改、执行的检查、失败或未验证边界与工作区状态；不得把目标规格写成完成结果。
+提交信息使用 Conventional Commits，类型与作用域为小写英文，描述为中文：
 
-Bug 与建议请使用仓库 Issue 模板，提供最小复现和脱敏证据。安全问题按 [SECURITY.md](SECURITY.md) 私下报告，社区协作遵循 [行为准则](CODE_OF_CONDUCT.md)。
+```text
+<type>(<scope>): <中文描述>
+```
+
+- 类型：`feat`、`fix`、`refactor`、`docs`、`test`、`perf`、`build`、`ci`、`chore`、`style`、`revert`。
+- 作用域使用 `main`、`renderer`、`frontend`、`build`、`docs` 等模块名；无法准确归属时省略，不留空括号。
+- 破坏性变更在类型或作用域后加 `!`，并在正文写 `BREAKING CHANGE: <中文说明>`。
+
+```text
+fix(renderer): 修复平台状态窄屏布局
+build: 更新桌面安装包配置
+```
+
+本地媒体、Cookie、密钥、完整 URL、预签名链接、诊断日志与构建产物不得进入 Git 或公开 Issue。Bug 与建议使用 Issue 模板并提供脱敏的最小复现；安全问题按 [SECURITY.md](SECURITY.md) 私下报告。

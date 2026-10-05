@@ -1506,7 +1506,7 @@
     {
       "source": "../design.md",
       "target": "design.md",
-      "sha256": "5fd98f98adb1be7be8146cf11556692ce493aa266114b7522ee34a3cdba6f1f8"
+      "sha256": "e36db457b00c52ad895ad5776b24640bbb22b0a644f2cba5e6adffb15f53d1b5"
     },
     {
       "source": "components.json",
