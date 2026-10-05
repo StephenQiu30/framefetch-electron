@@ -111,7 +111,7 @@ These historical images come from a released build rendered in a separate Electr
 5. **Process**: select a compatible Skill, output language and requirements in the original video/screenplay detail form. Edit or reset the default prompt. Query or cancel pending jobs; check the existing job before retrying an unknown receipt.
 6. **Deliver**: read results with source quotations, timestamps and limits, then use the system save dialog for MD/DOCX. Repeated exports reuse the stored report.
 
-The Server's Workers and host AI Worker execute lengthy tasks. Desktop receives state updates; clients connected to the same service and account can continue viewing records. Text uses actual scenes, chapters or unheaded source units; video references actual observation times. Source correspondence and coverage help verification without proving that analytical conclusions or full audio understanding are correct. See [Server AI analysis](https://github.com/StephenQiu30/video-server/blob/main/docs/design/10-AI分析.md) (Chinese).
+The Server's Workers and host AI Worker execute lengthy tasks. Desktop receives state updates; clients connected to the same service and account can continue viewing records. Text uses actual scenes, chapters or unheaded source units; video references actual observation times. Source correspondence and coverage help verification without proving that analytical conclusions or full audio understanding are correct. See [Server AI analysis](https://github.com/StephenQiu30/video-server/blob/main/docs/design/09-AI分析.md) (Chinese).
 
 ## Three projects, one product
 
@@ -145,7 +145,7 @@ Originals, normalized text, jobs and reports reside in configured Server storage
 
 ## Scope
 
-- Process authorized HTTP(S), non-DRM material. Providers, identity and network conditions affect availability. See the [Server provider scope and validation boundaries](https://github.com/StephenQiu30/video-server/blob/main/docs/design/17-解析引擎重建.md#8-平台能力与验证边界) (Chinese) for exact status and complete-file evidence.
+- Process authorized HTTP(S), non-DRM material. Providers, identity and network conditions affect availability. See the [Server provider scope and validation boundaries](https://github.com/StephenQiu30/video-server/blob/main/docs/design/14-解析引擎.md#13-验证状态) (Chinese) for exact status and complete-file evidence.
 - The operator supplies the service, storage, network and models. External models may incur charges and receive the text or frames needed for analysis.
 - Current capabilities cover acquisition, management, built-in analysis/document organization and reports. Content writing, editing video, project/master-draft management, version confirmation, cards, ASR/OCR, DRM decryption, live recording, unbounded playlists, collaborative editing and automatic platform publishing are outside this scope.
 
