@@ -1,7 +1,7 @@
 {
   "version": 2,
   "repository": "https://github.com/StephenQiu30/video-server",
-  "commit": "01c7d45b816a2b1ca8a718c43041063675f14768",
+  "commit": "ba5a645a816a8c0d44d50248986351f42737b6e9",
   "schemaAuthority": "backend/sql/schema.sql",
   "apiContract": "FastAPI annotations -> /openapi.json -> frontend/openapi2ts.config.ts -> src/api",
   "visualAuthority": "design.md",
@@ -526,7 +526,7 @@
     {
       "source": "src/components/analysis/analysis-report-preview.tsx",
       "target": "src/renderer/frontend/components/analysis/analysis-report-preview.tsx",
-      "sha256": "ea91a24dbd04f40e724571c6ffb2696fe21bedb642f1724ed161aed8536b8e59"
+      "sha256": "79e0666d737f958ff7e283b56d0397aa3b88f6aac5ac44153f613fb764828cda"
     },
     {
       "source": "src/components/analysis/analysis-result-view.tsx",
@@ -691,17 +691,17 @@
     {
       "source": "src/components/editor/document.ts",
       "target": "src/renderer/frontend/components/editor/document.ts",
-      "sha256": "963c63eaeecb52959943626962e3a73ca8b909e7f2b26d3470aa711c829bf9ed"
+      "sha256": "652a83a1e8a69ee022df150cbf7fbe6d39fc53aff62be481cfd4c5c5c58a4a7f"
     },
     {
       "source": "src/components/editor/editor.css",
       "target": "src/renderer/frontend/components/editor/editor.css",
-      "sha256": "b1185b39400ade2d560e87e423027dfe495912235a1c5e46961a155dd4427e7f"
+      "sha256": "e73aeed4a1406ceda267a3d39f7867a8875ec333bdb834b39877342450669ff3"
     },
     {
       "source": "src/components/editor/editor.tsx",
       "target": "src/renderer/frontend/components/editor/editor.tsx",
-      "sha256": "c00c1ee5fc224be0adb4cba8f5205a9f21cded7a7bea4cade24761a80619730a"
+      "sha256": "882daa48e5c8e9e14a2510f13cad9b795a7a0275fbc634a66acbcbd12c76dc83"
     },
     {
       "source": "src/components/editor/engine.ts",
@@ -711,17 +711,17 @@
     {
       "source": "src/components/editor/index.ts",
       "target": "src/renderer/frontend/components/editor/index.ts",
-      "sha256": "76038ce29bdeca2f6881ddc3f1bfd9fee2a7096ff8ed6e3dae48981fcfa5a116"
+      "sha256": "950bdc757e8d9bbb9339ef8a3ad8af9480eb643698d372bf52cddca69807b1fb"
     },
     {
-      "source": "src/components/editor/rich-text.tsx",
-      "target": "src/renderer/frontend/components/editor/rich-text.tsx",
-      "sha256": "0dbbcab69e644138eb282d65a7f32024965ec846ea91c1773108d2a34f376271"
+      "source": "src/components/editor/rich-text.ts",
+      "target": "src/renderer/frontend/components/editor/rich-text.ts",
+      "sha256": "cc7b4467bb180f6bbb737d675a29a4295435bd597277b1eca6762452c57f8a0f"
     },
     {
       "source": "src/components/editor/viewer.tsx",
       "target": "src/renderer/frontend/components/editor/viewer.tsx",
-      "sha256": "a863c193bad651ffbaa9ccdb3a138794802e337a5f56a650c080e0b305eea02e"
+      "sha256": "560571641758ca02248815658ce2a979d246be9f98c39f33bc2b66140fa69b0a"
     },
     {
       "source": "src/components/intake/content-intake-hero.tsx",
@@ -1106,7 +1106,7 @@
     {
       "source": "src/components/screenplay/screenplay-document-preview.tsx",
       "target": "src/renderer/frontend/components/screenplay/screenplay-document-preview.tsx",
-      "sha256": "2aa9cd846b55244e8903208a7fb54c5b613eb8812beeb06bd5f88ed4dbc98343"
+      "sha256": "90bcc76e60f4d818f52dffbf3e2ca3b83c9aa12d8cd1c104fe4d4341fa606832"
     },
     {
       "source": "src/components/screenplay/screenplay-document-route.tsx",
@@ -1116,7 +1116,7 @@
     {
       "source": "src/components/screenplay/screenplay-document-toc.tsx",
       "target": "src/renderer/frontend/components/screenplay/screenplay-document-toc.tsx",
-      "sha256": "3cd85c55331f328c14b526d0abfdb7ee622edaf32db89601838ca8a9d942d91a"
+      "sha256": "570f0f142425b7b8efd7ceb04b84144350c0fb23bd7007d787ed912adfcd292c"
     },
     {
       "source": "src/components/screenplay/screenplay-documents-view.tsx",
