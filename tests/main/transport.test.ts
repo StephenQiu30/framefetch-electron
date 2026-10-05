@@ -51,6 +51,7 @@ describe('packaged renderer protocol boundary', () => {
     expect(page.headers.get('content-security-policy')).toContain("script-src 'self'");
     expect(await (await handler(request('/assets/app.js'))).text()).toContain('dataset.bundle');
     expect(await (await handler(request('/', { method: 'HEAD' }))).text()).toBe('');
+    expect((await handler(request('/content?task=selected'))).status).toBe(404);
     expect(fetch).not.toHaveBeenCalled();
   });
 
@@ -116,6 +117,30 @@ describe('packaged renderer protocol boundary', () => {
     ).toBe(403);
     expect((await handler(request('http://remote.example/image.png'))).status).toBe(403);
     expect(fetch).not.toHaveBeenCalled();
+  });
+
+  it('preserves authenticated report bytes and server attachment headers', async () => {
+    const { handler, fetch } = client();
+    const bytes = new Uint8Array([80, 75, 3, 4, 0, 255]);
+    fetch.mockResolvedValueOnce(
+      new Response(bytes, {
+        headers: {
+          'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          'Content-Disposition': 'attachment; filename="skill-report.docx"',
+        },
+      }),
+    );
+    const input = request('/api/analyses/task/report.docx');
+    const response = await handler(input);
+    expect(response.headers.get('content-type')).toBe(
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    );
+    expect(response.headers.get('content-disposition')).toContain('skill-report.docx');
+    expect(new Uint8Array(await response.arrayBuffer())).toEqual(bytes);
+    expect(fetch).toHaveBeenCalledWith(
+      input,
+      expect.objectContaining({ credentials: 'include', redirect: 'error' }),
+    );
   });
 
   it('converts upstream network/redirect failure into a bounded transport error', async () => {

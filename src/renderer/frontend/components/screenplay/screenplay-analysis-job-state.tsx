@@ -86,7 +86,10 @@ export function ScreenplayAnalysisJobState({
         {job.status === AnalysisStatusCode.Failed ||
         job.status === AnalysisStatusCode.Cancelled ? (
           <Button
-            disabled={Boolean(state.action)}
+            disabled={
+              Boolean(state.action) ||
+              job.error_code === 'analysis_outcome_unknown'
+            }
             onClick={() => void state.retry()}
           >
             {state.action === 'retry' ? (
@@ -111,7 +114,7 @@ export function ScreenplayAnalysisJobState({
           onDelete={state.remove}
         />
       </div>
-      {job.result && !isVideoAnalysisResult(job.result) ? (
+      {job.result && !isVideoAnalysisResult(job.result, job.input_kind) ? (
         <div className="mt-10 pt-10">
           <Badge variant="secondary">上一版本结果</Badge>
           <ScreenplayResultView

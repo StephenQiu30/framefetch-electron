@@ -6,7 +6,7 @@ import { siteConfig } from '@/lib/site';
 
 const title = '视频解析、AI 分析与自托管使用指南 · 帧取 FrameFetch';
 const description =
-  '了解 FrameFetch 如何导入授权视频与剧本文档、执行 AI 分镜分析并导出 Markdown / DOCX 报告，以及 Web、Flutter 客户端和自托管服务端的分工。';
+  '了解 FrameFetch 如何导入视频与文档、调用内置 Skill 分析影视和整理文章，以及查看和导出报告。';
 export const metadata = publicMetadata(title, description, '/guide/');
 
 const sections = [
@@ -14,8 +14,8 @@ const sections = [
     id: 'video-analysis',
     title: '如何从视频得到可复核的 AI 分析报告？',
     paragraphs: [
-      '先导入自己拥有或已获授权的本地视频，也可以检查公开媒体链接、确认可用格式并创建任务。视频完成处理后，在任务详情选择分析能力并提交 AI 分析任务。',
-      '服务端 AI Worker 执行分析，页面展示场景、分镜时间轴、关键帧证据等结构化结果。不同分析能力输出不同内容；报告支持 Markdown 与 DOCX 导出，便于继续整理、审阅和分享。关键结论应对照视频与证据复核。',
+      '先导入自己拥有或已获授权的本地视频，也可以检查公开媒体链接、确认可用格式并下载。在成功的视频详情页选择当前可用的成片审阅或素材拆解 Skill，使用原分析表单提交。',
+      '服务端 Worker 读取该次输入并执行 Skill，返回相应分析报告。关键结论应对照视频、源时间与实际观察范围核查；可查看结果并导出 Markdown 或 DOCX。',
       '媒体处理成功不代表分析已经完成；AI 服务不可用时，检查管理员配置的模型 Provider 与 AI Worker 状态。',
     ],
     source: '/blob/main/README.md#产品能力',
@@ -25,7 +25,7 @@ const sections = [
     id: 'screenplays',
     title: '如何处理剧本文档？',
     paragraphs: [
-      '在剧本文档工作区导入 Markdown、Fountain、TXT、PDF 或 DOCX。导入后可阅读规范化文档、查看目录并发起分析或改写，结果与处理记录保存在同一工作区。',
+      '上传 Markdown、Fountain、TXT、PDF 或 DOCX 文档，在原文档详情阅读正文并选择故事审稿、文章、公众号或小红书整理 Skill。整理保持完整原文与事实，结果沿原报告操作查看和导出。',
       '文档是否能够完整提取取决于原文件结构。扫描件、复杂版式或缺失文本的文件需要检查导入结果，不能仅凭任务成功就判断原文已经完整保留。',
     ],
     source: '/blob/main/README.md#产品能力',

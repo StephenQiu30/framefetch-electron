@@ -270,7 +270,13 @@ export function useAnalysisJob(
     if (!action) await refetch({ cancelRefetch: false });
   }, [action, refetch]);
   const retry = async () => {
-    if (!job) return;
+    if (
+      !job ||
+      job.error_code === 'analysis_outcome_unknown' ||
+      job.input_kind === 'skill' ||
+      job.input_kind === 'content'
+    )
+      return;
     const operation: Operation = {
       action: 'retry',
       analysisId: job.id,

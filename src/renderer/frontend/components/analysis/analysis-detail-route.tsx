@@ -11,11 +11,13 @@ import {
   statusLabels,
 } from '@/components/analysis/analysis-panel-model';
 import AnalysisReportDownloadLink from '@/components/analysis/analysis-report-download-link';
+import AnalysisReportPreview from '@/components/analysis/analysis-report-preview';
 import AnalysisVideoResult, {
   isVideoAnalysisResult,
 } from '@/components/analysis/analysis-video-result';
 import { useAnalysisJob } from '@/components/analysis/use-analysis-job';
 import { useAnalysisSkills } from '@/components/analysis/use-analysis-skills';
+import ContentResultView from '@/components/content/content-result-view';
 import { historyRecordLabel } from '@/components/intake/history-record-presentation';
 import { FeedbackNotice } from '@/components/layout/feedback-notice';
 import { PageEmptyNotice } from '@/components/layout/page-empty-notice';
@@ -79,10 +81,18 @@ function AnalysisDetailContent({
 }: {
   record:
     | API.VideoAnalysisHistoryRecordResponse
-    | API.ScreenplayAnalysisHistoryRecordResponse;
+    | API.ScreenplayAnalysisHistoryRecordResponse
+    | API.ContentCreationHistoryRecordResponse
+    | API.SkillAnalysisHistoryRecordResponse;
 }) {
   const kind =
-    record.record_type === 'screenplay_analysis' ? 'screenplay' : 'video';
+    record.record_type === 'skill_analysis'
+      ? 'skill'
+      : record.record_type === 'content_creation'
+        ? 'content'
+        : record.record_type === 'screenplay_analysis'
+          ? 'screenplay'
+          : 'video';
   const state = useAnalysisJob('', 3000, kind, record.id);
   const skills = useAnalysisSkills(kind);
   const skillName =
@@ -160,7 +170,9 @@ function AnalysisDetailContent({
                 : statusLabels[job.status]}
             </Badge>
             <span className="text-sm text-muted-foreground">
-              第 {job.run_no} 次执行
+              {job.run_trigger === 'manual_edit'
+                ? `第 ${job.run_no} 份报告 · 历史人工稿`
+                : `第 ${job.run_no} 次执行`}
               {active
                 ? ` · ${job.progress}%${job.stage ? ` · ${stageLabels[job.stage]}` : ''}`
                 : ''}
@@ -179,6 +191,9 @@ function AnalysisDetailContent({
               <Button
                 disabled={
                   Boolean(state.action) ||
+                  job.error_code === 'analysis_outcome_unknown' ||
+                  record.record_type === 'skill_analysis' ||
+                  record.record_type === 'content_creation' ||
                   record.source_availability !== 'available'
                 }
                 variant="outline"
@@ -210,11 +225,14 @@ function AnalysisDetailContent({
             <FeedbackNotice
               className="mt-5"
               title="按原配置重新运行"
-              description="将保留任务编号并增加执行次数，可能消耗模型额度。修改配置请从源文件新建分析。"
+              description="将保留任务编号并增加执行次数，可能消耗模型额度。调整材料或目的请新建任务。"
               action={
                 <div className="flex gap-2">
                   <Button
-                    disabled={Boolean(state.action)}
+                    disabled={
+                      Boolean(state.action) ||
+                      job.error_code === 'analysis_outcome_unknown'
+                    }
                     onClick={() => {
                       setConfirmRetry(false);
                       void state.retry();
@@ -243,10 +261,22 @@ function AnalysisDetailContent({
               tone="error"
             />
           ) : null}
-          {isVideoAnalysisResult(job.result) ? (
+          {job.result?.kind === 'skill_report' ? (
+            <AnalysisReportPreview
+              markdown={job.report_markdown ?? job.result.body}
+            />
+          ) : isVideoAnalysisResult(job.result, job.input_kind) ? (
             <AnalysisVideoResult
               result={job.result}
               reportMarkdown={job.report_markdown}
+            />
+          ) : job.result?.kind === 'content_document' ? (
+            <ContentResultView
+              result={job.result}
+              markdown={job.report_markdown}
+              analysisId={job.id}
+              reportId={job.current_report_id}
+              historicalEdit={job.run_trigger === 'manual_edit'}
             />
           ) : job.result ? (
             <ScreenplayResultView
@@ -266,7 +296,7 @@ function AnalysisDetailContent({
   );
 }
 
-function AnalysisRuns({
+export function AnalysisRuns({
   id,
   runNo,
   active,
@@ -279,7 +309,14 @@ function AnalysisRuns({
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
   const before = cursors.at(-1);
   const runs = useQuery({
-    queryKey: privateQueryKey('analysis-runs', id, runNo, before, pageSize),
+    queryKey: privateQueryKey(
+      'analysis-runs',
+      id,
+      runNo,
+      before,
+      pageSize,
+      active,
+    ),
     queryFn: ({ signal }) =>
       listAnalysisRuns(
         { analysis_id: id, before_run_no: before, limit: pageSize },
@@ -303,14 +340,23 @@ function AnalysisRuns({
       <ol className="mt-4">
         {runs.data?.items.map((run) => (
           <li key={run.id} className="flex flex-wrap gap-4 py-4 text-sm">
-            <span>第 {run.run_no} 次</span>
+            <span>
+              {run.trigger === 'manual_edit'
+                ? `第 ${run.run_no} 份报告 · 历史人工稿`
+                : `第 ${run.run_no} 次`}
+            </span>
             <span>{statusLabels[run.status]}</span>
             <time dateTime={run.created_at}>
               {new Date(run.created_at).toLocaleString('zh-CN', {
                 hour12: false,
               })}
             </time>
-            {run.error_code ? <span>{run.error_code}</span> : null}
+            {run.error_code ? (
+              <span>
+                {localizedErrorMessage(run.error_code) ??
+                  '这次运行未完成，请查看任务状态。'}
+              </span>
+            ) : null}
           </li>
         ))}
       </ol>

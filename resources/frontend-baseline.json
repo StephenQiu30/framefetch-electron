@@ -1,7 +1,7 @@
 {
   "version": 2,
   "repository": "https://github.com/StephenQiu30/video-server",
-  "commit": "57c6084c05aa9b1f5a01ea3f728c758a5c082bb5",
+  "commit": "01c7d45b816a2b1ca8a718c43041063675f14768",
   "schemaAuthority": "backend/sql/schema.sql",
   "apiContract": "FastAPI annotations -> /openapi.json -> frontend/openapi2ts.config.ts -> src/api",
   "visualAuthority": "design.md",
@@ -46,7 +46,7 @@
     {
       "source": "src/api/analyses.ts",
       "target": "src/renderer/frontend/api/analyses.ts",
-      "sha256": "4a96688add9e514f661781f85993b5b67eee35d12c3134e137f97862f008dac0"
+      "sha256": "f76aa3a9c10d336538b69f6a003e87204dc18b73ae5869e62ca7ce530694778c"
     },
     {
       "source": "src/api/appAuth.ts",
@@ -61,7 +61,7 @@
     {
       "source": "src/api/documents.ts",
       "target": "src/renderer/frontend/api/documents.ts",
-      "sha256": "5b30f67f87de0fe62cb09a4453cc9e8c7312cdc652a9ad16562387b43334331b"
+      "sha256": "141b2323adbf7dddff4ceb1a718d33ed168cb0cb4e275fbb08fd311ee997d856"
     },
     {
       "source": "src/api/downloadIntents.ts",
@@ -106,7 +106,7 @@
     {
       "source": "src/api/typings.d.ts",
       "target": "src/renderer/frontend/api/typings.d.ts",
-      "sha256": "47d6a17f108928d50236d7e3fb27a9fc4cc395c1a2796e2936301ecd8661b39f"
+      "sha256": "465fbac23ec91bc5a24b0a6f1037611fa627c1fd13cb072c3a9d60c6f9670b31"
     },
     {
       "source": "src/api/users.ts",
@@ -181,12 +181,12 @@
     {
       "source": "src/app/globals.css",
       "target": "src/renderer/frontend/app/globals.css",
-      "sha256": "c257533769c8d375c64c8392fa44f562505c2776d3f572429c38b1cf488a8ed8"
+      "sha256": "97e5cb67fdcfb881b93f7f0cf2e15e7de39ef58081c11e11889edad8aed82902"
     },
     {
       "source": "src/app/guide/page.tsx",
       "target": "src/renderer/frontend/app/guide/page.tsx",
-      "sha256": "07e67e23d516fe6fb98c54591956495ae11ade4c9a8e91d2d2ac5a9d8be19a78"
+      "sha256": "ee4953199cb7dde442d66462787560fb0c205ad5627406b2ccd5e7e0b9d34cd8"
     },
     {
       "source": "src/app/history/activity/page.tsx",
@@ -431,7 +431,7 @@
     {
       "source": "src/components/admin/admin-storage/storage-file-list.tsx",
       "target": "src/renderer/frontend/components/admin/admin-storage/storage-file-list.tsx",
-      "sha256": "2e8692842ce03d2b70001b0d3795b87d7655e269eb603d95c6c24812051a53d3"
+      "sha256": "1754c39b4b31964792dc8c92e12e8f972232f3133d70443f2cf6c9a942d86d3a"
     },
     {
       "source": "src/components/admin/admin-users-view.tsx",
@@ -481,12 +481,12 @@
     {
       "source": "src/components/analysis/analysis-article-result-view.tsx",
       "target": "src/renderer/frontend/components/analysis/analysis-article-result-view.tsx",
-      "sha256": "f984948f8db800681512371575640738101cfe51b21e595f899bc95d9d34c57b"
+      "sha256": "ccbbfadbf6ac155b85d6924bb1c87a69a1e60c08b18b0c70de3f96c9038cebfb"
     },
     {
       "source": "src/components/analysis/analysis-configurator.tsx",
       "target": "src/renderer/frontend/components/analysis/analysis-configurator.tsx",
-      "sha256": "9213f08ca0b17ee40c25efa47c411ff2a232dc129b41c889ca17dbf6a1d29ab0"
+      "sha256": "42533e61141400ab4a36c328834dd710a421bc84d4485444b733d95b430447d8"
     },
     {
       "source": "src/components/analysis/analysis-delete-dialog.tsx",
@@ -496,22 +496,27 @@
     {
       "source": "src/components/analysis/analysis-detail-route.tsx",
       "target": "src/renderer/frontend/components/analysis/analysis-detail-route.tsx",
-      "sha256": "55b192ba75b47bb63f22e708dec8ed0e92c62be4f5f56b21c315b51f28191380"
+      "sha256": "6d7df48d950fbae0267e767a8c201056d245b06fa5dfc9fe973234c5f42101c8"
+    },
+    {
+      "source": "src/components/analysis/analysis-editorial-review.tsx",
+      "target": "src/renderer/frontend/components/analysis/analysis-editorial-review.tsx",
+      "sha256": "d563008cf34d437d29fb36ccb593ce27772c9292f84cdb87fb76443159d6b19c"
     },
     {
       "source": "src/components/analysis/analysis-execution-notice.tsx",
       "target": "src/renderer/frontend/components/analysis/analysis-execution-notice.tsx",
-      "sha256": "e6c233897c65e77ef71b2c1d14d909ba08b722bd707325336ddab9b1f278e231"
+      "sha256": "ad004e078fca3cad0f644598f63f9f2599e6215869b4836b7f6230449d3c3972"
     },
     {
       "source": "src/components/analysis/analysis-panel-model.ts",
       "target": "src/renderer/frontend/components/analysis/analysis-panel-model.ts",
-      "sha256": "e4f06fd7d5db7fcc29c7b5ae665405e7a3b285467890d67936ede1dd2db197ab"
+      "sha256": "7d026b0ef11f16923fd104aef7ce8852d50d4ee86c70b57d1ca921597c3f486a"
     },
     {
       "source": "src/components/analysis/analysis-panel.tsx",
       "target": "src/renderer/frontend/components/analysis/analysis-panel.tsx",
-      "sha256": "c6de34d742c6f6ac947876c862daa27d3f11f2c770f8030b802fa21c8548ba31"
+      "sha256": "9f2f0ba50e41d36a81492b33752af3f92e884e57bda44c0914dab02d1bae83f3"
     },
     {
       "source": "src/components/analysis/analysis-report-download-link.tsx",
@@ -541,17 +546,17 @@
     {
       "source": "src/components/analysis/analysis-structured-report-view.tsx",
       "target": "src/renderer/frontend/components/analysis/analysis-structured-report-view.tsx",
-      "sha256": "9d3a03dcbc1ac47118ddc9cf6117ed496b28cea801e5bf7e1b9748a34b0bbecf"
+      "sha256": "c1b8679aaf5f23481ae33372fc0afc847c513bebd36396fd46b9f69eade17ae0"
     },
     {
       "source": "src/components/analysis/analysis-video-result.tsx",
       "target": "src/renderer/frontend/components/analysis/analysis-video-result.tsx",
-      "sha256": "5422485bdab2150af708b35d5261fd5b9c43420cf5e7d3271ece251c9ebc62d1"
+      "sha256": "9171f4a10e1551852d89c01fd3345009fa960d702785a4f6572d67a351035210"
     },
     {
       "source": "src/components/analysis/use-analysis-job.ts",
       "target": "src/renderer/frontend/components/analysis/use-analysis-job.ts",
-      "sha256": "097b9fb969001aab78a13235eba14b77022de84ae4262815d3586f3d078c3497"
+      "sha256": "e74484caf150b05ddc4f2c83b1ca604ed289f6a934ffcceaa48f0e462e19c2e1"
     },
     {
       "source": "src/components/analysis/use-analysis-skills.ts",
@@ -597,6 +602,21 @@
       "source": "src/components/auth/registration-code-field.tsx",
       "target": "src/renderer/frontend/components/auth/registration-code-field.tsx",
       "sha256": "ff15257fb78fe087aa2d6d87fb59219e326dab7ed94c4e5285e17ffc126fc99a"
+    },
+    {
+      "source": "src/components/content/content-report-history.tsx",
+      "target": "src/renderer/frontend/components/content/content-report-history.tsx",
+      "sha256": "f2bed169d614f9b599926dc2e0897876efb7183efd3d909f89d8f3aff767f23f"
+    },
+    {
+      "source": "src/components/content/content-result-view.tsx",
+      "target": "src/renderer/frontend/components/content/content-result-view.tsx",
+      "sha256": "b0778172c85de662d13465d54b7c88c882faa44cb717dbe38e5057c68904fb16"
+    },
+    {
+      "source": "src/components/content/content-source-review.tsx",
+      "target": "src/renderer/frontend/components/content/content-source-review.tsx",
+      "sha256": "a2e276bfa40fa2865af62ab1b58d6b76d9e36afb2543c27de6cf749488470d7b"
     },
     {
       "source": "src/components/downloads/download-delete-dialog.tsx",
@@ -721,12 +741,12 @@
     {
       "source": "src/components/intake/history-record-filters.tsx",
       "target": "src/renderer/frontend/components/intake/history-record-filters.tsx",
-      "sha256": "d6c1f3fd4cff0a83b3b848cbee9ef7e11bd3c92e71f5f8f3fb66347e8453f8e2"
+      "sha256": "6661c593b29ef8a5d5c963de83a52f59a7b1133973d43a29e9144bda75a6c654"
     },
     {
       "source": "src/components/intake/history-record-presentation.ts",
       "target": "src/renderer/frontend/components/intake/history-record-presentation.ts",
-      "sha256": "d0dba02f7b6e4adb8d664693970be3e1dd0f1dfd91e5f8eb9585a9472feba668"
+      "sha256": "dc128eb07ba94a576b5798859496811d0187540ef0a6c0b5cc792d1ed72c8e98"
     },
     {
       "source": "src/components/intake/history-search-form.tsx",
@@ -1041,12 +1061,12 @@
     {
       "source": "src/components/screenplay/screenplay-analysis-job-state.tsx",
       "target": "src/renderer/frontend/components/screenplay/screenplay-analysis-job-state.tsx",
-      "sha256": "c590d6c1f5218f6ee4910acc06426e207c72921cbf4c94d81cb1b3f8d7d7c12a"
+      "sha256": "086e8aff0c5221c35d21dc1f0a322a5c777b1269455f056fc3645ee1b4d16612"
     },
     {
       "source": "src/components/screenplay/screenplay-analysis-panel.tsx",
       "target": "src/renderer/frontend/components/screenplay/screenplay-analysis-panel.tsx",
-      "sha256": "3703f661ee04b345a481f46292d01cd32fd3fe8e37fdad43d39ff8b0592ece9d"
+      "sha256": "a4e62e6782f45b1ccf90cf5c264885ea21370c89d9e1b7ac64c81c7b85ca24ad"
     },
     {
       "source": "src/components/screenplay/screenplay-analysis-result-view.tsx",
@@ -1056,7 +1076,7 @@
     {
       "source": "src/components/screenplay/screenplay-completed-analysis.tsx",
       "target": "src/renderer/frontend/components/screenplay/screenplay-completed-analysis.tsx",
-      "sha256": "9d9a183cd062fdb12e6c0df9dd33385cef19d1cea22cd8cad0f4b62f1716f8f9"
+      "sha256": "c705d35ae425a686ae4a670877b73b61937eb80d3a451904b2cf7838d0d78e7a"
     },
     {
       "source": "src/components/screenplay/screenplay-document-delete-dialog.tsx",
@@ -1071,7 +1091,7 @@
     {
       "source": "src/components/screenplay/screenplay-document-format.ts",
       "target": "src/renderer/frontend/components/screenplay/screenplay-document-format.ts",
-      "sha256": "bc5a0272e4a41a903a741a0997de4385a8563f1f47506f1f2a8adb1cdfc8d212"
+      "sha256": "5bbba76bb4a3139072a3eb581daabfd2d328c0e83d28a479993c530876181855"
     },
     {
       "source": "src/components/screenplay/screenplay-document-list.tsx",
@@ -1111,7 +1131,7 @@
     {
       "source": "src/components/screenplay/screenplay-result-view.tsx",
       "target": "src/renderer/frontend/components/screenplay/screenplay-result-view.tsx",
-      "sha256": "d2d035c7d883ea11e0b1621abd0737cff76b8770cb7fb8cb2fa23efb2e559d67"
+      "sha256": "ea5c70efeeeac9ce78e7598f90300e2e5b98ea9e8b78ad17ad27f89e3ca3aa27"
     },
     {
       "source": "src/components/screenplay/screenplay-rewrite-result-view.tsx",
@@ -1381,12 +1401,12 @@
     {
       "source": "src/lib/error-messages.ts",
       "target": "src/renderer/frontend/lib/error-messages.ts",
-      "sha256": "35104bf6da7b28192d5d8c870d509c9813512f56add9d3634abcffc812384b64"
+      "sha256": "dd59bc51a5e213723232986a1f803337d4fd537ba1d465e858d9307ceb16f1c3"
     },
     {
       "source": "src/lib/format.ts",
       "target": "src/renderer/frontend/lib/format.ts",
-      "sha256": "6126184305f694be73b24b1e7df8c16c687137cb0a02e2b53219f0b0db8030f6"
+      "sha256": "1c2a5dbe5d82bef8961b16ad5467bc3efb232b6985dd82b130371f7089895f7e"
     },
     {
       "source": "src/lib/import-status.ts",
@@ -1441,7 +1461,7 @@
     {
       "source": "src/lib/upload/document-import.ts",
       "target": "src/renderer/frontend/lib/upload/document-import.ts",
-      "sha256": "b504b09e933eb7f73ca8ce10755e9d97b29affcd2778b534cae1e14f462a78bd"
+      "sha256": "a8c15917026205faa9301697b2e66f2f27bb004842d6b16eb71937f21c941470"
     },
     {
       "source": "src/lib/upload/import-lifecycle.ts",

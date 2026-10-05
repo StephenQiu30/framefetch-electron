@@ -1,6 +1,7 @@
 'use client';
 
 import { ArrowClockwise, DownloadSimple, Robot } from '@phosphor-icons/react';
+import { useState } from 'react';
 import AnalysisConfigurator from '@/components/analysis/analysis-configurator';
 import AnalysisDeleteDialog from '@/components/analysis/analysis-delete-dialog';
 import {
@@ -12,6 +13,7 @@ import {
   statusLabels,
 } from '@/components/analysis/analysis-panel-model';
 import AnalysisReportDownloadLink from '@/components/analysis/analysis-report-download-link';
+import AnalysisReportPreview from '@/components/analysis/analysis-report-preview';
 import AnalysisStorageNotice from '@/components/analysis/analysis-storage-notice';
 import AnalysisVideoResult, {
   isVideoAnalysisResult,
@@ -52,6 +54,7 @@ export default function AnalysisPanel({
   pollIntervalMs?: number;
 }) {
   const state = useAnalysisJob(downloadId, pollIntervalMs, 'video', analysisId);
+  const [creating, setCreating] = useState(false);
 
   if (state.loading && state.action !== 'start') {
     return (
@@ -72,9 +75,12 @@ export default function AnalysisPanel({
     );
   }
 
+  const completedResult = state.job?.result;
   if (
     state.job?.status === AnalysisStatusCode.Succeeded &&
-    isVideoAnalysisResult(state.job.result)
+    completedResult &&
+    (isVideoAnalysisResult(completedResult, state.job.input_kind) ||
+      completedResult.kind === 'skill_report')
   ) {
     const formats = new Set(
       state.job.report?.status === AnalysisReportStatusCode.Available
@@ -105,11 +111,13 @@ export default function AnalysisPanel({
           />
         ) : null}
         <div className="flex flex-col gap-6">
-          <div className="min-w-0 w-full">
-            <h2 className="w-full text-xl font-semibold tracking-tight">
-              {state.job.result.title}
-            </h2>
-          </div>
+          {completedResult.kind !== 'video_article' ? (
+            <div className="min-w-0 w-full">
+              <h2 className="w-full text-xl font-semibold tracking-tight">
+                {completedResult.title}
+              </h2>
+            </div>
+          ) : null}
           <div className="flex flex-wrap items-center gap-3">
             <Badge variant="default">已完成</Badge>
             <span className="text-sm text-muted-foreground tabular-nums">
@@ -140,7 +148,11 @@ export default function AnalysisPanel({
               </>
             ) : null}
             <Button
-              disabled={Boolean(state.action)}
+              disabled={
+                Boolean(state.action) ||
+                completedResult.kind === 'skill_report' ||
+                state.job.error_code === 'analysis_outcome_unknown'
+              }
               onClick={() => void state.retry()}
               variant="outline"
             >
@@ -150,6 +162,13 @@ export default function AnalysisPanel({
                 <ArrowClockwise data-icon="inline-start" />
               )}
               {state.action === 'retry' ? '正在重新分析' : '重新分析'}
+            </Button>
+            <Button
+              disabled={Boolean(state.action)}
+              onClick={() => setCreating(!creating)}
+              variant="outline"
+            >
+              {creating ? '收起新建任务' : '新建分析'}
             </Button>
             <AnalysisDeleteDialog
               disabled={Boolean(state.action)}
@@ -161,7 +180,11 @@ export default function AnalysisPanel({
         {!reportAvailable ? (
           <FeedbackNotice
             className="mt-8"
-            description="分析结果仍可查看，但报告文件已被清理或暂时不可读取。你可以重新分析以生成新报告。"
+            description={
+              completedResult.kind === 'skill_report'
+                ? '历史报告仅保留已保存的正文；请使用最新 Skill 新建任务以分析这份视频。'
+                : '分析结果仍可查看，但报告文件已被清理或暂时不可读取。你可以重新分析以生成新报告。'
+            }
             title="报告已清理或暂时不可用"
             tone="error"
           />
@@ -174,12 +197,28 @@ export default function AnalysisPanel({
             {playbackUnavailableReason}
           </p>
         ) : null}
-        <AnalysisVideoResult
-          onSelectTime={onSelectTime}
-          reportMarkdown={state.job.report_markdown}
-          result={state.job.result}
-          skillId={state.job.skill_id}
-        />
+        {creating ? (
+          <AnalysisConfigurator
+            inputId={downloadId}
+            busy={state.action === 'start'}
+            onStart={(input) => {
+              setCreating(false);
+              void state.start(input);
+            }}
+          />
+        ) : null}
+        {completedResult.kind === 'skill_report' ? (
+          <div className="mt-10">
+            <AnalysisReportPreview markdown={state.job.report_markdown ?? ''} />
+          </div>
+        ) : (
+          <AnalysisVideoResult
+            onSelectTime={onSelectTime}
+            reportMarkdown={state.job.report_markdown}
+            result={completedResult}
+            skillId={state.job.skill_id}
+          />
+        )}
       </div>
     );
   }
@@ -195,8 +234,7 @@ export default function AnalysisPanel({
             AI 智能分析
           </h2>
           <p className="mt-4 max-w-2xl leading-7 text-muted-foreground">
-            由 AI
-            观察视频画面，生成连续分镜、视觉高光、资产目录，或将视频整理成文章。
+            根据视频材料撰写文章、审阅成片、拆解素材，或制定传播方案。
           </p>
         </div>
       </div>
@@ -236,6 +274,27 @@ export default function AnalysisPanel({
           playbackUnavailableReason={playbackUnavailableReason}
         />
       )}
+      {state.job && !isActiveAnalysisStatus(state.job.status) ? (
+        <div className="mt-6">
+          <Button
+            disabled={Boolean(state.action)}
+            onClick={() => setCreating(!creating)}
+            variant="outline"
+          >
+            {creating ? '收起新建任务' : '新建分析'}
+          </Button>
+          {creating ? (
+            <AnalysisConfigurator
+              inputId={downloadId}
+              busy={state.action === 'start'}
+              onStart={(input) => {
+                setCreating(false);
+                void state.start(input);
+              }}
+            />
+          ) : null}
+        </div>
+      ) : null}
     </div>
   );
 }
@@ -328,7 +387,10 @@ function AnalysisJobState({
         {job.status === AnalysisStatusCode.Failed ||
         job.status === AnalysisStatusCode.Cancelled ? (
           <Button
-            disabled={Boolean(state.action)}
+            disabled={
+              Boolean(state.action) ||
+              job.error_code === 'analysis_outcome_unknown'
+            }
             onClick={() => void state.retry()}
           >
             {state.action === 'retry' ? (
@@ -344,9 +406,9 @@ function AnalysisJobState({
         />
       </div>
       <p className="mt-8 text-sm text-muted-foreground">
-        分析结果会经过连续时间轴、严格结构与分镜证据校验。
+        结果会按所选任务检查结构、材料引用与事实范围。
       </p>
-      {isVideoAnalysisResult(job.result) ? (
+      {isVideoAnalysisResult(job.result, job.input_kind) ? (
         <div className="mt-10">
           <div className="flex flex-wrap items-center gap-3">
             <Badge variant="secondary">
