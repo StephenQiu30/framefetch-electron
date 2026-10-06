@@ -1,57 +1,74 @@
-import {
-  CheckCircle,
-  ShieldCheck,
-  WarningCircle,
-  XCircle,
-} from '@phosphor-icons/react';
-
+import { CheckIcon, ClockIcon } from '@phosphor-icons/react';
+import { FieldDescription } from '@/components/ui/field';
 import {
   Item,
   ItemContent,
   ItemDescription,
+  ItemGroup,
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item';
-
+import { Spinner } from '@/components/ui/spinner';
 import {
   DownloadStatusCode,
-  displayStage,
-  executionTitle,
+  downloadStageLabels,
 } from './download-state-model';
+
+const stages = Object.entries(downloadStageLabels).map(([code, label]) => ({
+  code,
+  label,
+}));
 
 export function DownloadExecutionSummary({
   job,
 }: {
   job: API.DownloadResponse;
 }) {
-  const complete = job.status === DownloadStatusCode.Succeeded;
-  const failed = job.status === DownloadStatusCode.Failed;
-  const cancelled = job.status === DownloadStatusCode.Cancelled;
-
+  const current = job.stage
+    ? stages.findIndex((stage) => stage.code === job.stage)
+    : -1;
   return (
-    <Item className="mt-7 items-start" size="sm">
-      <ItemMedia variant="icon">
-        {complete ? (
-          <ShieldCheck aria-hidden />
-        ) : failed ? (
-          <WarningCircle aria-hidden />
-        ) : cancelled ? (
-          <XCircle aria-hidden />
-        ) : (
-          <CheckCircle aria-hidden />
-        )}
-      </ItemMedia>
-      <ItemContent>
-        <ItemTitle>{executionTitle(job)}</ItemTitle>
-        <ItemDescription className="line-clamp-none">
-          {complete ? (
-            <span>{job.file_available ? '持久保存' : '文件已清理'}</span>
-          ) : (
-            <span>{displayStage(job)}</span>
-          )}{' '}
-          · 第 {job.attempt} 次执行
-        </ItemDescription>
-      </ItemContent>
-    </Item>
+    <section
+      aria-labelledby="download-stages-title"
+      className="flex flex-col gap-3"
+    >
+      <ItemTitle>
+        <h3 id="download-stages-title">处理阶段</h3>
+      </ItemTitle>
+      <ItemGroup>
+        {stages.map((stage, index) => {
+          const done =
+            job.status === DownloadStatusCode.Succeeded ||
+            (current >= 0 && index < current);
+          const isCurrent = index === current;
+          return (
+            <Item
+              key={stage.code}
+              role="listitem"
+              aria-current={isCurrent ? 'step' : undefined}
+            >
+              <ItemMedia variant="icon">
+                {done ? (
+                  <CheckIcon aria-hidden />
+                ) : isCurrent && job.status === DownloadStatusCode.Running ? (
+                  <Spinner aria-hidden />
+                ) : (
+                  <ClockIcon aria-hidden />
+                )}
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>{stage.label}</ItemTitle>
+                <ItemDescription>
+                  {done ? '已完成' : isCurrent ? '当前阶段' : '等待处理'}
+                </ItemDescription>
+              </ItemContent>
+            </Item>
+          );
+        })}
+      </ItemGroup>
+      <FieldDescription>
+        阶段按处理顺序展示，当前阶段随任务状态更新。
+      </FieldDescription>
+    </section>
   );
 }
