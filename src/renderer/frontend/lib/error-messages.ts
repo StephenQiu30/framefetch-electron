@@ -102,6 +102,29 @@ const localizedErrorMessages: Record<string, string> = {
 };
 
 const localizedFailureCauses: Record<string, string> = {
+  'identity_unavailable:yuanbao_request_rule_unavailable':
+    '平台身份插件的请求规则未启用，请在部署主机重新加载插件后再解析。',
+  'extractor_broken:yuanbao_response_source_invalid':
+    '平台解析响应未通过校验，请稍后重新解析。',
+  'extractor_broken:yuanbao_response_size_invalid':
+    '平台解析响应未通过校验，请稍后重新解析。',
+  'extractor_broken:yuanbao_response_utf8_invalid':
+    '平台解析响应未通过校验，请稍后重新解析。',
+  'extractor_broken:yuanbao_response_json_invalid':
+    '平台解析响应未通过校验，请稍后重新解析。',
+  'extractor_broken:yuanbao_response_credential_echo':
+    '平台解析响应未通过校验，请稍后重新解析。',
+  'extractor_broken:parse_response_invalid':
+    '平台解析响应未通过校验，请稍后重新解析。',
+  'transient:parse_request_failed': '平台解析请求失败，请检查网络后重新解析。',
+  'identity_unavailable:extension_disconnected':
+    '平台身份插件未连接，请确认部署主机的 Chrome 和帧取身份插件已启动。',
+  'identity_unavailable:extension_timeout':
+    '平台身份获取或解析请求超时，请检查部署主机的 Chrome 和网络后重新解析。',
+  'context_changed:identity_account_conflict':
+    '元宝账号在解析期间发生变化，请确认账号后重新解析。',
+  'login_required:credential_missing':
+    '缺少平台登录状态，请在部署主机的 Chrome 完成对应平台登录后重新解析。',
   'identity_unavailable:identity_cookie_rules_unverified':
     '该平台的身份规则尚未接通，当前无法解析；可导入已有本地视频。',
   'runtime_unavailable:browser_not_implemented':

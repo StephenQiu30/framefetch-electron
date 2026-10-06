@@ -238,7 +238,7 @@ test('bundled frontend loads at the API origin with no Node, preload or remote p
   });
   expect(requests.every((request) => /^\/(api|health)(\/|$)/.test(request.path))).toBe(true);
   await page.goto(`${backendUrl}user/login/`);
-  await expect(page.getByRole('heading', { name: '欢迎回来', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '登录帧取', exact: true })).toBeVisible();
   await menu('back');
   await expect.poll(() => new URL(page.url()).pathname).toBe('/');
   await page.goto(`${backendUrl}user/login/`);
@@ -493,12 +493,12 @@ test('soft Link navigation and native query History writes update the same rende
     (window as unknown as { adapterDocumentProbe: string }).adapterDocumentProbe = 'retained';
   });
   await page.getByRole('link', { name: '登录', exact: true }).click();
-  await expect(page.getByRole('heading', { name: '欢迎回来', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '登录帧取', exact: true })).toBeVisible();
   expect(new URL(page.url()).pathname).toBe('/user/login');
   await page.evaluate(() =>
     window.history.pushState(null, '', '/user/register?redirect=%2Fdocuments'),
   );
-  await expect(page.getByRole('heading', { name: '创建你的帧取账户', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '创建帧取账户', exact: true })).toBeVisible();
   const queryLink = page.getByRole('link', { name: '返回登录', exact: true });
   await expect(queryLink).toHaveAttribute('href', '/user/login?redirect=%2Fdocuments');
   expect(
@@ -507,5 +507,5 @@ test('soft Link navigation and native query History writes update the same rende
     ),
   ).toBe('retained');
   await page.evaluate(() => window.history.back());
-  await expect(page.getByRole('heading', { name: '欢迎回来', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: '登录帧取', exact: true })).toBeVisible();
 });
