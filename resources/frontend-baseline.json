@@ -1,7 +1,7 @@
 {
   "version": 2,
   "repository": "https://github.com/StephenQiu30/video-server",
-  "commit": "c0b5b75324c19c2b56b18b0963a7971dea6e2b6c",
+  "commit": "3b3ef880c35f8a37db64e509506e374ed2b2437f",
   "schemaAuthority": "backend/sql/schema.sql",
   "apiContract": "FastAPI annotations -> /openapi.json -> frontend/openapi2ts.config.ts -> src/api",
   "visualAuthority": "design.md",
@@ -566,7 +566,7 @@
     {
       "source": "src/components/auth/auth-page-frame.tsx",
       "target": "src/renderer/frontend/components/auth/auth-page-frame.tsx",
-      "sha256": "cd9fe11995af1c887df04d7dfa3313b1fbc1d25c994ba07d24305e2b1de85a79"
+      "sha256": "63d732fce3b0206cfa3431403244f29c57d7456b85815710b778eda6a9b8363b"
     },
     {
       "source": "src/components/auth/auth-provider.tsx",
