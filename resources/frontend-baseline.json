@@ -1,7 +1,7 @@
 {
   "version": 2,
   "repository": "https://github.com/StephenQiu30/video-server",
-  "commit": "3b3ef880c35f8a37db64e509506e374ed2b2437f",
+  "commit": "7b7c736ae4fd0366ab326b678346716615870580",
   "schemaAuthority": "backend/sql/schema.sql",
   "apiContract": "FastAPI annotations -> /openapi.json -> frontend/openapi2ts.config.ts -> src/api",
   "visualAuthority": "design.md",
@@ -881,7 +881,7 @@
     {
       "source": "src/components/intake/workspace-home.tsx",
       "target": "src/renderer/frontend/components/intake/workspace-home.tsx",
-      "sha256": "37773d413f5b4ae61c0e8adb7a6e08b69a31343b9ed7b18c6a55db87cbdedf95"
+      "sha256": "e9fb571cdeb104fcf6a2fe083f13f5bb7d37cd9092e54f575308507f4e7e47b9"
     },
     {
       "source": "src/components/layout/back-link.tsx",
@@ -1047,11 +1047,6 @@
       "source": "src/components/providers/provider-status-view.tsx",
       "target": "src/renderer/frontend/components/providers/provider-status-view.tsx",
       "sha256": "4112375bc8e6616869bbcaf4832bb2f629d54ae0867772f5350f1ebd6cdc5e9d"
-    },
-    {
-      "source": "src/components/providers/supported-platforms.tsx",
-      "target": "src/renderer/frontend/components/providers/supported-platforms.tsx",
-      "sha256": "69aebd5df72676b90666eb3c12ddbcc367c9a371d18eee88eef0667674c6c755"
     },
     {
       "source": "src/components/providers/use-provider-statuses.ts",
@@ -1511,7 +1506,7 @@
     {
       "source": "../design.md",
       "target": "design.md",
-      "sha256": "4f9a8abb5ada276d1fe9cf4c4dd979a4b6c8af649d127a37724d74687a7f52ba"
+      "sha256": "a4c2999432e9e79fbd3dfe71ba025ad87f1a4d58fd8f4834871d22422a8ba71f"
     },
     {
       "source": "components.json",
