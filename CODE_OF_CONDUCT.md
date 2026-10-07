@@ -1,6 +1,6 @@
 # 社区行为准则
 
-FrameFetch 社区为所有参与者提供开放、友善、无骚扰的协作环境，不因年龄、身体特征、残障、族群、性别身份与表达、经验、教育、社会经济状况、国籍、外貌、宗教或性取向而区别对待。
+Framefetch 社区为所有参与者提供开放、友善、无骚扰的协作环境，不因年龄、身体特征、残障、族群、性别身份与表达、经验、教育、社会经济状况、国籍、外貌、宗教或性取向而区别对待。
 
 本准则适用于维护者、贡献者、Issue 与 Pull Request 参与者，以及公开代表本项目的人。
 
@@ -25,4 +25,4 @@ FrameFetch 社区为所有参与者提供开放、友善、无骚扰的协作环
 
 请通过仓库所有者 [@StephenQiu30](https://github.com/StephenQiu30) 资料页列出的私密联系方式报告行为问题，附发生位置、时间和必要记录。如果无法安全联系维护者，可使用 [GitHub Abuse Report](https://support.github.com/contact/report-abuse)。不要为行为事件创建含当事人私密细节的公开 Issue；安全漏洞按 [SECURITY.md](SECURITY.md) 报告。
 
-本准则参考 [Contributor Covenant 2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct/) 原则，并结合 FrameFetch 的内容、安全与隐私边界制定。
+本准则参考 [Contributor Covenant 2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct/) 原则，并结合 Framefetch 的内容、安全与隐私边界制定。

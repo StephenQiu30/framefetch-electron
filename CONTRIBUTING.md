@@ -1,6 +1,6 @@
 # 贡献指南
 
-感谢你改进 FrameFetch Desktop。开始前请阅读 [AGENTS.md](AGENTS.md)、[PROJECT.md](PROJECT.md) 与 [验收条件](docs/design/README.md)。本仓库只维护 Electron 客户端；Server、Web 与移动端问题分别属于各自仓库。
+感谢你改进 Framefetch Desktop。开始前请阅读 [AGENTS.md](AGENTS.md)、[PROJECT.md](PROJECT.md) 与 [验收条件](docs/design/README.md)。本仓库只维护 Electron 客户端；Server、Web 与移动端问题分别属于各自仓库。
 
 ## 本地检查
 
@@ -16,7 +16,7 @@ pnpm build
 pnpm test:e2e
 ```
 
-- 同步上游界面时，在包含相邻 `video-server` 的工作区执行 `pnpm frontend:sync` 与 `pnpm frontend:check-upstream`，并提交同步产物。
+- 同步上游界面时，在包含相邻 `framefetch-server` 的工作区执行 `pnpm frontend:sync` 与 `pnpm frontend:check-upstream`，并提交同步产物。
 - 涉及构建或原生行为时运行 `pnpm package:dir` 并验证安装态。
 - 联调使用已运行的 Server（默认 `http://127.0.0.1:8111/`），不为客户端任务启动数据库、执行 SQL 或覆盖环境文件。
 

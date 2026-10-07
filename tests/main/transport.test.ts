@@ -181,7 +181,7 @@ describe('issued storage upload capability', () => {
   it('permits only live API-issued exact PUT URLs and strips identity/target headers', async () => {
     const { handler, fetch } = client();
     const headers = {
-      'X-FrameFetch-Upload-Target': target,
+      'X-Framefetch-Upload-Target': target,
       'Content-Type': 'application/octet-stream',
       Authorization: 'must-not-reach-storage',
       Cookie: 'must-not-reach-storage',
@@ -225,7 +225,7 @@ describe('issued storage upload capability', () => {
         await handler(
           request('/storage-upload', {
             method: 'PUT',
-            headers: { ...headers, 'X-FrameFetch-Upload-Target': `${target}changed` },
+            headers: { ...headers, 'X-Framefetch-Upload-Target': `${target}changed` },
             body: 'bytes',
           }),
         )
@@ -254,7 +254,7 @@ describe('issued storage upload capability', () => {
         await handler(
           request('/storage-upload', {
             method: 'PUT',
-            headers: { 'X-FrameFetch-Upload-Target': target },
+            headers: { 'X-Framefetch-Upload-Target': target },
             body: 'bytes',
           }),
         )

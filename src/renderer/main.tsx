@@ -88,7 +88,7 @@ function ApplicationRoutes() {
               'absolute' in metadataTitle &&
               typeof metadataTitle.absolute === 'string'
             ? metadataTitle.absolute
-            : '帧取 · FrameFetch';
+            : '帧取 · Framefetch';
   }, [path, route, user]);
   const Page = route?.Page;
   return (

@@ -1,6 +1,6 @@
-# video-electron 工程规范
+# framefetch-electron 工程规范
 
-本文规定 `video-electron` 的技术栈、目录与接入规则。协作见 [AGENTS.md](AGENTS.md)，运行入口见 [README.md](README.md)，验收条件见 [docs/design](docs/design/README.md)。视觉标准是 `video-server/design.md`，根 [design.md](design.md) 是其同步快照。
+本文规定 `framefetch-electron` 的技术栈、目录与接入规则。协作见 [AGENTS.md](AGENTS.md)，运行入口见 [README.md](README.md)，验收条件见 [docs/design](docs/design/README.md)。视觉标准是 `framefetch-server/design.md`，根 [design.md](design.md) 是其同步快照。
 
 ## 1. 技术栈
 
@@ -21,7 +21,7 @@
 src/
 ├── main/                     Electron 入口、连接、启动与传输
 └── renderer/
-    ├── frontend/             同步自 video-server/frontend 的页面依赖闭包（只读）
+    ├── frontend/             同步自 framefetch-server/frontend 的页面依赖闭包（只读）
     ├── adapters/             next/link、next/navigation、next/image 与 Metadata 类型适配
     ├── public/               同步的 Logo、favicon
     ├── main.tsx              桌面 React 入口与路由组合
@@ -42,7 +42,7 @@ docs/design/                  验收条件
 
 | 命令 | 作用 |
 | --- | --- |
-| `pnpm frontend:sync` | 从相邻 `video-server/frontend` 同步页面、组件、生成 API、资源、根 `design.md` 与 `resources/shadcn.json`，并把来源路径与 SHA-256 写入 `resources/frontend-baseline.json` |
+| `pnpm frontend:sync` | 从相邻 `framefetch-server/frontend` 同步页面、组件、生成 API、资源、根 `design.md` 与 `resources/shadcn.json`，并把来源路径与 SHA-256 写入 `resources/frontend-baseline.json` |
 | `pnpm frontend:check` | 离线校验已提交快照与 manifest hash；不证明与最新上游一致 |
 | `pnpm frontend:check-upstream` | 按内容对照实际上游当前文件 |
 
