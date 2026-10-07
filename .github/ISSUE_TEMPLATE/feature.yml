@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        客户端内置页面复用 Frontend，业务接口与数据使用既有 Server。请先说明用户问题；服务端或 Web 改进提交到 video-server。
+        客户端内置页面复用 Frontend，业务接口与数据使用既有 Server。请先说明用户问题；服务端或 Web 改进提交到 framefetch-server。
   - type: textarea
     id: problem
     attributes:

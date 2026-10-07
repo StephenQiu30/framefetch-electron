@@ -77,7 +77,7 @@ describe('backend connection boundary', () => {
   });
 
   it('allows external HTTPS links without credentials', () => {
-    expect(isExternalLink('https://github.com/StephenQiu30/video-electron')).toBe(true);
+    expect(isExternalLink('https://github.com/StephenQiu30/framefetch-electron')).toBe(true);
     for (const target of [
       'http://example.com/',
       'https://user:password@example.com/',

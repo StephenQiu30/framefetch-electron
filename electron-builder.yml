@@ -1,5 +1,5 @@
 appId: com.stephenqiu.framefetch.desktop
-productName: FrameFetch
+productName: Framefetch
 asar: true
 npmRebuild: false
 directories:
@@ -11,7 +11,7 @@ files:
   - resources/icons/icon-512.png
   - resources/licenses/**
   - '!node_modules/**'
-artifactName: FrameFetch-${version}-${os}-${arch}.${ext}
+artifactName: Framefetch-${version}-${os}-${arch}.${ext}
 mac:
   icon: resources/icons/icon.icns
   target: [dmg]

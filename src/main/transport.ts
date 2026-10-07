@@ -157,7 +157,7 @@ export function createDesktopHandler(browser: Session, backend: string, director
       }
 
       if (url.pathname === '/storage-upload') {
-        const target = request.headers.get('X-FrameFetch-Upload-Target') ?? '';
+        const target = request.headers.get('X-Framefetch-Upload-Target') ?? '';
         if (request.method !== 'PUT' || (issuedUploads.get(target) ?? 0) <= Date.now())
           return new Response('Invalid upload target', { status: 400 });
         const headers = new Headers();

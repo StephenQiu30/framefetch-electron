@@ -1,17 +1,17 @@
-# video-electron 协作规范
+# framefetch-electron 协作规范
 
 本文件约束在本仓库工作的代码代理与贡献者。技术栈、目录与接入规则见 [PROJECT.md](PROJECT.md)，验收条件见 [docs/design](docs/design/README.md)，安全边界见 [SECURITY.md](SECURITY.md)，本地检查与提交格式见 [CONTRIBUTING.md](CONTRIBUTING.md)。规则冲突时以用户最新要求为准，其次是本文件。
 
 ## 定位
 
-`video-electron` 是帧取的桌面客户端：安装包内置由 `video-server/frontend` 同步而来的页面，连接用户已有的 Server。桌面端不实现业务后端、媒体引擎、数据库或调度，不另立产品或视觉标准。
+`framefetch-electron` 是帧取的桌面客户端：安装包内置由 `framefetch-server/frontend` 同步而来的页面，连接用户已有的 Server。桌面端不实现业务后端、媒体引擎、数据库或调度，不另立产品或视觉标准。
 
 ## 来源
 
-- 页面、组件、文案、品牌与展示语义来自 `video-server/frontend`；视觉标准是 `video-server/design.md`。
+- 页面、组件、文案、品牌与展示语义来自 `framefetch-server/frontend`；视觉标准是 `framefetch-server/design.md`。
 - `src/renderer/frontend/`、根 `design.md` 与 `resources/shadcn.json` 只由同步脚本写入，不手工修改；需要改动时先改上游，再同步。
 - 手工维护的只有 `src/main/`、`src/renderer/adapters/` 与桌面入口文件。
-- 数据库结构只由 `video-server/backend/sql/schema.sql` 维护；HTTP 契约只由 FastAPI OpenAPI 生成。桌面不复制 SQL、不写 DTO、不从页面反推接口。
+- 数据库结构只由 `framefetch-server/backend/sql/schema.sql` 维护；HTTP 契约只由 FastAPI OpenAPI 生成。桌面不复制 SQL、不写 DTO、不从页面反推接口。
 
 ## 不可违反的边界
 

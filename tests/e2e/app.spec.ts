@@ -9,8 +9,8 @@ import { _electron, type ElectronApplication, expect, type Page, test } from '@p
 const project = path.resolve(__dirname, '../..');
 const executable = process.env.FRAMEFETCH_E2E_EXECUTABLE;
 const uploadId = '11111111-1111-4111-8111-111111111111';
-const fileBytes = Buffer.from('FrameFetch transport download\n');
-const uploadBytes = 'FrameFetch transport upload bytes';
+const fileBytes = Buffer.from('Framefetch transport download\n');
+const uploadBytes = 'Framefetch transport upload bytes';
 let workspace: string;
 let profile: string;
 let backend: Server;
@@ -405,7 +405,7 @@ test('storage upload accepts only a live signed target issued by the API and omi
       const response = await fetch('/storage-upload', {
         method: 'PUT',
         headers: {
-          'X-FrameFetch-Upload-Target': target,
+          'X-Framefetch-Upload-Target': target,
           'Content-Type': 'application/octet-stream',
         },
         body: bytes,
@@ -423,7 +423,7 @@ test('storage upload accepts only a live signed target issued by the API and omi
       (
         await fetch('/storage-upload', {
           method: 'PUT',
-          headers: { 'X-FrameFetch-Upload-Target': target },
+          headers: { 'X-Framefetch-Upload-Target': target },
           body: 'must not leave the client',
         })
       ).status,

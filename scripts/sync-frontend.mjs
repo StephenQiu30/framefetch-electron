@@ -10,7 +10,7 @@ const checkUpstream = process.argv.includes('--check-upstream');
 const check = process.argv.includes('--check') || checkUpstream;
 const sourceArgument = process.argv.find((argument) => argument.startsWith('--source='));
 const sourceRoot = resolve(
-  sourceArgument?.slice('--source='.length) || join(root, '../video-server/frontend'),
+  sourceArgument?.slice('--source='.length) || join(root, '../framefetch-server/frontend'),
 );
 const digest = (contents) => createHash('sha256').update(contents).digest('hex');
 
@@ -150,7 +150,7 @@ if (check) {
   }).trim();
   const manifest = {
     version: 2,
-    repository: 'https://github.com/StephenQiu30/video-server',
+    repository: 'https://github.com/StephenQiu30/framefetch-server',
     commit,
     schemaAuthority: 'backend/sql/schema.sql',
     apiContract: 'FastAPI annotations -> /openapi.json -> frontend/openapi2ts.config.ts -> src/api',

@@ -1,6 +1,6 @@
 # 桌面端设计
 
-本目录维护桌面客户端的验收条件。架构与接入规则见 [PROJECT.md](../../PROJECT.md)，开发与打包入口见 [README.md](../../README.md)；视觉与页面以 `video-server/design.md` 和 `video-server/frontend` 为源。
+本目录维护桌面客户端的验收条件。架构与接入规则见 [PROJECT.md](../../PROJECT.md)，开发与打包入口见 [README.md](../../README.md)；视觉与页面以 `framefetch-server/design.md` 和 `framefetch-server/frontend` 为源。
 
 | 文档 | 内容 |
 | --- | --- |

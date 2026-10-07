@@ -14,10 +14,10 @@ jobs:
         include:
           - runner: macos-15
             target: --mac --arm64
-            executable: release/mac-arm64/FrameFetch.app/Contents/MacOS/FrameFetch
+            executable: release/mac-arm64/Framefetch.app/Contents/MacOS/Framefetch
           - runner: windows-2022
             target: --win --x64
-            executable: release/win-unpacked/FrameFetch.exe
+            executable: release/win-unpacked/Framefetch.exe
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v5

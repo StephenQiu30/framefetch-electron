@@ -1,22 +1,22 @@
 <p align="center">
-  <img src="assets/readme/hero.en.svg" width="100%" alt="FrameFetch Desktop — The independent desktop client for your FrameFetch workstation" />
+  <img src="assets/readme/hero.en.svg" width="100%" alt="Framefetch Desktop — The independent desktop client for your Framefetch workstation" />
 </p>
 
-# <img src="src/renderer/public/logo.png" width="36" alt="Official FrameFetch logo" /> FrameFetch Desktop
+# <img src="src/renderer/public/logo.png" width="36" alt="Official Framefetch logo" /> Framefetch Desktop
 
-**The independent desktop client for your FrameFetch workstation.** Work with video and documents, inspect analysis evidence, and save files and reports through system dialogs. Bundled React pages connect to your FrameFetch Server.
+**The independent desktop client for your Framefetch workstation.** Work with video and documents, inspect analysis evidence, and save files and reports through system dialogs. Bundled React pages connect to your Framefetch Server.
 
-[![Desktop CI](https://github.com/StephenQiu30/video-electron/actions/workflows/internal-build.yml/badge.svg)](https://github.com/StephenQiu30/video-electron/actions/workflows/internal-build.yml)
+[![Desktop CI](https://github.com/StephenQiu30/framefetch-electron/actions/workflows/internal-build.yml/badge.svg)](https://github.com/StephenQiu30/framefetch-electron/actions/workflows/internal-build.yml)
 [![MIT License](https://img.shields.io/badge/license-MIT-111111.svg)](LICENSE)
-[![Latest preview](https://img.shields.io/github/v/release/StephenQiu30/video-electron?include_prereleases&color=111111)](https://github.com/StephenQiu30/video-electron/releases)
+[![Latest preview](https://img.shields.io/github/v/release/StephenQiu30/framefetch-electron?include_prereleases&color=111111)](https://github.com/StephenQiu30/framefetch-electron/releases)
 
-[Getting started](#getting-started) · [Features](#features) · [Development](#development-and-builds) · [Scope](#scope) · [Server / Web](https://github.com/StephenQiu30/video-server) · [App](https://github.com/StephenQiu30/video-app) · [简体中文](README.md)
+[Getting started](#getting-started) · [Features](#features) · [Development](#development-and-builds) · [Scope](#scope) · [Server / Web](https://github.com/StephenQiu30/framefetch-server) · [App](https://github.com/StephenQiu30/framefetch-app) · [简体中文](README.md)
 
-![FrameFetch desktop report: demo shots, source times and report export](docs/images/desktop-analysis.png)
+![Framefetch desktop report: demo shots, source times and report export](docs/images/desktop-analysis.png)
 
-> Captured from the released FrameFetch Desktop 0.2.0 Electron Renderer. These historical screens and demo data are not acceptance evidence for the current built-in Skill scope.
+> Captured from the released Framefetch Desktop 0.2.0 Electron Renderer. These historical screens and demo data are not acceptance evidence for the current built-in Skill scope.
 
-## Why use FrameFetch Desktop?
+## Why use Framefetch Desktop?
 
 Use the Web business pages in a dedicated native window. The installer includes React pages and resources; API and job updates connect directly to your Server. Media processing, storage and AI execution run on the Server and host AI Worker.
 
@@ -28,29 +28,29 @@ Use the Web business pages in a dedicated native window. The installer includes 
 
 ### Download the public preview
 
-The current public release is **[v0.2.0-beta.1](https://github.com/StephenQiu30/video-electron/releases/tag/v0.2.0-beta.1)**. The package version and filenames remain `0.2.0`; the tag's `beta.1` identifies the public preview channel.
+The current public release is **[v0.2.0-beta.1](https://github.com/StephenQiu30/framefetch-electron/releases/tag/v0.2.0-beta.1)**. The package version and filenames remain `0.2.0`; the tag's `beta.1` identifies the public preview channel.
 
 | System                             | Download                                                                                                                                        |
 | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| macOS 14.0+, Apple Silicon (ARM64) | [FrameFetch-0.2.0-mac-arm64.dmg](https://github.com/StephenQiu30/video-electron/releases/download/v0.2.0-beta.1/FrameFetch-0.2.0-mac-arm64.dmg) |
-| Windows x64                        | [FrameFetch-0.2.0-win-x64.exe](https://github.com/StephenQiu30/video-electron/releases/download/v0.2.0-beta.1/FrameFetch-0.2.0-win-x64.exe)     |
-| SHA-256 checksum manifest          | [SHA256SUMS.txt](https://github.com/StephenQiu30/video-electron/releases/download/v0.2.0-beta.1/SHA256SUMS.txt)                                 |
+| macOS 14.0+, Apple Silicon (ARM64) | [Framefetch-0.2.0-mac-arm64.dmg](https://github.com/StephenQiu30/framefetch-electron/releases/download/v0.2.0-beta.1/Framefetch-0.2.0-mac-arm64.dmg) |
+| Windows x64                        | [Framefetch-0.2.0-win-x64.exe](https://github.com/StephenQiu30/framefetch-electron/releases/download/v0.2.0-beta.1/Framefetch-0.2.0-win-x64.exe)     |
+| SHA-256 checksum manifest          | [SHA256SUMS.txt](https://github.com/StephenQiu30/framefetch-electron/releases/download/v0.2.0-beta.1/SHA256SUMS.txt)                                 |
 
 Installers are unsigned and the macOS build is not notarized, so system security prompts may appear. No Intel macOS or Linux installer is currently provided. Calculate the downloaded file's SHA-256 and compare it with the manifest:
 
 ```sh
 # macOS
-shasum -a 256 FrameFetch-0.2.0-mac-arm64.dmg
+shasum -a 256 Framefetch-0.2.0-mac-arm64.dmg
 ```
 
 ```powershell
 # Windows PowerShell
-Get-FileHash .\FrameFetch-0.2.0-win-x64.exe -Algorithm SHA256
+Get-FileHash .\Framefetch-0.2.0-win-x64.exe -Algorithm SHA256
 ```
 
 ### Connect to your workstation
 
-1. Prepare a reachable [FrameFetch Server](https://github.com/StephenQiu30/video-server/blob/main/README.en.md#quick-start), with authentication, storage and the required business capabilities configured.
+1. Prepare a reachable [Framefetch Server](https://github.com/StephenQiu30/framefetch-server/blob/main/README.en.md#quick-start), with authentication, storage and the required business capabilities configured.
 2. Download and install the package for your system, or build it as described below.
 3. Supply the Server root address and sign in with that Server's account. The default is `http://127.0.0.1:8111/`; remote deployments use HTTPS.
 4. Start with link inspection, local video or a screenplay document, or continue from existing records.
@@ -58,7 +58,7 @@ Get-FileHash .\FrameFetch-0.2.0-win-x64.exe -Algorithm SHA256
 Example for an installed macOS client:
 
 ```sh
-"/Applications/FrameFetch.app/Contents/MacOS/FrameFetch" \
+"/Applications/Framefetch.app/Contents/MacOS/Framefetch" \
   --backend-url=https://framefetch.example.com/
 ```
 
@@ -86,7 +86,7 @@ Use a root address without credentials, path, query or fragment. Remote addresse
 
 ### Methods and deliverables
 
-The active catalog has **6 built-in Skills**: video review, material breakdown, story coverage, article organization, WeChat document organization and Xiaohongshu document organization. The connected Server supplies compatible inputs and default prompts. Original page layouts and calls remain; improvements focus on methods, actual observations and output quality. Implementation and real acceptance are tracked in the [single execution plan](https://github.com/StephenQiu30/video-server/blob/main/workspace/content/plan/PLAN-内置Skill能力整合.md) (Chinese).
+The active catalog has **6 built-in Skills**: video review, material breakdown, story coverage, article organization, WeChat document organization and Xiaohongshu document organization. The connected Server supplies compatible inputs and default prompts. Original page layouts and calls remain; improvements focus on methods, actual observations and output quality. Implementation and real acceptance are tracked in the [single execution plan](https://github.com/StephenQiu30/framefetch-server/blob/main/workspace/content/plan/PLAN-内置Skill能力整合.md) (Chinese).
 
 Video review and breakdown use observed frames and targeted checks; sampling does not prove complete frame-by-frame or audio review. Story coverage examines character action, causality across source units and textual evidence. Document organization keeps complete source text and checks correspondence and coverage. Existing Server model routes execute analysis, organization and review; conclusions still need checking against the source.
 
@@ -96,7 +96,7 @@ Calls pin the actual sources, methods and hashes, then reuse original analysis A
 
 ![Download history with search, filters, selection and demo jobs](docs/images/desktop-history.png)
 
-![FrameFetch desktop workspace: link, local-video and document inputs](docs/images/desktop-workspace.png)
+![Framefetch desktop workspace: link, local-video and document inputs](docs/images/desktop-workspace.png)
 
 ![Screenplay document with metadata, normalized text and table of contents](docs/images/desktop-screenplay.png)
 
@@ -111,15 +111,15 @@ These historical images come from a released build rendered in a separate Electr
 5. **Process**: select a compatible Skill, output language and requirements in the original video/screenplay detail form. Edit or reset the default prompt. Query or cancel pending jobs; check the existing job before retrying an unknown receipt.
 6. **Deliver**: read results with source quotations, timestamps and limits, then use the system save dialog for MD/DOCX. Repeated exports reuse the stored report.
 
-The Server's Workers and host AI Worker execute lengthy tasks. Desktop receives state updates; clients connected to the same service and account can continue viewing records. Text uses actual scenes, chapters or unheaded source units; video references actual observation times. Source correspondence and coverage help verification without proving that analytical conclusions or full audio understanding are correct. See [Server AI analysis](https://github.com/StephenQiu30/video-server/blob/main/workspace/content/design/09-AI分析.md) (Chinese).
+The Server's Workers and host AI Worker execute lengthy tasks. Desktop receives state updates; clients connected to the same service and account can continue viewing records. Text uses actual scenes, chapters or unheaded source units; video references actual observation times. Source correspondence and coverage help verification without proving that analytical conclusions or full audio understanding are correct. See [Server AI analysis](https://github.com/StephenQiu30/framefetch-server/blob/main/workspace/content/design/09-AI分析.md) (Chinese).
 
 ## Three projects, one product
 
 | Project                                                                 | Responsibility                                                                                                                                                  |
 | ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [FrameFetch Server / Web](https://github.com/StephenQiu30/video-server) | FastAPI APIs, Next.js Web pages, accounts/permissions, inspection/download/import/analysis, queues and Workers, database, object storage and reports            |
-| **FrameFetch Desktop, this repository**                                 | An independent Electron installer with shared React pages, connecting to the existing Server and providing windows, sessions and controlled native capabilities |
-| [FrameFetch App](https://github.com/StephenQiu30/video-app)             | Flutter iOS/Android client using the same Server contracts for native file import, playback, analysis, reports and administration                               |
+| [Framefetch Server / Web](https://github.com/StephenQiu30/framefetch-server) | FastAPI APIs, Next.js Web pages, accounts/permissions, inspection/download/import/analysis, queues and Workers, database, object storage and reports            |
+| **Framefetch Desktop, this repository**                                 | An independent Electron installer with shared React pages, connecting to the existing Server and providing windows, sessions and controlled native capabilities |
+| [Framefetch App](https://github.com/StephenQiu30/framefetch-app)             | Flutter iOS/Android client using the same Server contracts for native file import, playback, analysis, reports and administration                               |
 
 Electron uses the configured Server origin in a separate Chromium session and returns HTML, JavaScript, fonts and images from the installed bundle. `/api` and `/health` requests connect to the existing Server; WebSocket uses the same-origin session protocol. Pages ship with the client and need neither remote Frontend pages nor a local Frontend process.
 
@@ -145,7 +145,7 @@ Originals, normalized text, jobs and reports reside in configured Server storage
 
 ## Scope
 
-- Process authorized HTTP(S), non-DRM material. Providers, identity and network conditions affect availability. See the [Server provider scope and validation boundaries](https://github.com/StephenQiu30/video-server/blob/main/workspace/content/design/14-解析引擎.md#13-验证状态) (Chinese) for exact status and complete-file evidence.
+- Process authorized HTTP(S), non-DRM material. Providers, identity and network conditions affect availability. See the [Server provider scope and validation boundaries](https://github.com/StephenQiu30/framefetch-server/blob/main/workspace/content/design/14-解析引擎.md#13-验证状态) (Chinese) for exact status and complete-file evidence.
 - The operator supplies the service, storage, network and models. External models may incur charges and receive the text or frames needed for analysis.
 - Current capabilities cover acquisition, management, built-in analysis/document organization and reports. Content writing, editing video, project/master-draft management, version confirmation, cards, ASR/OCR, DRM decryption, live recording, unbounded playlists, collaborative editing and automatic platform publishing are outside this scope.
 
@@ -187,7 +187,7 @@ Artifacts go to `release/`; the current macOS build configuration sets macOS 14.
 
 ### Page and API synchronization
 
-`video-server/frontend` owns business pages, copy, branding and themes. [design.md](design.md) is an exact snapshot of the Server's visual specification. Synchronization scripts manage upstream files; only platform adapters are maintained manually.
+`framefetch-server/frontend` owns business pages, copy, branding and themes. [design.md](design.md) is an exact snapshot of the Server's visual specification. Synchronization scripts manage upstream files; only platform adapters are maintained manually.
 
 Update and check in a workspace with adjacent Server source:
 
@@ -221,7 +221,7 @@ pnpm package:dir
 
 These checks cover source consistency, formatting/types, unit tests, production builds, Electron transport and package generation separately. Real Server user workflows and target-system installation behavior require separate validation against the [acceptance scope](docs/design/01-验收边界.md) (Chinese).
 
-The `v0.2.0-beta.1` installers come from the [successful CI](https://github.com/StephenQiu30/video-electron/actions/runs/37096373778) at commit `c8a85c94548a20619bf8b34a71a6916992654a17`. Unit tests and development/package transport E2E passed on macOS ARM64 and Windows x64. The E2E use controlled fixtures and prove their covered transport behavior, not complete real-Server business acceptance. Clean installation, upgrades, uninstallation and full real-Server workflows require separate validation.
+The `v0.2.0-beta.1` installers come from the [successful CI](https://github.com/StephenQiu30/framefetch-electron/actions/runs/37096373778) at commit `c8a85c94548a20619bf8b34a71a6916992654a17`. Unit tests and development/package transport E2E passed on macOS ARM64 and Windows x64. The E2E use controlled fixtures and prove their covered transport behavior, not complete real-Server business acceptance. Clean installation, upgrades, uninstallation and full real-Server workflows require separate validation.
 
 ## Documentation and contributing
 
@@ -229,10 +229,10 @@ The `v0.2.0-beta.1` installers come from the [successful CI](https://github.com/
 - [Design documentation](docs/design/README.md): current architecture and acceptance criteria.
 - [Source reuse](resources/FRONTEND_BASELINE.md): page dependency closure, source hashes and synchronization.
 - [Resources](resources/README.md): icons, fonts, dependency licenses, builds and signing.
-- [Contributing guide](CONTRIBUTING.md) · [Issues](https://github.com/StephenQiu30/video-electron/issues) · [Security policy](SECURITY.md).
+- [Contributing guide](CONTRIBUTING.md) · [Issues](https://github.com/StephenQiu30/framefetch-electron/issues) · [Security policy](SECURITY.md).
 
 Design and engineering documents are currently in Chinese. Business operations follow Server identity, ownership permissions and provider capabilities; process only authorized material. Older local media, databases, reports and credential files remain untouched and are not automatically uploaded, imported into Server or deleted.
 
 Source is available under the [MIT License](LICENSE). Dependencies, fonts and brand assets retain their applicable licenses.
 
-If FrameFetch helps your creative work, research or self-hosting setup, **Star** this repository, watch [Releases](https://github.com/StephenQiu30/video-electron/releases), or start with an [Issue](https://github.com/StephenQiu30/video-electron/issues) labeled `good first issue` or `help wanted`.
+If Framefetch helps your creative work, research or self-hosting setup, **Star** this repository, watch [Releases](https://github.com/StephenQiu30/framefetch-electron/releases), or start with an [Issue](https://github.com/StephenQiu30/framefetch-electron/issues) labeled `good first issue` or `help wanted`.

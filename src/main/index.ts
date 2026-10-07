@@ -101,7 +101,7 @@ async function bootstrap(): Promise<void> {
       minWidth: 390,
       minHeight: 560,
       show: false,
-      title: '帧取 · FrameFetch',
+      title: '帧取 · Framefetch',
       backgroundColor: '#ffffff',
       icon: app.isPackaged ? undefined : icon,
       webPreferences: {
