@@ -199,11 +199,7 @@ pnpm frontend:check-upstream
 
 `frontend:check` validates the committed snapshot and manifest hashes offline for independent checkouts and CI. `frontend:check-upstream` compares actual contents in the selected upstream checkout. Installation and runtime need no adjacent source. See [source reuse](resources/FRONTEND_BASELINE.md) (Chinese) for other checkout layouts.
 
-For API changes, generate OpenAPI requests/types in Server Frontend before syncing them to desktop. To compare with another current contract:
-
-```sh
-OPENAPI_SCHEMA_URL=http://127.0.0.1:8111/openapi.json pnpm openapi:check
-```
+For API changes, run `pnpm openapi:check` in `framefetch-server/frontend`, then run `pnpm frontend:sync` and `pnpm frontend:check-upstream` here. Set `OPENAPI_SCHEMA_URL` only upstream; desktop synchronizes the generated output.
 
 The contract chain is FastAPI annotations/Pydantic → `/openapi.json` → Swagger `/docs` → `@umijs/openapi`. Server's `backend/sql/schema.sql` is the sole database source. Do not edit generated APIs manually or maintain desktop copies of SQL, DTOs or Swagger documents.
 

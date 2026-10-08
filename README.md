@@ -199,11 +199,7 @@ pnpm frontend:check-upstream
 
 `frontend:check` 离线检查已提交快照与 manifest hash，可用于独立 checkout 和 CI；`frontend:check-upstream` 对照选定上游 checkout 的实际内容。安装和运行不需要相邻源码，其他 checkout 的同步方式见 [源码复用说明](resources/FRONTEND_BASELINE.md)。
 
-接口变更先在 Server Frontend 执行 OpenAPI 生成，再同步到桌面。需要对照其他当前契约时：
-
-```sh
-OPENAPI_SCHEMA_URL=http://127.0.0.1:8111/openapi.json pnpm openapi:check
-```
+接口变更先在 `framefetch-server/frontend` 执行 `pnpm openapi:check`，再在本仓库执行 `pnpm frontend:sync` 与 `pnpm frontend:check-upstream`。`OPENAPI_SCHEMA_URL` 只在上游指定，桌面直接同步其生成结果。
 
 契约链路为 FastAPI 注解/Pydantic → `/openapi.json` → Swagger `/docs` → `@umijs/openapi`。数据库结构唯一来源是 Server 的 `backend/sql/schema.sql`；不手工修改生成 API，不复制维护桌面 SQL、DTO 或 Swagger 文档。
 
