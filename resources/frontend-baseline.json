@@ -1,7 +1,7 @@
 {
   "version": 2,
   "repository": "https://github.com/StephenQiu30/framefetch-server",
-  "commit": "0a8b8896cfb1f844577e586f2ff25553d72a1458",
+  "commit": "906c9e04af058d150f3b5297f08db2e257d98f4d",
   "schemaAuthority": "backend/sql/schema.sql",
   "apiContract": "FastAPI annotations -> /openapi.json -> frontend/openapi2ts.config.ts -> src/api",
   "visualAuthority": "design.md",
@@ -913,7 +913,7 @@
     {
       "source": "src/components/layout/content-motion.tsx",
       "target": "src/renderer/frontend/components/layout/content-motion.tsx",
-      "sha256": "78af3004516e39beee0b377f8458a5b76cf7304ba2fb07a409d7b84abea45801"
+      "sha256": "6f7767e7d799e6559c87f547602961d3cdc6e7786dbf09d0e219affcd5996cfe"
     },
     {
       "source": "src/components/layout/data-table.tsx",
@@ -1093,7 +1093,7 @@
     {
       "source": "src/components/screenplay/screenplay-analysis-result-view.tsx",
       "target": "src/renderer/frontend/components/screenplay/screenplay-analysis-result-view.tsx",
-      "sha256": "61f2f4faf12930669e90e85765e832d22fb0f4ff8b5372ee04873756be6c3a17"
+      "sha256": "26e33da0ac92bbd03f4757b5a4e39c6ecb8526070c4555f502bff6e45e7e4884"
     },
     {
       "source": "src/components/screenplay/screenplay-completed-analysis.tsx",
