@@ -1,7 +1,7 @@
 {
   "version": 2,
   "repository": "https://github.com/StephenQiu30/framefetch-server",
-  "commit": "8e07a9e01e4bed3cad0aabe9b4b2a1f551f5f208",
+  "commit": "d755af15860750403c114afe8609665e8813035e",
   "schemaAuthority": "backend/sql/schema.sql",
   "apiContract": "FastAPI annotations -> /openapi.json -> frontend/openapi2ts.config.ts -> src/api",
   "visualAuthority": "design.md",
@@ -1126,7 +1126,7 @@
     {
       "source": "src/components/screenplay/screenplay-document-preview.tsx",
       "target": "src/renderer/frontend/components/screenplay/screenplay-document-preview.tsx",
-      "sha256": "07622a0df507dea6869c1fcc38733a5f813d2d68f4da60f4a5f0a2e6437f6620"
+      "sha256": "2f82b71f20f7bc8996284072bc5e20b3fae23f60e5321fb169f663d70f778815"
     },
     {
       "source": "src/components/screenplay/screenplay-document-route.tsx",
