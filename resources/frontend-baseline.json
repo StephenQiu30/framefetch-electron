@@ -1,7 +1,7 @@
 {
   "version": 2,
   "repository": "https://github.com/StephenQiu30/framefetch-server",
-  "commit": "906c9e04af058d150f3b5297f08db2e257d98f4d",
+  "commit": "7be76ca2bf86521078d835f905388dd6d94119d7",
   "schemaAuthority": "backend/sql/schema.sql",
   "apiContract": "FastAPI annotations -> /openapi.json -> frontend/openapi2ts.config.ts -> src/api",
   "visualAuthority": "design.md",
@@ -15,7 +15,6 @@
     "@editorjs/list",
     "@editorjs/quote",
     "@editorjs/table",
-    "@gsap/react",
     "@noble/hashes",
     "@phosphor-icons/react",
     "@tanstack/react-query",
@@ -26,7 +25,6 @@
     "cmdk",
     "cn",
     "date-fns",
-    "gsap",
     "htmlparser2",
     "marked",
     "next-themes",
@@ -48,7 +46,7 @@
     {
       "source": "src/api/analyses.ts",
       "target": "src/renderer/frontend/api/analyses.ts",
-      "sha256": "f76aa3a9c10d336538b69f6a003e87204dc18b73ae5869e62ca7ce530694778c"
+      "sha256": "3163ac8642e0c5edef895de33fa197c58fcd4816179c13f9b1a86242595447c5"
     },
     {
       "source": "src/api/appAuth.ts",
@@ -108,7 +106,7 @@
     {
       "source": "src/api/typings.d.ts",
       "target": "src/renderer/frontend/api/typings.d.ts",
-      "sha256": "465fbac23ec91bc5a24b0a6f1037611fa627c1fd13cb072c3a9d60c6f9670b31"
+      "sha256": "40b75137a08b80b5fc6156fb8804e81fe43fbfbf2c170069f8b147eff0e8a0b5"
     },
     {
       "source": "src/api/users.ts",
@@ -303,7 +301,7 @@
     {
       "source": "src/components/admin/admin-analytics/analysis-trend-chart.tsx",
       "target": "src/renderer/frontend/components/admin/admin-analytics/analysis-trend-chart.tsx",
-      "sha256": "10121592f7ac65c5e9ce063db127a502ad046535dc10c0515e5f5ceaa237b868"
+      "sha256": "4c7377458df050ae24839e57e7319e778242b11b3077d499cfb959fca57f79d4"
     },
     {
       "source": "src/components/admin/admin-analytics/analytics-format.ts",
@@ -323,7 +321,7 @@
     {
       "source": "src/components/admin/admin-analytics/completion-rate-chart.tsx",
       "target": "src/renderer/frontend/components/admin/admin-analytics/completion-rate-chart.tsx",
-      "sha256": "471fd66ad2b6bacedefdce69341c81e3ff46d86f3c1041e297c08a5cfcd1d082"
+      "sha256": "502fa9eb573a2f33b514cebda889e9d91ed9f993e5c8f69751fb4b44d20af2cb"
     },
     {
       "source": "src/components/admin/admin-analytics/daily-trend-chart.tsx",
@@ -333,12 +331,12 @@
     {
       "source": "src/components/admin/admin-analytics/daily-trend-data-table.tsx",
       "target": "src/renderer/frontend/components/admin/admin-analytics/daily-trend-data-table.tsx",
-      "sha256": "0fdfd95daa12424a77ba27924005ce417cdfe6588dfda5315ae4953b6c53c096"
+      "sha256": "f6efc3db7f4afd99229ed52472dd7a9095dc13b81122373222e52349a6a540a9"
     },
     {
       "source": "src/components/admin/admin-analytics/daily-trend-plot.tsx",
       "target": "src/renderer/frontend/components/admin/admin-analytics/daily-trend-plot.tsx",
-      "sha256": "bac5c16b13bcbbe7d0ee00134f94ffa7c99ed5d34575b22608a7f865c5d7b282"
+      "sha256": "2738ab9ca4a69c9dd0d0f54b8cfe24e9f10592481fdf3ee1ab614350e65c89c9"
     },
     {
       "source": "src/components/admin/admin-analytics/deferred-chart.tsx",
@@ -348,7 +346,7 @@
     {
       "source": "src/components/admin/admin-analytics/source-breakdown.tsx",
       "target": "src/renderer/frontend/components/admin/admin-analytics/source-breakdown.tsx",
-      "sha256": "df98cd50ccbee906391dc60e279f902605f0c819877a976732b1cb5b5e31d2e0"
+      "sha256": "51a086853f6461a74578bf048c9141cb777294bc8a084c5a16970835bb5c5585"
     },
     {
       "source": "src/components/admin/admin-analytics/source-performance-details.tsx",
@@ -503,7 +501,7 @@
     {
       "source": "src/components/analysis/analysis-detail-route.tsx",
       "target": "src/renderer/frontend/components/analysis/analysis-detail-route.tsx",
-      "sha256": "73fe4caaa18ce45eb40f5f5af8e7a1e83a9ecc09a8827a400b31abeff9186f57"
+      "sha256": "9bc5d2e0964d3754d931e5da24fd09ee04b3876c5d0049e058d41e5a6c5a6b24"
     },
     {
       "source": "src/components/analysis/analysis-editorial-review.tsx",
@@ -516,6 +514,11 @@
       "sha256": "ad004e078fca3cad0f644598f63f9f2599e6215869b4836b7f6230449d3c3972"
     },
     {
+      "source": "src/components/analysis/analysis-native-report.tsx",
+      "target": "src/renderer/frontend/components/analysis/analysis-native-report.tsx",
+      "sha256": "4e4b776e59b1d7feccf8bcefedac2be7f6c94853543306bdf402261a0cfe70d2"
+    },
+    {
       "source": "src/components/analysis/analysis-panel-model.ts",
       "target": "src/renderer/frontend/components/analysis/analysis-panel-model.ts",
       "sha256": "7d026b0ef11f16923fd104aef7ce8852d50d4ee86c70b57d1ca921597c3f486a"
@@ -523,12 +526,12 @@
     {
       "source": "src/components/analysis/analysis-panel.tsx",
       "target": "src/renderer/frontend/components/analysis/analysis-panel.tsx",
-      "sha256": "9f2f0ba50e41d36a81492b33752af3f92e884e57bda44c0914dab02d1bae83f3"
+      "sha256": "e29a5dfe251a1fade4ecd61567cbf2fc4bb9fcc1564fbf33fa26684bc1c8a3db"
     },
     {
       "source": "src/components/analysis/analysis-report-download-link.tsx",
       "target": "src/renderer/frontend/components/analysis/analysis-report-download-link.tsx",
-      "sha256": "31b798a2e06781cb3472f89278221b6cd73e5cc104156ef050104d1e409f9be2"
+      "sha256": "b1e5b8c8c704fd54da1f37c6ae8a160159739f4248e8a1e7292bccb055890bfb"
     },
     {
       "source": "src/components/analysis/analysis-report-preview.tsx",
@@ -678,7 +681,7 @@
     {
       "source": "src/components/downloads/recent-downloads.tsx",
       "target": "src/renderer/frontend/components/downloads/recent-downloads.tsx",
-      "sha256": "a417910e629978d13f4d164d1b8c51b0a4b9767356c4f094e9915cd4453db57d"
+      "sha256": "ae4cfba54211e802094ab7f9b07c653f19a46715f7f684a28970c47768e2502e"
     },
     {
       "source": "src/components/downloads/use-download-actions.ts",
@@ -898,7 +901,7 @@
     {
       "source": "src/components/layout/basic-layout.tsx",
       "target": "src/renderer/frontend/components/layout/basic-layout.tsx",
-      "sha256": "dac9369d1da247822ceb1766baee2e35e909cc948750f44d5aac6190e032d559"
+      "sha256": "1d0962d7f4c4212c306227c1720ca100aeb721b85a5f9b295d0e8953583daa00"
     },
     {
       "source": "src/components/layout/bulk-delete-selection.tsx",
@@ -911,14 +914,9 @@
       "sha256": "91e0fdff029b49ff356f7ddf913ab1fd0fd49a13fc7aa8da519b1588506dc2f0"
     },
     {
-      "source": "src/components/layout/content-motion.tsx",
-      "target": "src/renderer/frontend/components/layout/content-motion.tsx",
-      "sha256": "6f7767e7d799e6559c87f547602961d3cdc6e7786dbf09d0e219affcd5996cfe"
-    },
-    {
       "source": "src/components/layout/data-table.tsx",
       "target": "src/renderer/frontend/components/layout/data-table.tsx",
-      "sha256": "37a84cfa232b3f5c41875f69363cca4ecce3d360138dfaf4622626fa3d582e95"
+      "sha256": "83aeda480deb643499dbcd19f33df8ddff9b48e912b0d29287b9c58cd7959cea"
     },
     {
       "source": "src/components/layout/deferred-content.tsx",
@@ -1023,7 +1021,7 @@
     {
       "source": "src/components/layout/split-layout.tsx",
       "target": "src/renderer/frontend/components/layout/split-layout.tsx",
-      "sha256": "46b46f9b5c0657583d8b245d49c697e850fdb4d7027f4a954433881b93e0ecb5"
+      "sha256": "9125c0aee77aacbb59f7ffacce4db6e04b91763c8d02ddc0322f5efbcfd0348c"
     },
     {
       "source": "src/components/layout/table-date-time.tsx",
