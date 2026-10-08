@@ -1,7 +1,7 @@
 {
   "version": 2,
   "repository": "https://github.com/StephenQiu30/framefetch-server",
-  "commit": "6889d5d06f3fd86a0d405b228dfee0889c51fc17",
+  "commit": "9bda26524f5265c4804f8d27ec475d9bb12a4e42",
   "schemaAuthority": "backend/sql/schema.sql",
   "apiContract": "FastAPI annotations -> /openapi.json -> frontend/openapi2ts.config.ts -> src/api",
   "visualAuthority": "design.md",
@@ -211,7 +211,7 @@
     {
       "source": "src/app/self-hosting/page.tsx",
       "target": "src/renderer/frontend/app/self-hosting/page.tsx",
-      "sha256": "a215fad1382c9331857a4d56b46ee087252f7f34d2b3aa25a5e9894631d0c549"
+      "sha256": "2518fb95022eb807b6cf8cf13111f38b15997cbcbafb00f68512441a25d613c4"
     },
     {
       "source": "src/app/user/login/page.tsx",
@@ -256,7 +256,7 @@
     {
       "source": "src/components/admin/admin-ai-providers/ai-provider-list.tsx",
       "target": "src/renderer/frontend/components/admin/admin-ai-providers/ai-provider-list.tsx",
-      "sha256": "7ede0eb953b1e6a810e14ebd3e739693cabdf52756078c154088460ef5d383d1"
+      "sha256": "2d485e5b283408a037ea7ad5d8c8a97aeda1ceaec4e619615fab620f954b9f7a"
     },
     {
       "source": "src/components/admin/admin-ai-providers/ai-provider-screen.tsx",
@@ -301,7 +301,7 @@
     {
       "source": "src/components/admin/admin-analytics/analysis-trend-chart.tsx",
       "target": "src/renderer/frontend/components/admin/admin-analytics/analysis-trend-chart.tsx",
-      "sha256": "466ca04148cba70ce02e2a9e46e2399d60f1c6d51063c2dfc0a0b7cff25e84a0"
+      "sha256": "10121592f7ac65c5e9ce063db127a502ad046535dc10c0515e5f5ceaa237b868"
     },
     {
       "source": "src/components/admin/admin-analytics/analytics-format.ts",
@@ -346,7 +346,7 @@
     {
       "source": "src/components/admin/admin-analytics/source-performance-details.tsx",
       "target": "src/renderer/frontend/components/admin/admin-analytics/source-performance-details.tsx",
-      "sha256": "e734ca1308cc37f4eebe05c0d7913b20876c6fa347c096c79f3db2d53f5e4caa"
+      "sha256": "e95cbfb991f1fcc38d9a8beea82fd143a2fa91e09970eb851e9f254a66fbe5e3"
     },
     {
       "source": "src/components/admin/admin-analytics/source-performance.tsx",
@@ -396,7 +396,7 @@
     {
       "source": "src/components/admin/admin-provider-catalog/provider-catalog-list.tsx",
       "target": "src/renderer/frontend/components/admin/admin-provider-catalog/provider-catalog-list.tsx",
-      "sha256": "280bbdc559f10859afde59f80c14c46c0ef000cd2be6a9d26fde44dcfe7fea5e"
+      "sha256": "5ea1fd8f7793d1a7ccbe147d64520dd9e58e1334fa102636a2087d40b81ba5ea"
     },
     {
       "source": "src/components/admin/admin-provider-catalog/provider-catalog-screen.tsx",
@@ -431,7 +431,7 @@
     {
       "source": "src/components/admin/admin-storage/storage-file-list.tsx",
       "target": "src/renderer/frontend/components/admin/admin-storage/storage-file-list.tsx",
-      "sha256": "1754c39b4b31964792dc8c92e12e8f972232f3133d70443f2cf6c9a942d86d3a"
+      "sha256": "d765cd72e8cf037282a469e3b50ee0288c788c1033a7dd7ef952eea382da16f4"
     },
     {
       "source": "src/components/admin/admin-users-view.tsx",
@@ -466,7 +466,7 @@
     {
       "source": "src/components/admin/admin-users/user-list.tsx",
       "target": "src/renderer/frontend/components/admin/admin-users/user-list.tsx",
-      "sha256": "f1c095fc6d61fe9c7add670b03ec444796125988a3c4b2283a5814943ed19d69"
+      "sha256": "bf921c5fe2d22bdb707b9087bcd795e771070f86fdbfc7ca2e67d957ea5ec2c2"
     },
     {
       "source": "src/components/admin/admin-users/user-states.tsx",
@@ -476,7 +476,7 @@
     {
       "source": "src/components/admin/operation-logs-view.tsx",
       "target": "src/renderer/frontend/components/admin/operation-logs-view.tsx",
-      "sha256": "718e378a1d44afe73a29c85c495420d356699881282d79525c70cf6528a83843"
+      "sha256": "d06498891b57d617e5669ce7439abe15c7e7cb3cf9519bf2d25e8b724d269647"
     },
     {
       "source": "src/components/analysis/analysis-article-result-view.tsx",
@@ -496,7 +496,7 @@
     {
       "source": "src/components/analysis/analysis-detail-route.tsx",
       "target": "src/renderer/frontend/components/analysis/analysis-detail-route.tsx",
-      "sha256": "d8119aee4998c6b63889c87291cf842d0d81e5da9b99f9ad140de9d304063827"
+      "sha256": "73fe4caaa18ce45eb40f5f5af8e7a1e83a9ecc09a8827a400b31abeff9186f57"
     },
     {
       "source": "src/components/analysis/analysis-editorial-review.tsx",
@@ -631,7 +631,7 @@
     {
       "source": "src/components/downloads/download-history-list.tsx",
       "target": "src/renderer/frontend/components/downloads/download-history-list.tsx",
-      "sha256": "4cd84ef03b24272bfdc8c8583b60f56766a2ed5ce5c5171d09b42247fc0fa398"
+      "sha256": "da42eb0cefd164dcef91b5891af8496edc329341da3059389feb30191b909ee0"
     },
     {
       "source": "src/components/downloads/download-history-view.tsx",
@@ -696,7 +696,7 @@
     {
       "source": "src/components/editor/document.ts",
       "target": "src/renderer/frontend/components/editor/document.ts",
-      "sha256": "652a83a1e8a69ee022df150cbf7fbe6d39fc53aff62be481cfd4c5c5c58a4a7f"
+      "sha256": "de7d6014ad09d6ac548e879f8bf86afc1abcb69dcdc7e377cd07f7302177f5ae"
     },
     {
       "source": "src/components/editor/editor.css",
@@ -711,7 +711,7 @@
     {
       "source": "src/components/editor/engine.ts",
       "target": "src/renderer/frontend/components/editor/engine.ts",
-      "sha256": "d90372e4974b870714bb835d5c2aa5e4befc0807e3e49e32479ede912f5bf4cb"
+      "sha256": "45d6a68e7d2ae4b3b8fb3c27c1f85ae86eac8c9e1c0662c1eb1f33e8a76d09e8"
     },
     {
       "source": "src/components/editor/index.ts",
@@ -801,7 +801,7 @@
     {
       "source": "src/components/intake/intent-history.tsx",
       "target": "src/renderer/frontend/components/intake/intent-history.tsx",
-      "sha256": "e19103bffd33948fa042d06d1b6099ac11771a7f067a65296bdc52897c88ecc1"
+      "sha256": "aa9a9cf470b89af474925ba8b46af49f7948f5d51a6a4c8cdb27fa175b93df68"
     },
     {
       "source": "src/components/intake/intent-polling.ts",
@@ -906,7 +906,7 @@
     {
       "source": "src/components/layout/data-table.tsx",
       "target": "src/renderer/frontend/components/layout/data-table.tsx",
-      "sha256": "ed8d6ee7365886a827cf00154daccb74545ece026461c7bbb7a17fb466f3ed01"
+      "sha256": "83aeda480deb643499dbcd19f33df8ddff9b48e912b0d29287b9c58cd7959cea"
     },
     {
       "source": "src/components/layout/desktop-navigation.tsx",
@@ -1009,6 +1009,11 @@
       "sha256": "9125c0aee77aacbb59f7ffacce4db6e04b91763c8d02ddc0322f5efbcfd0348c"
     },
     {
+      "source": "src/components/layout/table-date-time.tsx",
+      "target": "src/renderer/frontend/components/layout/table-date-time.tsx",
+      "sha256": "d0ac921ca11669bb6548c531352650cae42c9bc407981c0e43e28b1e695ca7d6"
+    },
+    {
       "source": "src/components/layout/theme-provider.tsx",
       "target": "src/renderer/frontend/components/layout/theme-provider.tsx",
       "sha256": "7a6c708458fc042a5869b4e257a6f252e7de896a8d686e87d58ec93106d4e5e9"
@@ -1096,7 +1101,7 @@
     {
       "source": "src/components/screenplay/screenplay-document-list.tsx",
       "target": "src/renderer/frontend/components/screenplay/screenplay-document-list.tsx",
-      "sha256": "093340cbb542a5a04662d3a4cc95ba602504a7776393dd4eeb716ef860f27761"
+      "sha256": "0dd909452e1b49af2bba64034d12c7d2b8785de8b5e8e19c932a8652fcace4dc"
     },
     {
       "source": "src/components/screenplay/screenplay-document-metadata.tsx",
@@ -1136,7 +1141,7 @@
     {
       "source": "src/components/screenplay/screenplay-rewrite-result-view.tsx",
       "target": "src/renderer/frontend/components/screenplay/screenplay-rewrite-result-view.tsx",
-      "sha256": "8e2e3ebf7a3faf22e3ac8e6bbd1acf49f6c3a828ee9c6a704130e40f8764bae8"
+      "sha256": "36b481ff83e1c42f43b337b36432a0af7dc1665ccb720bffd602da1f19d58749"
     },
     {
       "source": "src/components/screenplay/screenplay-upload-dialog.tsx",
@@ -1451,7 +1456,7 @@
     {
       "source": "src/lib/site.ts",
       "target": "src/renderer/frontend/lib/site.ts",
-      "sha256": "30ffc25b25c62985354b523e4a832fa42cf6674c35b0f7529479d523c80574fe"
+      "sha256": "c91da7a9ab004037bc2e263e5779a07258d90ebb29646c1d3620f4ae1b2b2711"
     },
     {
       "source": "src/lib/task-socket.ts",
