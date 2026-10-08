@@ -15,7 +15,8 @@
       "@/*": ["./src/renderer/frontend/*"],
       "next/link": ["./src/renderer/adapters/link.tsx"],
       "next/image": ["./src/renderer/adapters/image.tsx"],
-      "next/navigation": ["./src/renderer/adapters/navigation.ts"]
+      "next/navigation": ["./src/renderer/adapters/navigation.ts"],
+      "next/dynamic": ["./src/renderer/adapters/dynamic.tsx"]
     }
   },
   "include": ["src", "tests", "scripts/*.ts", "*.config.ts"]

@@ -29,4 +29,4 @@ pnpm frontend:check-upstream   # 对照实际上游当前内容
 
 ## 手工维护范围
 
-`src/renderer/adapters/` 只适配 `next/link`、`next/navigation`、`next/image` 与构建时 Metadata 类型。桌面入口复用上游 Provider 顺序与页面包装，省略 RSC 与 SEO 请求。其余同步产物不手工修改、不单独格式化。
+`src/renderer/adapters/` 只适配 `next/link`、`next/navigation`、`next/image`、`next/dynamic` 与构建时 Metadata 类型。动态组件通过 React lazy/Suspense 加载本地打包的模块并保留上游加载状态。桌面入口复用上游 Provider 顺序与页面包装，省略 RSC 与 SEO 请求。其余同步产物不手工修改、不单独格式化。

@@ -13,6 +13,7 @@ export default defineConfig({
       'next/link': resolve('src/renderer/adapters/link.tsx'),
       'next/image': resolve('src/renderer/adapters/image.tsx'),
       'next/navigation': resolve('src/renderer/adapters/navigation.ts'),
+      'next/dynamic': resolve('src/renderer/adapters/dynamic.tsx'),
     },
   },
   define: { 'process.env.SITE_URL': 'undefined', 'process.env.SITE_INDEXABLE': 'false' },

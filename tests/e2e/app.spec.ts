@@ -249,6 +249,23 @@ test('bundled frontend loads at the API origin with no Node, preload or remote p
   expect(requests.every((request) => /^\/(api|health)(\/|$)/.test(request.path))).toBe(true);
 });
 
+test('shortcut ignores malformed key events and restores focus after lazy layout loading', async () => {
+  const errors: string[] = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  const origin = page.getByRole('button', { name: '搜索或粘贴链接' });
+  await origin.focus();
+  await page.evaluate(() => document.dispatchEvent(new Event('keydown', { bubbles: true })));
+  await origin.press('Control+k');
+  const input = page.getByRole('combobox', { name: '链接或页面' });
+  await expect(input).toBeFocused();
+  await input.press('Escape');
+  await expect(origin).toBeFocused();
+  await origin.press('Meta+k');
+  await expect(input).toBeFocused();
+  await input.press('Escape');
+  expect(errors).toEqual([]);
+});
+
 test('same-origin API preserves method, query, body and response without allowing foreign redirects', async () => {
   const result = await page.evaluate(async () => {
     const response = await fetch('/api/_desktop-probe/echo?query=preserved', {
