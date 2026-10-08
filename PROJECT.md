@@ -22,7 +22,7 @@ src/
 ├── main/                     Electron 入口、连接、启动与传输
 └── renderer/
     ├── frontend/             同步自 framefetch-server/frontend 的页面依赖闭包（只读）
-    ├── adapters/             next/link、next/navigation、next/image 与 Metadata 类型适配
+    ├── adapters/             next/link、next/navigation、next/image、next/dynamic 与 Metadata 类型适配
     ├── public/               同步的 Logo、favicon
     ├── main.tsx              桌面 React 入口与路由组合
     ├── styles.css / fonts.css

@@ -1,7 +1,7 @@
 {
   "version": 2,
   "repository": "https://github.com/StephenQiu30/framefetch-server",
-  "commit": "9bda26524f5265c4804f8d27ec475d9bb12a4e42",
+  "commit": "0a8b8896cfb1f844577e586f2ff25553d72a1458",
   "schemaAuthority": "backend/sql/schema.sql",
   "apiContract": "FastAPI annotations -> /openapi.json -> frontend/openapi2ts.config.ts -> src/api",
   "visualAuthority": "design.md",
@@ -15,6 +15,7 @@
     "@editorjs/list",
     "@editorjs/quote",
     "@editorjs/table",
+    "@gsap/react",
     "@noble/hashes",
     "@phosphor-icons/react",
     "@tanstack/react-query",
@@ -25,6 +26,7 @@
     "cmdk",
     "cn",
     "date-fns",
+    "gsap",
     "htmlparser2",
     "marked",
     "next-themes",
@@ -281,12 +283,12 @@
     {
       "source": "src/components/admin/admin-analytics/admin-analytics-screen.tsx",
       "target": "src/renderer/frontend/components/admin/admin-analytics/admin-analytics-screen.tsx",
-      "sha256": "28c674810246d1d4664a2ccc0fae6b298be4f7d22c5f1280da8500947b60809d"
+      "sha256": "e1b5809fdae6a479068e3625e4a889696610c004f41c1ad56f16c145dd8ec13e"
     },
     {
       "source": "src/components/admin/admin-analytics/analysis-analytics-content.tsx",
       "target": "src/renderer/frontend/components/admin/admin-analytics/analysis-analytics-content.tsx",
-      "sha256": "c6be01015459020578b2d2fac1d24d98829c31688fe1c510f25d846e4871b516"
+      "sha256": "14c6e3490da47531d8a455e2c00f585299f6cb79c27eeb2427d3966bec7dc8ad"
     },
     {
       "source": "src/components/admin/admin-analytics/analysis-breakdown-charts.tsx",
@@ -326,7 +328,7 @@
     {
       "source": "src/components/admin/admin-analytics/daily-trend-chart.tsx",
       "target": "src/renderer/frontend/components/admin/admin-analytics/daily-trend-chart.tsx",
-      "sha256": "30cc535e65031be09120e2a32769dce9f629b96cb37f093e267d914286a6be2f"
+      "sha256": "3c505eb88dab6b89cd03c76c85fdc597bcb7a5fd535a3874ffb1061087456cc9"
     },
     {
       "source": "src/components/admin/admin-analytics/daily-trend-data-table.tsx",
@@ -337,6 +339,11 @@
       "source": "src/components/admin/admin-analytics/daily-trend-plot.tsx",
       "target": "src/renderer/frontend/components/admin/admin-analytics/daily-trend-plot.tsx",
       "sha256": "bac5c16b13bcbbe7d0ee00134f94ffa7c99ed5d34575b22608a7f865c5d7b282"
+    },
+    {
+      "source": "src/components/admin/admin-analytics/deferred-chart.tsx",
+      "target": "src/renderer/frontend/components/admin/admin-analytics/deferred-chart.tsx",
+      "sha256": "583e2692e50628087c1f1ed48c432e8d1360d55d656b3f4e01a42d44f413f1c5"
     },
     {
       "source": "src/components/admin/admin-analytics/source-breakdown.tsx",
@@ -631,7 +638,7 @@
     {
       "source": "src/components/downloads/download-history-list.tsx",
       "target": "src/renderer/frontend/components/downloads/download-history-list.tsx",
-      "sha256": "da42eb0cefd164dcef91b5891af8496edc329341da3059389feb30191b909ee0"
+      "sha256": "c59880a0144fff3d8823fc5cb66d66cb1d2454fe0e96589bd254e987b272a399"
     },
     {
       "source": "src/components/downloads/download-history-view.tsx",
@@ -641,7 +648,7 @@
     {
       "source": "src/components/downloads/download-job-view.tsx",
       "target": "src/renderer/frontend/components/downloads/download-job-view.tsx",
-      "sha256": "2cfc7f952d9bd5b51d7c8e90166d39b239960203745b12f2246170c96c190283"
+      "sha256": "96950dba6bf0c9ea463a46f8e537d190d642384b54e1cab39dce71542187b220"
     },
     {
       "source": "src/components/downloads/download-route.tsx",
@@ -661,7 +668,7 @@
     {
       "source": "src/components/downloads/download-video-preview.tsx",
       "target": "src/renderer/frontend/components/downloads/download-video-preview.tsx",
-      "sha256": "39552ea5e0ca8b46bb787345280cd2bfc28f4bc69bc2b4e5fba907fb9c4da4fb"
+      "sha256": "0a84a93682e4bab383fe36f0d1150bbdea142657e9921b27fa6f0057b9700215"
     },
     {
       "source": "src/components/downloads/missing-download.tsx",
@@ -671,7 +678,7 @@
     {
       "source": "src/components/downloads/recent-downloads.tsx",
       "target": "src/renderer/frontend/components/downloads/recent-downloads.tsx",
-      "sha256": "767b1ff02f6b5b3301777065f1e52796b4d5dff52f77dcf5e046be2ec28ff9b8"
+      "sha256": "a417910e629978d13f4d164d1b8c51b0a4b9767356c4f094e9915cd4453db57d"
     },
     {
       "source": "src/components/downloads/use-download-actions.ts",
@@ -691,7 +698,7 @@
     {
       "source": "src/components/downloads/use-video-preview-source.ts",
       "target": "src/renderer/frontend/components/downloads/use-video-preview-source.ts",
-      "sha256": "183fe2785b55ed6966d8bdae30efbb61e5ea95419868f3ba3e7d50a5b0951891"
+      "sha256": "35471cb2677506180da293f6ffad333672fb9fdb0c3ceff8c14b9fd5d923609f"
     },
     {
       "source": "src/components/editor/document.ts",
@@ -791,7 +798,7 @@
     {
       "source": "src/components/intake/intent-history-dialog.tsx",
       "target": "src/renderer/frontend/components/intake/intent-history-dialog.tsx",
-      "sha256": "ad424e7a7e7e7ce33613e94af61c769526d5c6867a17cc006a1ded94d7881a5c"
+      "sha256": "f3bbed083fd276f2add795f9fffc080584d958f3920aa49e3ae8298a5c5a2912"
     },
     {
       "source": "src/components/intake/intent-history-page.tsx",
@@ -851,7 +858,7 @@
     {
       "source": "src/components/intake/quick-parse-dialog.tsx",
       "target": "src/renderer/frontend/components/intake/quick-parse-dialog.tsx",
-      "sha256": "651cb1ccb0786ec4486665c5e75d6e30445e81c4beae34a19b23850e2adb5ad8"
+      "sha256": "c983d60d92b5ee9809f8dc9a70f620db19345c26243a02a9d2b6a5202574d5bb"
     },
     {
       "source": "src/components/intake/source-discovery-workspace.tsx",
@@ -891,7 +898,7 @@
     {
       "source": "src/components/layout/basic-layout.tsx",
       "target": "src/renderer/frontend/components/layout/basic-layout.tsx",
-      "sha256": "1d0962d7f4c4212c306227c1720ca100aeb721b85a5f9b295d0e8953583daa00"
+      "sha256": "dac9369d1da247822ceb1766baee2e35e909cc948750f44d5aac6190e032d559"
     },
     {
       "source": "src/components/layout/bulk-delete-selection.tsx",
@@ -904,9 +911,19 @@
       "sha256": "91e0fdff029b49ff356f7ddf913ab1fd0fd49a13fc7aa8da519b1588506dc2f0"
     },
     {
+      "source": "src/components/layout/content-motion.tsx",
+      "target": "src/renderer/frontend/components/layout/content-motion.tsx",
+      "sha256": "78af3004516e39beee0b377f8458a5b76cf7304ba2fb07a409d7b84abea45801"
+    },
+    {
       "source": "src/components/layout/data-table.tsx",
       "target": "src/renderer/frontend/components/layout/data-table.tsx",
-      "sha256": "83aeda480deb643499dbcd19f33df8ddff9b48e912b0d29287b9c58cd7959cea"
+      "sha256": "37a84cfa232b3f5c41875f69363cca4ecce3d360138dfaf4622626fa3d582e95"
+    },
+    {
+      "source": "src/components/layout/deferred-content.tsx",
+      "target": "src/renderer/frontend/components/layout/deferred-content.tsx",
+      "sha256": "4e8c085708609949f78e83a91a56c898ba7cee2fca46ea66bc957ad42df0cf84"
     },
     {
       "source": "src/components/layout/desktop-navigation.tsx",
@@ -1006,7 +1023,7 @@
     {
       "source": "src/components/layout/split-layout.tsx",
       "target": "src/renderer/frontend/components/layout/split-layout.tsx",
-      "sha256": "9125c0aee77aacbb59f7ffacce4db6e04b91763c8d02ddc0322f5efbcfd0348c"
+      "sha256": "46b46f9b5c0657583d8b245d49c697e850fdb4d7027f4a954433881b93e0ecb5"
     },
     {
       "source": "src/components/layout/table-date-time.tsx",
@@ -1031,7 +1048,7 @@
     {
       "source": "src/components/media/media-cover.tsx",
       "target": "src/renderer/frontend/components/media/media-cover.tsx",
-      "sha256": "1ce20ae96d82dd41f254b1e88238bc2c10e78817b90ed6c7dfae54df19c676cb"
+      "sha256": "de886ea813caee4415a1960983a0b5d901d73a0187afd97b48aa8d17371ad7f9"
     },
     {
       "source": "src/components/media/media-result.tsx",
@@ -1377,6 +1394,11 @@
       "source": "src/components/ui/tooltip.tsx",
       "target": "src/renderer/frontend/components/ui/tooltip.tsx",
       "sha256": "93dde0c45cfcff92eb6b35ad6d3ef26fcacdbba14e7955137131a683079c96c6"
+    },
+    {
+      "source": "src/hooks/use-near-viewport.ts",
+      "target": "src/renderer/frontend/hooks/use-near-viewport.ts",
+      "sha256": "fddeba9c1f5803b068bf53e50351f95c44bda03da3bf1d2e9a5e531976d076c1"
     },
     {
       "source": "src/hooks/use-page-selection.ts",
