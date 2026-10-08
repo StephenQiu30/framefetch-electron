@@ -36,6 +36,13 @@ jobs:
         env:
           FRAMEFETCH_E2E_EXECUTABLE: ${{ github.workspace }}/${{ matrix.executable }}
         run: pnpm test:e2e
+      - name: Upload failed end-to-end diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: framefetch-e2e-${{ runner.os }}
+          path: .artifacts/e2e/
+          if-no-files-found: ignore
       - uses: actions/upload-artifact@v4
         with:
           name: framefetch-${{ runner.os }}
