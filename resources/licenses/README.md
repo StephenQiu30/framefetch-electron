@@ -7,6 +7,5 @@ Geist 与 Geist Mono 的 OFL 文本来自锁定的 `@fontsource-variable/*` 包�
 
 - react-remove-scroll-bar：[官方 LICENSE](https://github.com/theKashey/react-remove-scroll-bar/blob/master/LICENSE)
 - victory-vendor：[Victory 官方 LICENSE](https://github.com/FormidableLabs/victory/blob/main/LICENSE.txt)，其发布物内 `lib-vendor` 的各份许可仍由构建同时收集。
-- gsap 与 @gsap/react：[官方 Standard License](https://gsap.com/community/standard-license/)，适用于锁定的 GSAP 3.15.0 与 @gsap/react 2.1.2。
 
 更新对应依赖时核对这些来源。安装包包含许可文件及 `out/renderer/assets/third-party-licenses.txt`。
