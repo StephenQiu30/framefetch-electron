@@ -249,22 +249,35 @@ test('bundled frontend loads at the API origin with no Node, preload or remote p
   expect(requests.every((request) => /^\/(api|health)(\/|$)/.test(request.path))).toBe(true);
 });
 
-test('shortcut ignores malformed key events and restores focus after lazy layout loading', async () => {
-  const errors: string[] = [];
-  page.on('pageerror', (error) => errors.push(error.message));
-  const origin = page.getByRole('button', { name: '搜索或粘贴链接' });
-  await origin.focus();
-  await page.evaluate(() => document.dispatchEvent(new Event('keydown', { bubbles: true })));
-  await origin.press('Control+k');
-  const input = page.getByRole('combobox', { name: '链接或页面' });
-  await expect(input).toBeFocused();
-  await input.press('Escape');
-  await expect(origin).toBeFocused();
-  await origin.press('Meta+k');
-  await expect(input).toBeFocused();
-  await input.press('Escape');
-  expect(errors).toEqual([]);
-});
+for (const viewport of ['default', '390px'] as const) {
+  test(`shortcut ignores malformed key events and restores focus at ${viewport}`, async () => {
+    const errors: string[] = [];
+    page.on('pageerror', (error) => errors.push(error.message));
+    if (viewport === '390px') {
+      await application.evaluate(({ BrowserWindow }) => {
+        BrowserWindow.getAllWindows()[0].setContentSize(390, 840);
+      });
+      await expect.poll(() => page.evaluate(() => window.innerWidth)).toBe(390);
+      await expect(page.getByRole('button', { name: '搜索或粘贴链接' })).toBeHidden();
+    }
+    // The search trigger is hidden below lg. Keyboard focus must start at
+    // an element available even when the runner's desktop constrains the window.
+    const origin = page.getByRole('link', { name: '登录', exact: true });
+    await expect(origin).toBeVisible();
+    await origin.focus();
+    await expect(origin).toBeFocused();
+    await page.evaluate(() => document.dispatchEvent(new Event('keydown', { bubbles: true })));
+    await expect(page.getByRole('dialog', { name: '快捷操作' })).not.toBeVisible();
+    const input = page.getByRole('combobox', { name: '链接或页面' });
+    for (const shortcut of ['Control+k', 'Meta+k']) {
+      await origin.press(shortcut);
+      await expect(input).toBeFocused();
+      await input.press('Escape');
+      await expect(origin).toBeFocused();
+    }
+    expect(errors).toEqual([]);
+  });
+}
 
 test('same-origin API preserves method, query, body and response without allowing foreign redirects', async () => {
   const result = await page.evaluate(async () => {
