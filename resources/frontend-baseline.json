@@ -1,7 +1,7 @@
 {
   "version": 2,
   "repository": "https://github.com/StephenQiu30/framefetch-server",
-  "commit": "d755af15860750403c114afe8609665e8813035e",
+  "commit": "b548f81d86b9f198709ddabed38b2d155f85671e",
   "schemaAuthority": "backend/sql/schema.sql",
   "apiContract": "FastAPI annotations -> /openapi.json -> frontend/openapi2ts.config.ts -> src/api",
   "visualAuthority": "design.md",
@@ -106,7 +106,7 @@
     {
       "source": "src/api/typings.d.ts",
       "target": "src/renderer/frontend/api/typings.d.ts",
-      "sha256": "40b75137a08b80b5fc6156fb8804e81fe43fbfbf2c170069f8b147eff0e8a0b5"
+      "sha256": "4bf142f2c8052e201a13127fd69d7e1b1d3b723bc133ff5a6d500f598f589263"
     },
     {
       "source": "src/api/users.ts",
@@ -781,7 +781,7 @@
     {
       "source": "src/components/intake/inspection-route.tsx",
       "target": "src/renderer/frontend/components/intake/inspection-route.tsx",
-      "sha256": "fe8dd31e52603583da3652bf460fda4efbf42295e1a4661bdea8df30027c0eb4"
+      "sha256": "573dd3426fb84a77f8ec45db7a0f0913c99a8b3a3966d625e68414529bfba008"
     },
     {
       "source": "src/components/intake/inspection-workspace.tsx",
@@ -866,7 +866,7 @@
     {
       "source": "src/components/intake/source-discovery-workspace.tsx",
       "target": "src/renderer/frontend/components/intake/source-discovery-workspace.tsx",
-      "sha256": "d3ec2bfc7180ec6fd6282283c9c744e5e0e2241b57366d5defa5823f85c386a6"
+      "sha256": "9b06b91355c4ceb3a835c94bb778f021c53983ac900118605d93afde058f881e"
     },
     {
       "source": "src/components/intake/use-bulk-parse-download.ts",
@@ -881,7 +881,7 @@
     {
       "source": "src/components/intake/use-download-intent.ts",
       "target": "src/renderer/frontend/components/intake/use-download-intent.ts",
-      "sha256": "c4479212fb72505aef94fd1093f1af000f7d64d43e821e7981f680b04ec550eb"
+      "sha256": "ee9c52e0e030ccd46478ea51425f107b535de946afb96968c9b855c417a3dfcf"
     },
     {
       "source": "src/components/intake/use-media-import.ts",
