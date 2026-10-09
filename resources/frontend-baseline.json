@@ -1,7 +1,7 @@
 {
   "version": 2,
   "repository": "https://github.com/StephenQiu30/framefetch-server",
-  "commit": "b548f81d86b9f198709ddabed38b2d155f85671e",
+  "commit": "2b61caf4e688fc97ff0b18a6c30221fce867cff8",
   "schemaAuthority": "backend/sql/schema.sql",
   "apiContract": "FastAPI annotations -> /openapi.json -> frontend/openapi2ts.config.ts -> src/api",
   "visualAuthority": "design.md",
@@ -636,22 +636,22 @@
     {
       "source": "src/components/downloads/download-execution-summary.tsx",
       "target": "src/renderer/frontend/components/downloads/download-execution-summary.tsx",
-      "sha256": "9d433217727e7ffeec26a1e17682cf7abc71fc88e7b7fa534493534415dfe631"
+      "sha256": "858c6f047bd8132d13510916c9c7dc3961746557538aa4c11877fcab62a67661"
     },
     {
       "source": "src/components/downloads/download-history-list.tsx",
       "target": "src/renderer/frontend/components/downloads/download-history-list.tsx",
-      "sha256": "c59880a0144fff3d8823fc5cb66d66cb1d2454fe0e96589bd254e987b272a399"
+      "sha256": "c4eca728aa05c6dbd36870c244d647760af89ff8ae90fc190910321d69ce5f09"
     },
     {
       "source": "src/components/downloads/download-history-view.tsx",
       "target": "src/renderer/frontend/components/downloads/download-history-view.tsx",
-      "sha256": "769c19494dc7da838c0230a9ca43fc1ed072b1711ecae31dd8ea0593aa93b270"
+      "sha256": "e8585ca5fac98df792c55dfb1c3854fd3454e4c3ef888c2dec5017b18c01adb3"
     },
     {
       "source": "src/components/downloads/download-job-view.tsx",
       "target": "src/renderer/frontend/components/downloads/download-job-view.tsx",
-      "sha256": "96950dba6bf0c9ea463a46f8e537d190d642384b54e1cab39dce71542187b220"
+      "sha256": "86618046f742bb75e8e0117a5ad61462300ac8ac902e558f2118d2cb4cb31329"
     },
     {
       "source": "src/components/downloads/download-route.tsx",
@@ -1531,7 +1531,7 @@
     {
       "source": "../design.md",
       "target": "design.md",
-      "sha256": "7977be7c3eb3349dd3cf4b0e53e8590faef52dcc2414a164d183929f7ff0a108"
+      "sha256": "1b34d1ccba5b2c8622bfed8d23376984f3fc2696fa6013fe3261c60a81db0985"
     },
     {
       "source": "components.json",
