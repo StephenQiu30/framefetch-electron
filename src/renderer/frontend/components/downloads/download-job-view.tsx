@@ -2,7 +2,6 @@
 
 import { DotsThreeIcon, Robot, TrashIcon } from '@phosphor-icons/react';
 import type { MediaPlayerInstance } from '@vidstack/react';
-import { cn } from 'cn';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -61,6 +60,9 @@ const DownloadVideoPreview = dynamic(
     ),
   },
 );
+const WatermarkPanel = dynamic(
+  () => import('@/components/downloads/watermark-panel'),
+);
 const AnalysisPanel = dynamic(
   () => import('@/components/analysis/analysis-panel'),
   {
@@ -90,7 +92,6 @@ export default function DownloadJobView({
   const menuTriggerRef = useRef<HTMLButtonElement>(null);
   const [previewReady, setPreviewReady] = useState(false);
   const state = useDownloadJob(jobId, pollIntervalMs);
-  const active = state.job && !isTerminalDownloadStatus(state.job.status);
   const format = state.job?.format ?? undefined;
   const gallery = state.job?.media_kind === 'image_gallery';
   const collection = state.job?.media_kind === 'video_collection';
@@ -273,20 +274,14 @@ export default function DownloadJobView({
             </section>
             <aside
               aria-label="文件信息与操作"
-              className={cn(
-                'flex min-h-0 flex-col',
-                !active && 'lg:contain-size',
-              )}
+              className="flex min-h-0 flex-col"
             >
               <Item
                 variant="muted"
                 className="min-h-0 flex-1 flex-nowrap items-stretch"
               >
                 <ItemContent
-                  className={cn(
-                    'min-h-0 gap-6',
-                    !active && 'lg:overflow-y-auto',
-                  )}
+                  className="min-h-0 gap-6"
                   data-slot="download-status-panel"
                 >
                   {state.retryTarget && state.retryTarget !== jobId ? (
@@ -475,6 +470,13 @@ export default function DownloadJobView({
               </Item>
             </aside>
           </SplitLayout>
+          {state.job.status === DownloadStatusCode.Succeeded &&
+          state.job.file_available &&
+          !gallery &&
+          !collection &&
+          duration ? (
+            <WatermarkPanel jobId={state.job.id} />
+          ) : null}
           {state.job.status === DownloadStatusCode.Succeeded ? (
             !gallery && !collection ? (
               <section
