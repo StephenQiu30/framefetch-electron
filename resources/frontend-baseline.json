@@ -106,7 +106,7 @@
     {
       "source": "src/api/typings.d.ts",
       "target": "src/renderer/frontend/api/typings.d.ts",
-      "sha256": "4bf142f2c8052e201a13127fd69d7e1b1d3b723bc133ff5a6d500f598f589263"
+      "sha256": "00d1f1769ed4f18e4b9359ac66fe9696c4722aea23305b76f7fc6314c430e8d1"
     },
     {
       "source": "src/api/users.ts",
@@ -1421,12 +1421,12 @@
     {
       "source": "src/lib/browser-download.ts",
       "target": "src/renderer/frontend/lib/browser-download.ts",
-      "sha256": "9e663c7cb705876f0f2e8f1dffac307ff0b5821fcf9ce363e99ff3d41895392e"
+      "sha256": "507e9602f29727d37989923f1b1203df2c29afe444432ebad19b7b7721ebd142"
     },
     {
       "source": "src/lib/error-messages.ts",
       "target": "src/renderer/frontend/lib/error-messages.ts",
-      "sha256": "e98bd6317ec469a3ac162a6c08ebfcc8b5dd695036179502f4d06b9a9e7253d8"
+      "sha256": "9a967ab1fc8061cc8591ba216a6c9044242a9e57b2887fa73cc6ed229c0ccf65"
     },
     {
       "source": "src/lib/format.ts",
