@@ -8,7 +8,7 @@
 
 [![Desktop CI](https://github.com/StephenQiu30/framefetch-electron/actions/workflows/internal-build.yml/badge.svg)](https://github.com/StephenQiu30/framefetch-electron/actions/workflows/internal-build.yml)
 [![MIT License](https://img.shields.io/badge/license-MIT-111111.svg)](LICENSE)
-[![Latest preview](https://img.shields.io/github/v/release/StephenQiu30/framefetch-electron?include_prereleases&color=111111)](https://github.com/StephenQiu30/framefetch-electron/releases)
+[![Latest release](https://img.shields.io/github/v/release/StephenQiu30/framefetch-electron?color=111111)](https://github.com/StephenQiu30/framefetch-electron/releases)
 
 [Getting started](#getting-started) · [Features](#features) · [Development](#development-and-builds) · [Scope](#scope) · [Server / Web](https://github.com/StephenQiu30/framefetch-server) · [App](https://github.com/StephenQiu30/framefetch-app) · [简体中文](README.md)
 
@@ -26,15 +26,15 @@ Use the Web business pages in a dedicated native window. The installer includes 
 
 ## Getting started
 
-### Download the public preview
+### Download the stable release
 
-The current public release is **[v0.2.0-beta.1](https://github.com/StephenQiu30/framefetch-electron/releases/tag/v0.2.0-beta.1)**. The package version and filenames remain `0.2.0`; the tag's `beta.1` identifies the public preview channel.
+The current stable release is **[v0.2.0](https://github.com/StephenQiu30/framefetch-electron/releases/tag/v0.2.0)**. Package version and filenames are `0.2.0`, paired with Server/Web v0.3.0.
 
 | System                             | Download                                                                                                                                        |
 | ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| macOS 14.0+, Apple Silicon (ARM64) | [Framefetch-0.2.0-mac-arm64.dmg](https://github.com/StephenQiu30/framefetch-electron/releases/download/v0.2.0-beta.1/Framefetch-0.2.0-mac-arm64.dmg) |
-| Windows x64                        | [Framefetch-0.2.0-win-x64.exe](https://github.com/StephenQiu30/framefetch-electron/releases/download/v0.2.0-beta.1/Framefetch-0.2.0-win-x64.exe)     |
-| SHA-256 checksum manifest          | [SHA256SUMS.txt](https://github.com/StephenQiu30/framefetch-electron/releases/download/v0.2.0-beta.1/SHA256SUMS.txt)                                 |
+| macOS 14.0+, Apple Silicon (ARM64) | [Framefetch-0.2.0-mac-arm64.dmg](https://github.com/StephenQiu30/framefetch-electron/releases/download/v0.2.0/Framefetch-0.2.0-mac-arm64.dmg) |
+| Windows x64                        | [Framefetch-0.2.0-win-x64.exe](https://github.com/StephenQiu30/framefetch-electron/releases/download/v0.2.0/Framefetch-0.2.0-win-x64.exe)     |
+| SHA-256 checksum manifest          | [SHA256SUMS.txt](https://github.com/StephenQiu30/framefetch-electron/releases/download/v0.2.0/SHA256SUMS.txt)                                 |
 
 Installers are unsigned and the macOS build is not notarized, so system security prompts may appear. No Intel macOS or Linux installer is currently provided. Calculate the downloaded file's SHA-256 and compare it with the manifest:
 
@@ -217,7 +217,7 @@ pnpm package:dir
 
 These checks cover source consistency, formatting/types, unit tests, production builds, Electron transport and package generation separately. Real Server user workflows and target-system installation behavior require separate validation against the [acceptance scope](docs/design/01-验收边界.md) (Chinese).
 
-The `v0.2.0-beta.1` installers come from the [successful CI](https://github.com/StephenQiu30/framefetch-electron/actions/runs/37096373778) at commit `c8a85c94548a20619bf8b34a71a6916992654a17`. Unit tests and development/package transport E2E passed on macOS ARM64 and Windows x64. The E2E use controlled fixtures and prove their covered transport behavior, not complete real-Server business acceptance. Clean installation, upgrades, uninstallation and full real-Server workflows require separate validation.
+Release installers come from macOS ARM64 and Windows x64 CI at the same release commit. CI runs unit tests and development/package transport E2E before producing installers; see the Release for results and SHA-256 checksums. E2E use controlled fixtures and do not establish complete real-Server business acceptance. Clean installation, upgrades, uninstallation and real workflows require separate validation.
 
 ## Documentation and contributing
 

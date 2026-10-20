@@ -8,7 +8,7 @@
 
 [![Desktop CI](https://github.com/StephenQiu30/framefetch-electron/actions/workflows/internal-build.yml/badge.svg)](https://github.com/StephenQiu30/framefetch-electron/actions/workflows/internal-build.yml)
 [![MIT License](https://img.shields.io/badge/license-MIT-111111.svg)](LICENSE)
-[![Latest preview](https://img.shields.io/github/v/release/StephenQiu30/framefetch-electron?include_prereleases&color=111111)](https://github.com/StephenQiu30/framefetch-electron/releases)
+[![Latest release](https://img.shields.io/github/v/release/StephenQiu30/framefetch-electron?color=111111)](https://github.com/StephenQiu30/framefetch-electron/releases)
 
 [开始使用](#开始使用) · [核心功能](#核心功能) · [开发与构建](#开发与构建) · [使用范围](#使用范围) · [Server / Web](https://github.com/StephenQiu30/framefetch-server) · [App](https://github.com/StephenQiu30/framefetch-app) · [English](README.en.md)
 
@@ -26,15 +26,15 @@
 
 ## 开始使用
 
-### 下载公开预览版
+### 下载正式版本
 
-当前公开版本为 **[v0.2.0-beta.1](https://github.com/StephenQiu30/framefetch-electron/releases/tag/v0.2.0-beta.1)**。安装包内版本与文件名为 `0.2.0`，tag 的 `beta.1` 表示公开预览渠道。
+当前正式版本为 **[v0.2.0](https://github.com/StephenQiu30/framefetch-electron/releases/tag/v0.2.0)**，安装包内版本与文件名为 `0.2.0`，配套 Server/Web v0.3.0。
 
 | 系统                                | 安装包                                                                                                                                          |
 | ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| macOS 14.0+，Apple Silicon（ARM64） | [Framefetch-0.2.0-mac-arm64.dmg](https://github.com/StephenQiu30/framefetch-electron/releases/download/v0.2.0-beta.1/Framefetch-0.2.0-mac-arm64.dmg) |
-| Windows x64                         | [Framefetch-0.2.0-win-x64.exe](https://github.com/StephenQiu30/framefetch-electron/releases/download/v0.2.0-beta.1/Framefetch-0.2.0-win-x64.exe)     |
-| SHA-256 校验清单                    | [SHA256SUMS.txt](https://github.com/StephenQiu30/framefetch-electron/releases/download/v0.2.0-beta.1/SHA256SUMS.txt)                                 |
+| macOS 14.0+，Apple Silicon（ARM64） | [Framefetch-0.2.0-mac-arm64.dmg](https://github.com/StephenQiu30/framefetch-electron/releases/download/v0.2.0/Framefetch-0.2.0-mac-arm64.dmg) |
+| Windows x64                         | [Framefetch-0.2.0-win-x64.exe](https://github.com/StephenQiu30/framefetch-electron/releases/download/v0.2.0/Framefetch-0.2.0-win-x64.exe)     |
+| SHA-256 校验清单                    | [SHA256SUMS.txt](https://github.com/StephenQiu30/framefetch-electron/releases/download/v0.2.0/SHA256SUMS.txt)                                 |
 
 安装包尚未完成发布者签名，macOS 未公证，系统可能显示安全提示；当前不提供 Intel macOS 或 Linux 安装包。下载后计算对应文件的 SHA-256，并与校验清单比较：
 
@@ -227,7 +227,7 @@ pnpm package:dir
 
 检查分别覆盖源码一致性、格式和类型、单元测试、生产构建、真实 Electron 传输及安装包。真实 Server 用户流程和各目标系统安装行为按 [验收边界](docs/design/01-验收边界.md) 单独验证。
 
-`v0.2.0-beta.1` 安装包来自提交 `c8a85c94548a20619bf8b34a71a6916992654a17` 的 [成功 CI](https://github.com/StephenQiu30/framefetch-electron/actions/runs/37096373778)。macOS ARM64 与 Windows x64 的单元测试、开发态及打包态传输 E2E 通过，E2E 使用受控夹具，只证明相应传输行为，不等于真实 Server 全业务验收。干净安装、升级、卸载和真实 Server 完整业务流程仍需独立验证。
+正式安装包来自同一发行提交的 macOS ARM64 与 Windows x64 CI。CI 分别执行单元测试、开发态及打包态传输 E2E，并生成安装包；完整结果与 SHA-256 清单见对应 Release。E2E 使用受控夹具，不等于真实 Server 全业务验收；干净安装、升级、卸载和真实业务流程需要独立验证。
 
 ## 文档与贡献
 
