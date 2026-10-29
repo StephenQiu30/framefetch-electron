@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: Server 或 Web 问题
-    url: https://github.com/StephenQiu30/framefetch-server/issues
-    about: 服务端接口、Web 页面、任务或部署问题请提交到 framefetch-server。
+    url: https://github.com/StephenQiu30/framefetch/issues
+    about: 服务端接口、Web 页面、任务或部署问题请提交到 framefetch。
   - name: iOS 或 Android 客户端问题
     url: https://github.com/StephenQiu30/framefetch-app/issues
     about: Flutter 客户端问题请提交到 framefetch-app。

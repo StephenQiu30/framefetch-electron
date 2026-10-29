@@ -51,7 +51,7 @@ const sections = [
     id: 'deployment',
     title: '自托管需要部署哪些服务？',
     paragraphs: [
-      'framefetch-server 包含 Next.js Web 页面、FastAPI API，以及独立的下载、媒体处理与 AI Worker。Docker Compose 管理业务服务，并连接部署者已有的 PostgreSQL、RabbitMQ、Redis 和 MinIO。默认 Web 端口为 8101，API 端口为 8111。',
+      'framefetch 包含 Next.js Web 页面、FastAPI API，以及独立的下载、媒体处理与 AI Worker。Docker Compose 管理业务服务，并连接部署者已有的 PostgreSQL、RabbitMQ、Redis 和 MinIO。默认 Web 端口为 8101，API 端口为 8111。',
       '使用根 README 的快速开始说明安装和配置，按实际需求启用模型服务与媒体 Provider。MIT 许可证开放源代码；基础设施、存储、流量和外部模型的费用由部署者承担。',
       '自托管不表示数据永远不离开设备：使用外部 AI Provider 时，分析所需内容会发送到该服务。启用模型前应核对其数据处理约定，并确认素材可用于该分析。',
     ],
@@ -60,13 +60,13 @@ const sections = [
   },
   {
     id: 'clients',
-    title: 'Web 与 iOS / Android 客户端如何选择？',
+    title: 'Web、桌面与 iOS / Android 如何选择？',
     paragraphs: [
-      'Web 随 framefetch-server 部署，适合在浏览器中管理素材、任务、分析报告与管理员配置。framefetch-app 是单独维护的 Flutter 原生客户端，面向 iOS 和 Android，需要连接可访问的 framefetch-server。',
-      '手机端负责上传、任务操作与结果展示，媒体处理与 AI 推理仍由服务端完成。当前移动端从源码构建，不提供 App Store 或 Google Play 预构建安装包，也不提供离线 AI。',
+      'Web 随 framefetch 部署，适合在浏览器中管理素材、任务、分析报告与管理员配置。framefetch-electron 是面向 macOS 与 Windows 的桌面客户端，framefetch-app 是面向 iOS 和 Android 的 Flutter 客户端。两者都连接可访问的 framefetch，不单独保存业务数据。',
+      '桌面端与手机端负责操作、展示，以及系统文件保存或分享。媒体处理与 AI 推理仍由服务端完成。当前客户端从源码构建，不提供应用商店预构建安装包，也不提供离线 AI。',
     ],
-    source: siteConfig.mobileRepositoryUrl,
-    sourceLabel: '查看 Flutter 移动客户端与构建说明',
+    source: '/blob/main/README.md#同一工作站多种使用方式',
+    sourceLabel: '查看 Web、桌面与移动端仓库',
   },
   {
     id: 'availability',

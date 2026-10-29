@@ -10,7 +10,7 @@
 [![MIT License](https://img.shields.io/badge/license-MIT-111111.svg)](LICENSE)
 [![Latest release](https://img.shields.io/github/v/release/StephenQiu30/framefetch-electron?color=111111)](https://github.com/StephenQiu30/framefetch-electron/releases)
 
-[开始使用](#开始使用) · [核心功能](#核心功能) · [开发与构建](#开发与构建) · [使用范围](#使用范围) · [Server / Web](https://github.com/StephenQiu30/framefetch-server) · [App](https://github.com/StephenQiu30/framefetch-app) · [English](README.en.md)
+[开始使用](#开始使用) · [核心功能](#核心功能) · [开发与构建](#开发与构建) · [使用范围](#使用范围) · [Server / Web](https://github.com/StephenQiu30/framefetch) · [App](https://github.com/StephenQiu30/framefetch-app) · [English](README.en.md)
 
 ![帧取桌面报告：演示分镜、来源时间与报告导出](docs/images/desktop-analysis.png)
 
@@ -50,7 +50,7 @@ Get-FileHash .\Framefetch-0.2.0-win-x64.exe -Algorithm SHA256
 
 ### 连接你的工作站
 
-1. 准备可访问的 [Framefetch Server](https://github.com/StephenQiu30/framefetch-server#快速开始)，确认其登录、文件存储和所需业务能力已经配置。
+1. 准备可访问的 [Framefetch Server](https://github.com/StephenQiu30/framefetch#快速开始)，确认其登录、文件存储和所需业务能力已经配置。
 2. 下载并安装目标系统的 Framefetch 桌面包；自行构建的命令见下文。
 3. 指定 Server 根地址，打开客户端并登录该 Server 的账户。默认连接 `http://127.0.0.1:8111/`，远端部署使用 HTTPS。
 4. 从链接解析、本地视频或已有文档开始，或进入已有记录继续处理。
@@ -86,7 +86,7 @@ macOS 安装态指定连接地址的示例：
 
 ### 专业方法与成果
 
-当前活动目录为 6 项内置 Skill：成片审阅、素材拆解、剧本故事审稿，以及文章、公众号和小红书文档整理。具体相容类型与默认提示词来自连接的 Server。原页面布局与调用方式保持，优化集中在方法、实际取证和产出质量；实施和真实验收见 [唯一执行计划](https://github.com/StephenQiu30/framefetch-server/blob/main/docs/plan/PLAN-内置Skill能力整合.md)。
+当前活动目录为 6 项内置 Skill：成片审阅、素材拆解、剧本故事审稿，以及文章、公众号和小红书文档整理。具体相容类型与默认提示词来自连接的 Server。原页面布局与调用方式保持，优化集中在方法、实际取证和产出质量；实施和真实验收见 [唯一执行计划](https://github.com/StephenQiu30/framefetch/blob/main/docs/plan/PLAN-内置Skill能力整合.md)。
 
 视频审阅与拆解使用实际观察画面及定点复核，不能把抽样当作逐帧全片或声音核验。故事审稿围绕人物行动、跨单元因果和原文依据；文档整理保持完整原文并核对来源对应与覆盖。模型分析、整理和审校由 Server 的既有线路执行，结论仍需对照来源核查。
 
@@ -111,13 +111,13 @@ macOS 安装态指定连接地址的示例：
 5. **处理**：在原视频／剧本文档详情选择相容 Skill、输出语言和任务要求，默认提示词可编辑或恢复。等待时查询状态或取消，回执未知时先核对已有任务。
 6. **交付**：结合原文引用、时间依据和限制阅读结果，通过系统保存窗口获取 MD／DOCX。再次导出复用已保存报告。
 
-耗时任务由 Server 的 Worker 和宿主 AI Worker 执行。桌面接收任务状态更新；连接同一服务并登录同一账户后，可以从 Web、桌面或 App 继续查看业务记录。文本按真实场景、章节或无标题单元审阅，视频按实际观察位置引用。来源对应与覆盖帮助核查，不证明分析结论正确或完整声音理解。执行设计见 [Server AI 分析](https://github.com/StephenQiu30/framefetch-server/blob/main/docs/design/09-AI分析.md)。
+耗时任务由 Server 的 Worker 和宿主 AI Worker 执行。桌面接收任务状态更新；连接同一服务并登录同一账户后，可以从 Web、桌面或 App 继续查看业务记录。文本按真实场景、章节或无标题单元审阅，视频按实际观察位置引用。来源对应与覆盖帮助核查，不证明分析结论正确或完整声音理解。执行设计见 [Server AI 分析](https://github.com/StephenQiu30/framefetch/blob/main/docs/design/09-AI分析.md)。
 
 ## 三个项目，一套产品
 
 | 项目                                                                    | 负责什么                                                                                                   |
 | ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| [Framefetch Server / Web](https://github.com/StephenQiu30/framefetch-server) | FastAPI 业务接口、Next.js Web 页面、用户与权限、解析/下载/导入/分析、队列与 Worker、数据库、对象存储和报告 |
+| [Framefetch Server / Web](https://github.com/StephenQiu30/framefetch) | FastAPI 业务接口、Next.js Web 页面、用户与权限、解析/下载/导入/分析、队列与 Worker、数据库、对象存储和报告 |
 | **Framefetch Desktop，本仓库**                                          | 独立 Electron 安装包，内置共享 React 页面，连接现有 Server，提供窗口、会话与受限原生能力                   |
 | [Framefetch App](https://github.com/StephenQiu30/framefetch-app)             | Flutter iOS/Android 原生客户端，通过同一 Server 契约提供移动端文件导入、播放、分析、报告与管理入口         |
 
@@ -145,7 +145,7 @@ macOS 安装态指定连接地址的示例：
 
 ## 使用范围
 
-- 只处理已获授权的 HTTP(S) 非 DRM 素材。平台、身份与网络条件会影响实际可用性，准确状态和完整文件证据以 [Server 平台目录与验证边界](https://github.com/StephenQiu30/framefetch-server/blob/main/docs/design/14-解析引擎.md#13-验证状态) 为准。
+- 只处理已获授权的 HTTP(S) 非 DRM 素材。平台、身份与网络条件会影响实际可用性，准确状态和完整文件证据以 [Server 平台目录与验证边界](https://github.com/StephenQiu30/framefetch/blob/main/docs/design/14-解析引擎.md#13-验证状态) 为准。
 - 部署者提供服务、存储、网络和模型；外部模型可能产生费用，并接收分析所需的文本或画面。
 - 当前产品覆盖素材获取、管理、内置分析与文档整理、报告交付。内容写作、剪辑、作品与母稿管理、版本确认、图卡、ASR／OCR、DRM 解密、直播录制、无限播放列表、在线协作编辑和自动平台发布不在本轮范围内。
 

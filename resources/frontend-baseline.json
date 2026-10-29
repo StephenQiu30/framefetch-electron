@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "repository": "https://github.com/StephenQiu30/framefetch-server",
-  "commit": "44b74dd96298a9cf1854e5f8a445714125224089",
+  "repository": "https://github.com/StephenQiu30/framefetch",
+  "commit": "56c2ac730eefc2bd0b95dfb54fee655d58f6cacd",
   "schemaAuthority": "backend/sql/schema.sql",
   "apiContract": "FastAPI annotations -> /openapi.json -> frontend/openapi2ts.config.ts -> src/api",
   "visualAuthority": "design.md",
@@ -116,7 +116,7 @@
     {
       "source": "src/app/about/page.tsx",
       "target": "src/renderer/frontend/app/about/page.tsx",
-      "sha256": "07fcccf95f7c783c88570ae3f5aa0d486dada3e51956d1de1ad383fb8a9c4ecf"
+      "sha256": "e34387009583a16c0a97168093a9f1ad65a59e75c195955a7364668648c5b594"
     },
     {
       "source": "src/app/account/page.tsx",
@@ -186,7 +186,7 @@
     {
       "source": "src/app/guide/page.tsx",
       "target": "src/renderer/frontend/app/guide/page.tsx",
-      "sha256": "49fb21761f2e4f09f7e18678785e03a7165d44c296caa1356ef2f0a20079ed7d"
+      "sha256": "e260365fec46a75c299c5a686f0fe3b9da01ee76c6272321307aebe6dbb720ee"
     },
     {
       "source": "src/app/history/activity/page.tsx",
@@ -211,7 +211,7 @@
     {
       "source": "src/app/self-hosting/page.tsx",
       "target": "src/renderer/frontend/app/self-hosting/page.tsx",
-      "sha256": "2518fb95022eb807b6cf8cf13111f38b15997cbcbafb00f68512441a25d613c4"
+      "sha256": "8c8d5e6cf19cedf7ac67b3888fae355965ee236279aecb1e10fb260368f1813e"
     },
     {
       "source": "src/app/user/login/page.tsx",
@@ -856,7 +856,7 @@
     {
       "source": "src/components/intake/public-home-content.ts",
       "target": "src/renderer/frontend/components/intake/public-home-content.ts",
-      "sha256": "a0b1eee51f1e52dcf38dce5db6ba0081d8f883f27385a1b13a88cdec3844d73f"
+      "sha256": "58c4010310f6221a0be91640cad87f516b2d12740010c816f97c7db3c461cd57"
     },
     {
       "source": "src/components/intake/public-home-details.tsx",
@@ -871,7 +871,7 @@
     {
       "source": "src/components/intake/public-home.tsx",
       "target": "src/renderer/frontend/components/intake/public-home.tsx",
-      "sha256": "89f1e1d9b7235791bce38cf44e131239e0241a7ea8c77d30568b04936fe21f93"
+      "sha256": "c49ba12cc76826dbe28a4189c0920f67860976606cb3704d269b3bf44209fc0a"
     },
     {
       "source": "src/components/intake/public-input.ts",
@@ -1471,7 +1471,7 @@
     {
       "source": "src/lib/public-metadata.ts",
       "target": "src/renderer/frontend/lib/public-metadata.ts",
-      "sha256": "85cba74df21835ccd9b8983603518a7928d376bfefa4ec6b96d07edd74018e4a"
+      "sha256": "3cda297aa439002ebf96533253de98eadfc0bcb6ea6456138d28e2297b6087a5"
     },
     {
       "source": "src/lib/query-keys.ts",
@@ -1496,7 +1496,7 @@
     {
       "source": "src/lib/site.ts",
       "target": "src/renderer/frontend/lib/site.ts",
-      "sha256": "c91da7a9ab004037bc2e263e5779a07258d90ebb29646c1d3620f4ae1b2b2711"
+      "sha256": "88ac772abb6a7f43ddb6e2462faa5e3ba2c18476057ae4a4538652e7e08d8a02"
     },
     {
       "source": "src/lib/task-socket.ts",

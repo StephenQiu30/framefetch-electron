@@ -150,7 +150,7 @@ if (check) {
   }).trim();
   const manifest = {
     version: 2,
-    repository: 'https://github.com/StephenQiu30/framefetch-server',
+    repository: 'https://github.com/StephenQiu30/framefetch',
     commit,
     schemaAuthority: 'backend/sql/schema.sql',
     apiContract: 'FastAPI annotations -> /openapi.json -> frontend/openapi2ts.config.ts -> src/api',

@@ -10,7 +10,7 @@
 [![MIT License](https://img.shields.io/badge/license-MIT-111111.svg)](LICENSE)
 [![Latest release](https://img.shields.io/github/v/release/StephenQiu30/framefetch-electron?color=111111)](https://github.com/StephenQiu30/framefetch-electron/releases)
 
-[Getting started](#getting-started) · [Features](#features) · [Development](#development-and-builds) · [Scope](#scope) · [Server / Web](https://github.com/StephenQiu30/framefetch-server) · [App](https://github.com/StephenQiu30/framefetch-app) · [简体中文](README.md)
+[Getting started](#getting-started) · [Features](#features) · [Development](#development-and-builds) · [Scope](#scope) · [Server / Web](https://github.com/StephenQiu30/framefetch) · [App](https://github.com/StephenQiu30/framefetch-app) · [简体中文](README.md)
 
 ![Framefetch desktop report: demo shots, source times and report export](docs/images/desktop-analysis.png)
 
@@ -50,7 +50,7 @@ Get-FileHash .\Framefetch-0.2.0-win-x64.exe -Algorithm SHA256
 
 ### Connect to your workstation
 
-1. Prepare a reachable [Framefetch Server](https://github.com/StephenQiu30/framefetch-server/blob/main/README.en.md#quick-start), with authentication, storage and the required business capabilities configured.
+1. Prepare a reachable [Framefetch Server](https://github.com/StephenQiu30/framefetch/blob/main/README.en.md#quick-start), with authentication, storage and the required business capabilities configured.
 2. Download and install the package for your system, or build it as described below.
 3. Supply the Server root address and sign in with that Server's account. The default is `http://127.0.0.1:8111/`; remote deployments use HTTPS.
 4. Start with link inspection, local video or a screenplay document, or continue from existing records.
@@ -86,7 +86,7 @@ Use a root address without credentials, path, query or fragment. Remote addresse
 
 ### Methods and deliverables
 
-The active catalog has **6 built-in Skills**: video review, material breakdown, story coverage, article organization, WeChat document organization and Xiaohongshu document organization. The connected Server supplies compatible inputs and default prompts. Original page layouts and calls remain; improvements focus on methods, actual observations and output quality. Implementation and real acceptance are tracked in the [single execution plan](https://github.com/StephenQiu30/framefetch-server/blob/main/docs/plan/PLAN-内置Skill能力整合.md) (Chinese).
+The active catalog has **6 built-in Skills**: video review, material breakdown, story coverage, article organization, WeChat document organization and Xiaohongshu document organization. The connected Server supplies compatible inputs and default prompts. Original page layouts and calls remain; improvements focus on methods, actual observations and output quality. Implementation and real acceptance are tracked in the [single execution plan](https://github.com/StephenQiu30/framefetch/blob/main/docs/plan/PLAN-内置Skill能力整合.md) (Chinese).
 
 Video review and breakdown use observed frames and targeted checks; sampling does not prove complete frame-by-frame or audio review. Story coverage examines character action, causality across source units and textual evidence. Document organization keeps complete source text and checks correspondence and coverage. Existing Server model routes execute analysis, organization and review; conclusions still need checking against the source.
 
@@ -111,13 +111,13 @@ These historical images come from a released build rendered in a separate Electr
 5. **Process**: select a compatible Skill, output language and requirements in the original video/screenplay detail form. Edit or reset the default prompt. Query or cancel pending jobs; check the existing job before retrying an unknown receipt.
 6. **Deliver**: read results with source quotations, timestamps and limits, then use the system save dialog for MD/DOCX. Repeated exports reuse the stored report.
 
-The Server's Workers and host AI Worker execute lengthy tasks. Desktop receives state updates; clients connected to the same service and account can continue viewing records. Text uses actual scenes, chapters or unheaded source units; video references actual observation times. Source correspondence and coverage help verification without proving that analytical conclusions or full audio understanding are correct. See [Server AI analysis](https://github.com/StephenQiu30/framefetch-server/blob/main/docs/design/09-AI分析.md) (Chinese).
+The Server's Workers and host AI Worker execute lengthy tasks. Desktop receives state updates; clients connected to the same service and account can continue viewing records. Text uses actual scenes, chapters or unheaded source units; video references actual observation times. Source correspondence and coverage help verification without proving that analytical conclusions or full audio understanding are correct. See [Server AI analysis](https://github.com/StephenQiu30/framefetch/blob/main/docs/design/09-AI分析.md) (Chinese).
 
 ## Three projects, one product
 
 | Project                                                                 | Responsibility                                                                                                                                                  |
 | ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Framefetch Server / Web](https://github.com/StephenQiu30/framefetch-server) | FastAPI APIs, Next.js Web pages, accounts/permissions, inspection/download/import/analysis, queues and Workers, database, object storage and reports            |
+| [Framefetch Server / Web](https://github.com/StephenQiu30/framefetch) | FastAPI APIs, Next.js Web pages, accounts/permissions, inspection/download/import/analysis, queues and Workers, database, object storage and reports            |
 | **Framefetch Desktop, this repository**                                 | An independent Electron installer with shared React pages, connecting to the existing Server and providing windows, sessions and controlled native capabilities |
 | [Framefetch App](https://github.com/StephenQiu30/framefetch-app)             | Flutter iOS/Android client using the same Server contracts for native file import, playback, analysis, reports and administration                               |
 
@@ -145,7 +145,7 @@ Originals, normalized text, jobs and reports reside in configured Server storage
 
 ## Scope
 
-- Process authorized HTTP(S), non-DRM material. Providers, identity and network conditions affect availability. See the [Server provider scope and validation boundaries](https://github.com/StephenQiu30/framefetch-server/blob/main/docs/design/14-解析引擎.md#13-验证状态) (Chinese) for exact status and complete-file evidence.
+- Process authorized HTTP(S), non-DRM material. Providers, identity and network conditions affect availability. See the [Server provider scope and validation boundaries](https://github.com/StephenQiu30/framefetch/blob/main/docs/design/14-解析引擎.md#13-验证状态) (Chinese) for exact status and complete-file evidence.
 - The operator supplies the service, storage, network and models. External models may incur charges and receive the text or frames needed for analysis.
 - Current capabilities cover acquisition, management, built-in analysis/document organization and reports. Content writing, editing video, project/master-draft management, version confirmation, cards, ASR/OCR, DRM decryption, live recording, unbounded playlists, collaborative editing and automatic platform publishing are outside this scope.
 
