@@ -1,7 +1,7 @@
 {
   "version": 2,
   "repository": "https://github.com/StephenQiu30/framefetch",
-  "commit": "56c2ac730eefc2bd0b95dfb54fee655d58f6cacd",
+  "commit": "6f3497b91483243245dfdc0e1f34815255442e64",
   "schemaAuthority": "backend/sql/schema.sql",
   "apiContract": "FastAPI annotations -> /openapi.json -> frontend/openapi2ts.config.ts -> src/api",
   "visualAuthority": "design.md",
@@ -26,6 +26,7 @@
     "cn",
     "date-fns",
     "htmlparser2",
+    "input-otp",
     "marked",
     "next-themes",
     "radix-ui",
@@ -181,7 +182,7 @@
     {
       "source": "src/app/globals.css",
       "target": "src/renderer/frontend/app/globals.css",
-      "sha256": "c51d05482261eed424d51ca9aded5fd4cafd5b9088346e159591f61834b89726"
+      "sha256": "33bf6af6513500766d35316042aebc29022e0b9ca4b54b6f315f448b3ecef91e"
     },
     {
       "source": "src/app/guide/page.tsx",
@@ -601,7 +602,7 @@
     {
       "source": "src/components/auth/login-view.tsx",
       "target": "src/renderer/frontend/components/auth/login-view.tsx",
-      "sha256": "ed0fe2263ccf9e329b5bb718684c80a9f593e81b5ec2718383faf7943100e16c"
+      "sha256": "9bfa071a3e027e71ab93cfeddb79f3e5b3bc0174bdf0390c6fa017e2e15ff373"
     },
     {
       "source": "src/components/auth/password-input.tsx",
@@ -621,12 +622,12 @@
     {
       "source": "src/components/auth/register-view.tsx",
       "target": "src/renderer/frontend/components/auth/register-view.tsx",
-      "sha256": "560a483d1153baafd9bce8cdf887512f702f9581f245b9c481546bbbf7d3ce75"
+      "sha256": "2eaa110211ceeca876d444057dc433939ccb3904913b342f370f1beff60d4469"
     },
     {
       "source": "src/components/auth/registration-code-field.tsx",
       "target": "src/renderer/frontend/components/auth/registration-code-field.tsx",
-      "sha256": "e6978c5ec6ca946812f29e69ec6956e15e6641ba3cb18b6401b8f24c2b6ba6b4"
+      "sha256": "f84e44f01bc4da87b1c2f2af91bc00e03eae8e2b2e82888925ca13f2738f8442"
     },
     {
       "source": "src/components/content/content-report-history.tsx",
@@ -1304,6 +1305,11 @@
       "sha256": "054fba2cfa5cf52fc5f2d205f51ee9af8f07918960da1be68357825709f3e335"
     },
     {
+      "source": "src/components/ui/input-otp.tsx",
+      "target": "src/renderer/frontend/components/ui/input-otp.tsx",
+      "sha256": "df2ad18ea30b66d70c1364b40d25b5e4507a495e6e9888a569334c714d8962fd"
+    },
+    {
       "source": "src/components/ui/input.tsx",
       "target": "src/renderer/frontend/components/ui/input.tsx",
       "sha256": "70d4978de36356de053f3e515ffd232f7274d0b92ca46271b07ccec59848a194"
@@ -1551,7 +1557,7 @@
     {
       "source": "../design.md",
       "target": "design.md",
-      "sha256": "874f72b61dc9affa6026d49062ad86dd7d62f12365c7654c9c7a62367ca4b3e0"
+      "sha256": "61da99823cd11c94bf7f5202d4f1bf775954a343e9f465229ca85ccf9ff4c348"
     },
     {
       "source": "components.json",
