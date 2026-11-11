@@ -7,10 +7,8 @@ declare namespace API {
     | "unsupported";
 
   type activateAiProviderProfileParams = {
-    provider_key: string;
+    engine: AiProviderEngine;
   };
-
-  type AiProviderAuthMode = "api_key";
 
   type AiProviderConnectionTestResponse = {
     /** Ok */
@@ -51,11 +49,6 @@ declare namespace API {
 
   type AiProviderEngine = "volcengine" | "deepseek" | "openai";
 
-  type AiProviderPresetListResponse = {
-    /** Items */
-    items: AiProviderPresetResponse[];
-  };
-
   type AiProviderPresetResponse = {
     /** Id */
     id: string;
@@ -64,7 +57,6 @@ declare namespace API {
     display_name: string;
     /** Base Url */
     base_url: string;
-    auth_mode: AiProviderAuthMode;
     /** Default Model */
     default_model: string;
     /** Suggested Models */
@@ -91,34 +83,29 @@ declare namespace API {
   };
 
   type AiProviderProfileResponse = {
-    /** Key */
-    key: string;
+    engine: AiProviderEngine;
     /** Display Name */
     display_name: string;
-    engine: AiProviderEngine;
-    auth_mode: AiProviderAuthMode;
-    /** Base Url */
-    base_url: string | null;
-    /** Model */
-    model: string;
     /** Credential Configured */
     credential_configured: boolean;
     /** Is Active */
     is_active: boolean;
-    /** Is Fallback */
-    is_fallback: boolean;
     /** Preset Id */
-    preset_id: string | null;
+    preset_id: string;
+    /** Base Url */
+    base_url: string;
+    /** Model */
+    model: string;
     /** Supports Vision */
     supports_vision: boolean;
     /** Supports Models Endpoint */
     supports_models_endpoint: boolean;
     /** Structured Output Mode */
     structured_output_mode: "json_schema" | "json_object";
-    /** Created At */
-    created_at: string;
+    /** Presets */
+    presets: AiProviderPresetResponse[];
     /** Updated At */
-    updated_at: string;
+    updated_at: string | null;
   };
 
   type AiProviderSuggestedModelResponse = {
@@ -378,15 +365,6 @@ declare namespace API {
     message: string;
     /** 成功时为业务数据，错误时为 null。 */
     data: AiProviderConnectionTestResponse;
-  };
-
-  type ApiResponseAiProviderPresetListResponse_ = {
-    /** 稳定的业务结果码。 */
-    code: ErrorCode;
-    /** Message 安全的结果说明。 */
-    message: string;
-    /** 成功时为业务数据，错误时为 null。 */
-    data: AiProviderPresetListResponse;
   };
 
   type ApiResponseAiProviderProfileListResponse_ = {
@@ -767,10 +745,6 @@ declare namespace API {
     task_id: string;
   };
 
-  type clearFallbackAiProviderProfileParams = {
-    provider_key: string;
-  };
-
   type CompatibilityProfile = "balanced" | "quality" | "smallest";
 
   type completeDocumentImportParams = {
@@ -796,6 +770,21 @@ declare namespace API {
   type CompleteMediaImportRequest = {
     /** Parts */
     parts: CompletedPartRequest[];
+  };
+
+  type configureAiProviderParams = {
+    engine: AiProviderEngine;
+  };
+
+  type ConfigureAiProviderRequest = {
+    /** Preset Id */
+    preset_id?: string | null;
+    /** Model */
+    model?: string | null;
+    /** Api Key */
+    api_key?: string | null;
+    /** Activate */
+    activate?: boolean;
   };
 
   type ContainerPreference = "mp4" | "webm" | "source";
@@ -941,21 +930,6 @@ declare namespace API {
     content_sha256: string;
   };
 
-  type CreateAiProviderProfileRequest = {
-    /** Key */
-    key: string;
-    /** Display Name */
-    display_name: string;
-    engine: AiProviderEngine;
-    auth_mode: AiProviderAuthMode;
-    /** Base Url */
-    base_url?: string | null;
-    /** Model */
-    model: string;
-    /** Api Key */
-    api_key?: string | null;
-  };
-
   type createAnalysisParams = {
     download_id: string;
   };
@@ -990,7 +964,7 @@ declare namespace API {
   type DeclaredOrigin = "user_file" | "wechat_channels";
 
   type deleteAiProviderProfileParams = {
-    provider_key: string;
+    engine: AiProviderEngine;
   };
 
   type deleteAnalysisParams = {
@@ -1504,11 +1478,9 @@ declare namespace API {
     | "transient"
     | "invalid_input"
     | "runtime_unavailable"
-    | "active_ai_provider_delete"
     | "active_task_quota_exceeded"
     | "admin_bootstrap_required"
     | "ai_model_catalog_unavailable"
-    | "ai_provider_conflict"
     | "ai_provider_not_found"
     | "analysis_already_active"
     | "analysis_artifact_unavailable"
@@ -2574,10 +2546,6 @@ declare namespace API {
     compatibility_profile: CompatibilityProfile;
   };
 
-  type setFallbackAiProviderProfileParams = {
-    provider_key: string;
-  };
-
   type ShotResponse = {
     /** Id */
     id: string;
@@ -2845,29 +2813,9 @@ declare namespace API {
   };
 
   type TestAiProviderConnectionRequest = {
-    /** Provider Key */
-    provider_key?: string | null;
-    engine?: AiProviderEngine | null;
-    auth_mode?: AiProviderAuthMode | null;
-    /** Base Url */
-    base_url?: string | null;
-    /** Model */
-    model?: string | null;
-    /** Api Key */
-    api_key?: string | null;
-  };
-
-  type updateAiProviderProfileParams = {
-    provider_key: string;
-  };
-
-  type UpdateAiProviderProfileRequest = {
-    /** Display Name */
-    display_name?: string | null;
-    engine?: AiProviderEngine | null;
-    auth_mode?: AiProviderAuthMode | null;
-    /** Base Url */
-    base_url?: string | null;
+    engine: AiProviderEngine;
+    /** Preset Id */
+    preset_id?: string | null;
     /** Model */
     model?: string | null;
     /** Api Key */

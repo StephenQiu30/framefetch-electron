@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { request, type RequestOptions } from "@/lib/request";
 
-/** 查询 AI 分析 Provider GET /api/admin/ai-providers */
+/** 查看内置官方 AI 服务配置状态 GET /api/admin/ai-providers */
 export async function listAiProviderProfiles(options?: RequestOptions) {
   return request<API.ApiResponseAiProviderProfileListResponse_>(
     "/api/admin/ai-providers",
@@ -13,50 +13,18 @@ export async function listAiProviderProfiles(options?: RequestOptions) {
   );
 }
 
-/** 新增 AI 分析 Provider POST /api/admin/ai-providers */
-export async function createAiProviderProfile(
-  body: API.CreateAiProviderProfileRequest,
-  options?: RequestOptions
-) {
-  return request<API.ApiResponseAiProviderProfileResponse_>(
-    "/api/admin/ai-providers",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: body,
-      ...(options || {}),
-    }
-  );
-}
-
-/** 删除 AI 分析 Provider DELETE /api/admin/ai-providers/${param0} */
-export async function deleteAiProviderProfile(
+/** 配置并启用内置官方 AI 服务 PUT /api/admin/ai-providers/${param0} */
+export async function configureAiProvider(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.deleteAiProviderProfileParams,
+  params: API.configureAiProviderParams,
+  body: API.ConfigureAiProviderRequest,
   options?: RequestOptions
 ) {
-  const { provider_key: param0, ...queryParams } = params;
-  return request<any>(`/api/admin/ai-providers/${param0}`, {
-    method: "DELETE",
-    params: { ...queryParams },
-    ...(options || {}),
-  });
-}
-
-/** 更新 AI 分析 Provider PATCH /api/admin/ai-providers/${param0} */
-export async function updateAiProviderProfile(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.updateAiProviderProfileParams,
-  body: API.UpdateAiProviderProfileRequest,
-  options?: RequestOptions
-) {
-  const { provider_key: param0, ...queryParams } = params;
+  const { engine: param0, ...queryParams } = params;
   return request<API.ApiResponseAiProviderProfileResponse_>(
     `/api/admin/ai-providers/${param0}`,
     {
-      method: "PATCH",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -67,13 +35,27 @@ export async function updateAiProviderProfile(
   );
 }
 
-/** 启用 AI 分析 Provider POST /api/admin/ai-providers/${param0}/activate */
+/** 清除官方 AI 服务已保存密钥与配置 DELETE /api/admin/ai-providers/${param0} */
+export async function deleteAiProviderProfile(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.deleteAiProviderProfileParams,
+  options?: RequestOptions
+) {
+  const { engine: param0, ...queryParams } = params;
+  return request<any>(`/api/admin/ai-providers/${param0}`, {
+    method: "DELETE",
+    params: { ...queryParams },
+    ...(options || {}),
+  });
+}
+
+/** 启用已配置的官方 AI 服务 POST /api/admin/ai-providers/${param0}/activate */
 export async function activateAiProviderProfile(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.activateAiProviderProfileParams,
   options?: RequestOptions
 ) {
-  const { provider_key: param0, ...queryParams } = params;
+  const { engine: param0, ...queryParams } = params;
   return request<API.ApiResponseAiProviderProfileResponse_>(
     `/api/admin/ai-providers/${param0}/activate`,
     {
@@ -84,52 +66,7 @@ export async function activateAiProviderProfile(
   );
 }
 
-/** 设为备用兜底 AI Provider POST /api/admin/ai-providers/${param0}/fallback */
-export async function setFallbackAiProviderProfile(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.setFallbackAiProviderProfileParams,
-  options?: RequestOptions
-) {
-  const { provider_key: param0, ...queryParams } = params;
-  return request<API.ApiResponseAiProviderProfileResponse_>(
-    `/api/admin/ai-providers/${param0}/fallback`,
-    {
-      method: "POST",
-      params: { ...queryParams },
-      ...(options || {}),
-    }
-  );
-}
-
-/** 取消备用兜底 AI Provider DELETE /api/admin/ai-providers/${param0}/fallback */
-export async function clearFallbackAiProviderProfile(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.clearFallbackAiProviderProfileParams,
-  options?: RequestOptions
-) {
-  const { provider_key: param0, ...queryParams } = params;
-  return request<API.ApiResponseAiProviderProfileResponse_>(
-    `/api/admin/ai-providers/${param0}/fallback`,
-    {
-      method: "DELETE",
-      params: { ...queryParams },
-      ...(options || {}),
-    }
-  );
-}
-
-/** 查询官方 AI 渠道预设与能力目录 GET /api/admin/ai-providers/presets */
-export async function listAiProviderPresets(options?: RequestOptions) {
-  return request<API.ApiResponseAiProviderPresetListResponse_>(
-    "/api/admin/ai-providers/presets",
-    {
-      method: "GET",
-      ...(options || {}),
-    }
-  );
-}
-
-/** 测试官方 AI 渠道连通性与模型能力 POST /api/admin/ai-providers/test */
+/** 探测官方 AI 服务端点与模型可用性 POST /api/admin/ai-providers/test */
 export async function testAiProviderConnection(
   body: API.TestAiProviderConnectionRequest,
   options?: RequestOptions

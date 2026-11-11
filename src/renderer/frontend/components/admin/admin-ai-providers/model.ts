@@ -1,49 +1,32 @@
-export type AiProviderEditorState = {
-  mode: 'create' | 'edit' | null;
-  key: string;
-  displayName: string;
-  engine: API.AiProviderEngine;
-  authMode: API.AiProviderAuthMode;
-  baseUrl: string;
-  model: string;
-  apiKey: string;
-  credentialConfigured: boolean;
-  error: string;
-  saving: boolean;
-  testing: boolean;
-  testResult: API.AiProviderConnectionTestResponse | null;
-  testError: string;
-};
+export const ENGINE_ORDER: API.AiProviderEngine[] = [
+  'volcengine',
+  'deepseek',
+  'openai',
+];
 
-export const OFFICIAL_PROVIDER_PRESET_DEFAULTS: readonly API.AiProviderPresetResponse[] =
+export const OFFICIAL_PROVIDER_PRESET_DEFAULTS: API.AiProviderPresetResponse[] =
   [
     {
       id: 'volcengine-ark-v3',
       engine: 'volcengine',
-      display_name: '火山引擎方舟（按量付费 V3）',
+      display_name: '按量付费 V3',
       base_url: 'https://ark.cn-beijing.volces.com/api/v3',
-      auth_mode: 'api_key',
       default_model: 'doubao-seed-2-0-lite',
       suggested_models: [
         {
           id: 'doubao-seed-2-0-lite',
-          label: 'Doubao Seed 2.0 Lite（多模态）',
+          label: 'Doubao Seed 2.0 Lite',
           supports_vision: true,
         },
         {
-          id: 'doubao-seed-2-0-pro',
-          label: 'Doubao Seed 2.0 Pro（多模态）',
+          id: 'doubao-1.5-vision-pro',
+          label: 'Doubao 1.5 Vision Pro',
           supports_vision: true,
         },
         {
-          id: 'doubao-seed-1-6-vision-250815',
-          label: 'Doubao Seed 1.6 Vision（多模态）',
+          id: 'doubao-seed-1.6',
+          label: 'Doubao Seed 1.6',
           supports_vision: true,
-        },
-        {
-          id: 'deepseek-v3-250324',
-          label: 'DeepSeek V3（方舟纯文本）',
-          supports_vision: false,
         },
       ],
       supports_vision: true,
@@ -52,25 +35,18 @@ export const OFFICIAL_PROVIDER_PRESET_DEFAULTS: readonly API.AiProviderPresetRes
       endpoint_kind: 'payg',
       supports_custom_model_id: true,
       key_isolation_notice:
-        '仅使用方舟按量 API Key，禁止与 Coding Plan / Agent Plan 套餐密钥混用；支持官方 Model ID 或接入点 ID（ep-...）。',
+        '使用方舟常规 V3 按量付费 API Key；请勿与 Coding Plan 或 Agent Plan 套餐密钥混用。',
     },
     {
       id: 'volcengine-coding-v3',
       engine: 'volcengine',
-      display_name: '火山引擎方舟（Coding Plan V3）',
+      display_name: 'Coding Plan V3',
       base_url: 'https://ark.cn-beijing.volces.com/api/coding/v3',
-      auth_mode: 'api_key',
       default_model: 'ark-code-latest',
       suggested_models: [
         {
           id: 'ark-code-latest',
-          label: 'Ark Code Latest（编码套餐）',
-          supports_vision: false,
-          notes: 'Coding Plan 套餐默认聚合模型',
-        },
-        {
-          id: 'doubao-seed-code',
-          label: 'Doubao Seed Code（纯文本）',
+          label: 'Ark Code Latest（智能编程）',
           supports_vision: false,
         },
       ],
@@ -80,24 +56,18 @@ export const OFFICIAL_PROVIDER_PRESET_DEFAULTS: readonly API.AiProviderPresetRes
       endpoint_kind: 'coding_plan',
       supports_custom_model_id: true,
       key_isolation_notice:
-        '仅使用方舟 Coding Plan 专属 API Key，不可与按量 V3 或 Agent Plan 混用；该套餐端点不支持 GET /models。',
+        '仅用于方舟 Coding Plan 专属 API Key，禁止与按量付费或 Agent Plan 套餐密钥混用。',
     },
     {
       id: 'volcengine-agent-v3',
       engine: 'volcengine',
-      display_name: '火山引擎方舟（Agent Plan V3）',
+      display_name: 'Agent Plan V3',
       base_url: 'https://ark.cn-beijing.volces.com/api/plan/v3',
-      auth_mode: 'api_key',
       default_model: 'doubao-seed-2-0-lite',
       suggested_models: [
         {
           id: 'doubao-seed-2-0-lite',
-          label: 'Doubao Seed 2.0 Lite（多模态）',
-          supports_vision: true,
-        },
-        {
-          id: 'doubao-seed-2-0-pro',
-          label: 'Doubao Seed 2.0 Pro（多模态）',
+          label: 'Doubao Seed 2.0 Lite',
           supports_vision: true,
         },
       ],
@@ -107,243 +77,206 @@ export const OFFICIAL_PROVIDER_PRESET_DEFAULTS: readonly API.AiProviderPresetRes
       endpoint_kind: 'agent_plan',
       supports_custom_model_id: true,
       key_isolation_notice:
-        '仅使用方舟 Agent Plan 专属 API Key，不可与按量 V3 或 Coding Plan 混用；该套餐端点不支持 GET /models。',
+        '仅用于方舟 Agent Plan 专属 API Key，禁止与按量付费或 Coding Plan 套餐密钥混用。',
     },
     {
       id: 'deepseek-official',
       engine: 'deepseek',
-      display_name: 'DeepSeek 官方',
+      display_name: '官方直连',
       base_url: 'https://api.deepseek.com',
-      auth_mode: 'api_key',
       default_model: 'deepseek-chat',
       suggested_models: [
         {
           id: 'deepseek-chat',
-          label: 'DeepSeek Chat（纯文本）',
+          label: 'DeepSeek Chat (V3)',
           supports_vision: false,
         },
         {
           id: 'deepseek-reasoner',
-          label: 'DeepSeek Reasoner（纯文本推理）',
+          label: 'DeepSeek Reasoner (R1)',
           supports_vision: false,
         },
-        {
-          id: 'deepseek-v4-flash-vision-exp',
-          label: 'DeepSeek V4 Flash Vision（多模态）',
-          supports_vision: true,
-        },
       ],
-      supports_vision: true,
+      supports_vision: false,
       supports_models_endpoint: true,
       structured_output_mode: 'json_object',
       endpoint_kind: 'official',
-      supports_custom_model_id: true,
-      key_isolation_notice:
-        '官方直连 https://api.deepseek.com；纯文本模型可用于剧本与文档类 Skill，视频视觉分析需选择多模态视觉模型。',
+      supports_custom_model_id: false,
+      key_isolation_notice: '仅支持文本/剧本/文档类 Skill，不接收视频图像帧。',
     },
     {
       id: 'openai-official',
       engine: 'openai',
-      display_name: 'OpenAI 官方',
+      display_name: '官方直连',
       base_url: 'https://api.openai.com/v1',
-      auth_mode: 'api_key',
       default_model: 'gpt-4.1-mini',
       suggested_models: [
         {
           id: 'gpt-4.1-mini',
-          label: 'GPT-4.1 Mini（多模态）',
+          label: 'GPT-4.1 Mini',
           supports_vision: true,
         },
         {
           id: 'gpt-4.1',
-          label: 'GPT-4.1（多模态）',
+          label: 'GPT-4.1',
           supports_vision: true,
         },
         {
           id: 'gpt-4o',
-          label: 'GPT-4o（多模态）',
+          label: 'GPT-4o',
           supports_vision: true,
-        },
-        {
-          id: 'gpt-4o-mini',
-          label: 'GPT-4o Mini（多模态）',
-          supports_vision: true,
-        },
-        {
-          id: 'o3-mini',
-          label: 'o3-mini（纯文本推理）',
-          supports_vision: false,
         },
       ],
       supports_vision: true,
       supports_models_endpoint: true,
       structured_output_mode: 'json_schema',
       endpoint_kind: 'official',
-      supports_custom_model_id: true,
+      supports_custom_model_id: false,
       key_isolation_notice:
-        '官方直连 https://api.openai.com/v1，原生支持 json_schema strict 与多模态工具调用。',
+        'OpenAI 官方平台直连，支持 Strict JSON Schema 与多模态视觉分析。',
     },
   ];
 
-export const EMPTY_AI_PROVIDER_EDITOR: AiProviderEditorState = {
-  mode: null,
-  key: '',
-  displayName: '',
-  engine: 'volcengine',
-  authMode: 'api_key',
-  baseUrl: 'https://ark.cn-beijing.volces.com/api/v3',
-  model: 'doubao-seed-2-0-lite',
-  apiKey: '',
-  credentialConfigured: false,
-  error: '',
-  saving: false,
-  testing: false,
-  testResult: null,
-  testError: '',
+export type AiServiceDraft = {
+  engine: API.AiProviderEngine;
+  presetId: string;
+  model: string;
+  apiKey: string;
+  saving: boolean;
+  testing: boolean;
+  error: string;
+  testResult: API.AiProviderConnectionTestResponse | null;
+  testError: string;
 };
 
-const ENGINE_LABELS = {
-  volcengine: '火山引擎方舟',
-  deepseek: 'DeepSeek 官方',
-  openai: 'OpenAI 官方',
-} satisfies Record<API.AiProviderEngine, string>;
+export function createDraftFromService(
+  service: API.AiProviderProfileResponse,
+): AiServiceDraft {
+  return {
+    engine: service.engine,
+    presetId: service.preset_id,
+    model: service.model,
+    apiKey: '',
+    saving: false,
+    testing: false,
+    error: '',
+    testResult: null,
+    testError: '',
+  };
+}
 
-const ENDPOINT_KIND_LABELS: Record<string, string> = {
-  payg: '按量付费 V3',
-  coding_plan: 'Coding Plan V3',
-  agent_plan: 'Agent Plan V3',
-  official: '官方直连',
-};
+export function pickInitialEngine(
+  items: API.AiProviderProfileResponse[],
+  preferred?: API.AiProviderEngine | null,
+): API.AiProviderEngine {
+  if (preferred && items.some((item) => item.engine === preferred)) {
+    return preferred;
+  }
+  const active = items.find((item) => item.is_active);
+  if (active) return active.engine;
+  const configured = items.find((item) => item.credential_configured);
+  if (configured) return configured.engine;
+  return items[0]?.engine ?? 'volcengine';
+}
 
-const API_BASE_URLS = {
-  volcengine: 'https://ark.cn-beijing.volces.com/api/v3',
-  deepseek: 'https://api.deepseek.com',
-  openai: 'https://api.openai.com/v1',
-} satisfies Record<API.AiProviderEngine, string>;
-
-function normalizePresets(
-  presets?: readonly API.AiProviderPresetResponse[],
-): readonly API.AiProviderPresetResponse[] {
-  return presets && presets.length > 0
-    ? presets
-    : OFFICIAL_PROVIDER_PRESET_DEFAULTS;
+export function resolveActivePreset(
+  service: API.AiProviderProfileResponse,
+  presetId?: string,
+): API.AiProviderPresetResponse {
+  const presets = service.presets.length
+    ? service.presets
+    : providerPresetsForEngine(service.engine);
+  return (
+    presets.find((item) => item.id === presetId) ??
+    presets.find((item) => item.id === service.preset_id) ??
+    presets[0]
+  );
 }
 
 export function providerPresetsForEngine(
   engine: API.AiProviderEngine,
-  presets?: readonly API.AiProviderPresetResponse[],
 ): API.AiProviderPresetResponse[] {
-  return normalizePresets(presets).filter((item) => item.engine === engine);
-}
-
-function normalizedPathname(rawUrl: string): string {
-  const trimmed = rawUrl.trim();
-  if (!trimmed) return '';
-  try {
-    const parsed = new URL(trimmed);
-    return parsed.pathname.replace(/\/+$/, '') || '/';
-  } catch {
-    return trimmed.replace(/\/+$/, '');
-  }
-}
-
-export function findMatchingPreset(
-  engine: API.AiProviderEngine,
-  baseUrl: string,
-  presets?: readonly API.AiProviderPresetResponse[],
-): API.AiProviderPresetResponse | undefined {
-  const candidates = providerPresetsForEngine(engine, presets);
-  if (candidates.length === 0) return undefined;
-  const path = normalizedPathname(baseUrl);
-  if (path) {
-    const exact = candidates.find(
-      (preset) => normalizedPathname(preset.base_url) === path,
-    );
-    if (exact) return exact;
-  }
-  return candidates[0];
-}
-
-export function providerEngineDefaults(
-  engine: API.AiProviderEngine,
-  presets?: readonly API.AiProviderPresetResponse[],
-): Pick<AiProviderEditorState, 'authMode' | 'baseUrl' | 'model'> {
-  const primary = providerPresetsForEngine(engine, presets)[0];
-  return {
-    authMode: 'api_key',
-    baseUrl: primary ? primary.base_url : providerApiBaseUrl(engine),
-    model: primary ? primary.default_model : '',
-  };
+  return OFFICIAL_PROVIDER_PRESET_DEFAULTS.filter(
+    (item) => item.engine === engine,
+  );
 }
 
 export function providerEngineLabel(engine: API.AiProviderEngine): string {
-  return ENGINE_LABELS[engine];
+  switch (engine) {
+    case 'volcengine':
+      return '火山引擎方舟';
+    case 'deepseek':
+      return 'DeepSeek';
+    case 'openai':
+      return 'OpenAI';
+  }
 }
 
 export function endpointKindLabel(kind: string): string {
-  return ENDPOINT_KIND_LABELS[kind] ?? kind;
+  switch (kind) {
+    case 'payg':
+      return '按量付费 V3';
+    case 'coding_plan':
+      return 'Coding Plan V3';
+    case 'agent_plan':
+      return 'Agent Plan V3';
+    default:
+      return '官方直连';
+  }
 }
 
-export function providerApiBaseUrl(engine: API.AiProviderEngine): string {
-  return API_BASE_URLS[engine];
+export function structuredOutputLabel(
+  mode: API.AiProviderProfileResponse['structured_output_mode'],
+): string {
+  return mode === 'json_schema' ? '严格 JSON Schema' : 'JSON Object';
 }
-
-const OPENAI_TEXT_ONLY_PREFIXES = [
-  'o1-mini',
-  'o1-preview',
-  'o3-mini',
-  'gpt-3.5',
-  'text-',
-];
 
 export function inferModelSupportsVision(
   engine: API.AiProviderEngine,
   model: string,
   baseUrl: string,
-  presets?: readonly API.AiProviderPresetResponse[],
 ): { supportsVision: boolean; uncertain: boolean } {
-  const normalized = model.trim().toLowerCase();
-  const preset = findMatchingPreset(engine, baseUrl, presets);
-  if (preset) {
-    if (!preset.supports_vision) {
-      return { supportsVision: false, uncertain: false };
-    }
-    const matched = preset.suggested_models.find(
-      (item) => item.id.toLowerCase() === normalized,
-    );
-    if (matched) {
-      return { supportsVision: matched.supports_vision, uncertain: false };
-    }
-  }
-  if (!normalized) {
-    return {
-      supportsVision: preset ? preset.supports_vision : false,
-      uncertain: false,
-    };
-  }
-  if (engine === 'volcengine' && normalized.startsWith('ep-')) {
-    return { supportsVision: true, uncertain: true };
-  }
+  const normalizedModel = model.trim().toLowerCase();
+  const normalizedUrl = baseUrl.trim().toLowerCase();
   if (engine === 'deepseek') {
-    if (normalized === 'deepseek-chat' || normalized === 'deepseek-reasoner') {
-      return { supportsVision: false, uncertain: false };
-    }
-    return {
-      supportsVision:
-        normalized.includes('vision') || normalized.includes('vl'),
-      uncertain: !normalized.includes('vision') && !normalized.includes('vl'),
-    };
+    return { supportsVision: false, uncertain: false };
   }
-  if (engine === 'openai') {
+  if (engine === 'volcengine') {
+    if (normalizedModel.startsWith('ep-')) {
+      return { supportsVision: true, uncertain: true };
+    }
     if (
-      OPENAI_TEXT_ONLY_PREFIXES.some((prefix) => normalized.startsWith(prefix))
+      normalizedUrl.includes('/api/coding/v3') &&
+      normalizedModel === 'ark-code-latest'
     ) {
       return { supportsVision: false, uncertain: false };
     }
+    if (
+      normalizedModel.includes('vision') ||
+      normalizedModel.includes('doubao-seed') ||
+      normalizedModel.includes('vl')
+    ) {
+      return { supportsVision: true, uncertain: false };
+    }
+    if (!normalizedModel) return { supportsVision: true, uncertain: true };
+    return { supportsVision: true, uncertain: true };
+  }
+  if (
+    normalizedModel.startsWith('o1') ||
+    normalizedModel.startsWith('o3') ||
+    normalizedModel.startsWith('o4') ||
+    normalizedModel.startsWith('gpt-3.5') ||
+    normalizedModel === 'gpt-4'
+  ) {
+    return { supportsVision: false, uncertain: false };
+  }
+  if (
+    normalizedModel.startsWith('gpt-4.1') ||
+    normalizedModel.startsWith('gpt-4o') ||
+    normalizedModel.startsWith('gpt-5') ||
+    normalizedModel.includes('vision')
+  ) {
     return { supportsVision: true, uncertain: false };
   }
-  return {
-    supportsVision: !normalized.includes('deepseek-v3'),
-    uncertain: true,
-  };
+  return { supportsVision: true, uncertain: true };
 }

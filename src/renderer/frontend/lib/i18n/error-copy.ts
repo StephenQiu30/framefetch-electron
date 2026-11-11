@@ -131,8 +131,6 @@ const englishErrorMessages: Record<string, string> = {
     'The request limit service is temporarily unavailable. Try again later.',
   request_timeout: 'The request timed out. Try again later.',
   request_too_large: 'The submission is too large. Reduce it and try again.',
-  reserved_ai_provider_mutation:
-    'This reserved AI provider configuration does not allow that change.',
   resource_expired:
     'The original media parse is no longer valid. Parse the link again.',
   self_admin_change:

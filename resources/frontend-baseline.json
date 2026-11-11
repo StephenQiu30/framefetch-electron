@@ -1,7 +1,7 @@
 {
   "version": 2,
   "repository": "https://github.com/StephenQiu30/framefetch",
-  "commit": "937b253770a705ce0793351b9c60d55f8e87ad29",
+  "commit": "351906ab1d9c6ac35c045e2c0dfb699f31b5a7f2",
   "schemaAuthority": "backend/sql/schema.sql",
   "apiContract": "FastAPI annotations -> /openapi.json -> frontend/openapi2ts.config.ts -> src/api",
   "visualAuthority": "design.md",
@@ -42,7 +42,7 @@
     {
       "source": "src/api/admin.ts",
       "target": "src/renderer/frontend/api/admin.ts",
-      "sha256": "497622a306af91544192f6602924d1835153e25962d82e3be4331e5b965172fa"
+      "sha256": "81b4b982078bd09975a04f7d315083ca0ddfd6681dbfd354e441218ea5b7c228"
     },
     {
       "source": "src/api/analyses.ts",
@@ -107,7 +107,7 @@
     {
       "source": "src/api/typings.d.ts",
       "target": "src/renderer/frontend/api/typings.d.ts",
-      "sha256": "95a165b0110c4a84ec034db77bbea65444ab6d4ce86341553bfd63cf2a75a7bb"
+      "sha256": "1dae13d9c0276bb46c423971c5ab23841d90bbd64cf71f90364c3086f1999f99"
     },
     {
       "source": "src/api/users.ts",
@@ -227,37 +227,27 @@
     {
       "source": "src/components/admin/admin-ai-providers-view.tsx",
       "target": "src/renderer/frontend/components/admin/admin-ai-providers-view.tsx",
-      "sha256": "59d41e9f2a2106daed56325f79ed95f1e3612bd42a6bc1d2d7102ad9b5e7db3e"
-    },
-    {
-      "source": "src/components/admin/admin-ai-providers/ai-provider-delete.tsx",
-      "target": "src/renderer/frontend/components/admin/admin-ai-providers/ai-provider-delete.tsx",
-      "sha256": "886e00090d914c4afc82cb8759e6293e6e0ae1c35fa3c3274734e4968e3c06d7"
-    },
-    {
-      "source": "src/components/admin/admin-ai-providers/ai-provider-editor.tsx",
-      "target": "src/renderer/frontend/components/admin/admin-ai-providers/ai-provider-editor.tsx",
-      "sha256": "3c47ed10e86fa4a6f9520b58609a8412a733569b7bde14ba5f93a82e3ab93469"
-    },
-    {
-      "source": "src/components/admin/admin-ai-providers/ai-provider-fields.tsx",
-      "target": "src/renderer/frontend/components/admin/admin-ai-providers/ai-provider-fields.tsx",
-      "sha256": "dca847d54449ff9e898908f8c740fabe596919d97cf0fde9c9e3dbc437d4553d"
-    },
-    {
-      "source": "src/components/admin/admin-ai-providers/ai-provider-list.tsx",
-      "target": "src/renderer/frontend/components/admin/admin-ai-providers/ai-provider-list.tsx",
-      "sha256": "385b8474249f90a4da349db56fe8fb9f6bf843dfda202d0c5afb44fd52b1cac8"
+      "sha256": "fb8c3fa84872360e0b6c6b64e192b9e0d1d3754d9094cc5cf945b9b5a5e92017"
     },
     {
       "source": "src/components/admin/admin-ai-providers/ai-provider-screen.tsx",
       "target": "src/renderer/frontend/components/admin/admin-ai-providers/ai-provider-screen.tsx",
-      "sha256": "68b3ce5490a8e84f00159a2c115c3fd842b24b8eb9be498327b2548c896c1fb5"
+      "sha256": "4a299aa90beb4d0148718f8ba6e13cc9608d3daffed23751ba8728aa9168635e"
+    },
+    {
+      "source": "src/components/admin/admin-ai-providers/ai-service-configurator.tsx",
+      "target": "src/renderer/frontend/components/admin/admin-ai-providers/ai-service-configurator.tsx",
+      "sha256": "9e292ac144907fad71761137537e38202f1a50eff135f9db3a040c4676246ac7"
+    },
+    {
+      "source": "src/components/admin/admin-ai-providers/ai-service-selector.tsx",
+      "target": "src/renderer/frontend/components/admin/admin-ai-providers/ai-service-selector.tsx",
+      "sha256": "8e4300962d5615d05d1b4fca2124dfe749eef48c70fb8823fa78b0e69bad3875"
     },
     {
       "source": "src/components/admin/admin-ai-providers/model.ts",
       "target": "src/renderer/frontend/components/admin/admin-ai-providers/model.ts",
-      "sha256": "18b34dda54da1b7a1339582e98d7c1f6e34b4168e0241772d0e4384cbc5089d9"
+      "sha256": "0049ccce2b944b23ecc1a1dd07558a9495f2e962fbb4792744e7e03b6f482ae1"
     },
     {
       "source": "src/components/admin/admin-analytics-view.tsx",
@@ -1442,7 +1432,7 @@
     {
       "source": "src/lib/error-messages.ts",
       "target": "src/renderer/frontend/lib/error-messages.ts",
-      "sha256": "66e20a23cc4f7848bda76c386ed9258958728c423802d26bc6833eed5c8e2956"
+      "sha256": "1bcc1a95080b9ab288301400e1668029cdf61e6786112aec6609d985f93e530a"
     },
     {
       "source": "src/lib/format.ts",
@@ -1452,7 +1442,7 @@
     {
       "source": "src/lib/i18n/error-copy.ts",
       "target": "src/renderer/frontend/lib/i18n/error-copy.ts",
-      "sha256": "d4903a23ad81a61ba21566f6561fbaa5773d8991da032c2641b162f0c4574121"
+      "sha256": "04a5978653ed658b1a6c90abe3d8bc9f4f27d1d79ab53dbd6f554cde1ae2797f"
     },
     {
       "source": "src/lib/i18n/i18n-provider.tsx",
@@ -1572,7 +1562,7 @@
     {
       "source": "../design.md",
       "target": "design.md",
-      "sha256": "7e77879d50b56002fabef9df0574184aa56766e475266b68ef924db19bd28415"
+      "sha256": "63ebba356f78e97e700b625fd30043346b1049e358bd656150863e48723cf8e8"
     },
     {
       "source": "components.json",

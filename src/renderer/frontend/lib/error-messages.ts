@@ -90,7 +90,6 @@ const localizedErrorMessages: Record<string, string> = {
   rate_limiter_unavailable: '请求限制服务暂时不可用，请稍后重试。',
   request_timeout: '请求处理超时，请稍后重试。',
   request_too_large: '提交内容超过大小限制，请缩小后重试。',
-  reserved_ai_provider_mutation: '当前保留配置不支持此修改。',
   resource_expired: '原始媒体解析信息已失效，请重新解析链接。',
   self_admin_change: '管理员不能停用或删除自己的账户。',
   service_unavailable: '服务暂时不可用，请稍后重试。',
