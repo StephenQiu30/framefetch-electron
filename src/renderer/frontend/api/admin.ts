@@ -84,12 +84,64 @@ export async function activateAiProviderProfile(
   );
 }
 
-/** 查询 OpenRouter 公开模型能力 GET /api/admin/ai-providers/models/openrouter */
-export async function listOpenRouterModels(options?: RequestOptions) {
-  return request<API.ApiResponseAiModelListResponse_>(
-    "/api/admin/ai-providers/models/openrouter",
+/** 设为备用兜底 AI Provider POST /api/admin/ai-providers/${param0}/fallback */
+export async function setFallbackAiProviderProfile(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.setFallbackAiProviderProfileParams,
+  options?: RequestOptions
+) {
+  const { provider_key: param0, ...queryParams } = params;
+  return request<API.ApiResponseAiProviderProfileResponse_>(
+    `/api/admin/ai-providers/${param0}/fallback`,
+    {
+      method: "POST",
+      params: { ...queryParams },
+      ...(options || {}),
+    }
+  );
+}
+
+/** 取消备用兜底 AI Provider DELETE /api/admin/ai-providers/${param0}/fallback */
+export async function clearFallbackAiProviderProfile(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.clearFallbackAiProviderProfileParams,
+  options?: RequestOptions
+) {
+  const { provider_key: param0, ...queryParams } = params;
+  return request<API.ApiResponseAiProviderProfileResponse_>(
+    `/api/admin/ai-providers/${param0}/fallback`,
+    {
+      method: "DELETE",
+      params: { ...queryParams },
+      ...(options || {}),
+    }
+  );
+}
+
+/** 查询官方 AI 渠道预设与能力目录 GET /api/admin/ai-providers/presets */
+export async function listAiProviderPresets(options?: RequestOptions) {
+  return request<API.ApiResponseAiProviderPresetListResponse_>(
+    "/api/admin/ai-providers/presets",
     {
       method: "GET",
+      ...(options || {}),
+    }
+  );
+}
+
+/** 测试官方 AI 渠道连通性与模型能力 POST /api/admin/ai-providers/test */
+export async function testAiProviderConnection(
+  body: API.TestAiProviderConnectionRequest,
+  options?: RequestOptions
+) {
+  return request<API.ApiResponseAiProviderConnectionTestResponse_>(
+    "/api/admin/ai-providers/test",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: body,
       ...(options || {}),
     }
   );

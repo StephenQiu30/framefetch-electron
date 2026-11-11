@@ -30,10 +30,12 @@ type Props = {
   items: API.AiProviderProfileResponse[];
   loading: boolean;
   onActivate: (item: API.AiProviderProfileResponse) => void;
+  onClearFallback?: (item: API.AiProviderProfileResponse) => void;
   onCreate: () => void;
   onDelete: (item: API.AiProviderProfileResponse) => void;
   onEdit: (item: API.AiProviderProfileResponse) => void;
   onRetry: () => void;
+  onSetFallback?: (item: API.AiProviderProfileResponse) => void;
 };
 
 export function AiProviderScreen({
@@ -43,10 +45,12 @@ export function AiProviderScreen({
   items,
   loading,
   onActivate,
+  onClearFallback,
   onCreate,
   onDelete,
   onEdit,
   onRetry,
+  onSetFallback,
 }: Props) {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
@@ -59,6 +63,8 @@ export function AiProviderScreen({
     currentPage * pageSize,
   );
   const active = items.find((item) => item.is_active);
+  const fallback = items.find((item) => item.is_fallback);
+
   return (
     <div aria-busy={loading} className="flex flex-col gap-8">
       <div>
@@ -70,7 +76,7 @@ export function AiProviderScreen({
               新增 AI 服务
             </Button>
           }
-          description="默认使用服务端本机 Codex；可在这里新增并启用第三方 API。切换后从下一次分析任务生效，无需修改环境文件。"
+          description="通过火山引擎方舟、DeepSeek 与 OpenAI 官方 API 执行分析。主备线路与加密凭据配置会在容器化 analysis-worker 下一次任务时生效。"
           title="AI 服务"
         />
       </div>
@@ -106,12 +112,12 @@ export function AiProviderScreen({
             </ItemDescription>
             <ItemTitle className="line-clamp-none">
               <h2 className="mt-1" id="active-ai-route">
-                Agent 与模型连接状态
+                Worker 与官方渠道状态
               </h2>
             </ItemTitle>
           </div>
           <Badge variant={agentAvailable ? 'default' : 'destructive'}>
-            {agentAvailable ? 'Agent 在线' : 'Agent 离线'}
+            {agentAvailable ? 'Worker 在线' : 'Worker 离线'}
           </Badge>
         </div>
         <div>
@@ -125,13 +131,14 @@ export function AiProviderScreen({
                     <h3>{active.display_name}</h3>
                   </ItemTitle>
                   <Badge variant="default">已启用</Badge>
-                  <Badge variant="secondary">
-                    {active.auth_mode === 'host_login'
-                      ? '免 Key'
-                      : 'Key 已加密'}
+                  <Badge variant="secondary">Key 已加密</Badge>
+                  <Badge
+                    variant={active.supports_vision ? 'secondary' : 'outline'}
+                  >
+                    {active.supports_vision ? '支持多模态' : '纯文本模型'}
                   </Badge>
                 </div>
-                <ExecutionRoute active={active} />
+                <ExecutionRoute active={active} fallback={fallback} />
               </div>
               <div className="lg:text-right">
                 <ItemDescription className="line-clamp-none">
@@ -144,18 +151,18 @@ export function AiProviderScreen({
             </div>
           ) : (
             <ItemDescription className="line-clamp-none">
-              尚未启用 Provider。新增配置后将其设为当前线路。
+              尚未启用官方 Provider。新增配置并测试连接后，将其设为当前线路。
             </ItemDescription>
           )}
         </div>
         {!agentAvailable ? (
           <Alert className="mt-3">
             <WarningCircle aria-hidden />
-            <AlertTitle>分析 Agent 暂时离线</AlertTitle>
+            <AlertTitle>分析 Worker 暂时离线</AlertTitle>
             <AlertDescription>
-              配置仍然有效，新的分析任务会先进入可靠队列，待 Agent
-              恢复后继续处理。请检查宿主机分析 Worker、Codex
-              登录、数据库与消息队列。
+              配置仍然有效，新的分析任务会先进入 Temporal 可靠队列，待容器化
+              analysis-worker 恢复后继续处理。请检查 analysis-worker
+              容器、PostgreSQL 与 Temporal 服务状态。
             </AlertDescription>
           </Alert>
         ) : null}
@@ -190,8 +197,10 @@ export function AiProviderScreen({
               }
               items={visible}
               onActivate={onActivate}
+              onClearFallback={onClearFallback}
               onDelete={onDelete}
               onEdit={onEdit}
+              onSetFallback={onSetFallback}
             />
           ) : error ? null : (
             <PageEmptyNotice
@@ -202,7 +211,7 @@ export function AiProviderScreen({
                 </Button>
               }
               compact
-              description="新增并启用一个 AI Provider 后，分析任务会从这里选择执行线路。"
+              description="新增并启用一个官方 API Provider 后，分析任务会从这里选择主备执行线路。"
               icon={<PlugsConnected aria-hidden />}
               title="还没有 AI 服务配置"
             />

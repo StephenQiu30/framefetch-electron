@@ -1,3 +1,10 @@
+import {
+  localizedStatusMessage,
+  lookupEnglishError,
+} from '@/lib/i18n/error-copy';
+import type { Locale } from '@/lib/i18n/locale';
+import { currentLocale } from '@/lib/i18n/locale-state';
+
 const localizedErrorMessages: Record<string, string> = {
   active_task_quota_exceeded:
     '同时进行的任务已达上限，请等待完成或取消任务后再试。',
@@ -10,10 +17,13 @@ const localizedErrorMessages: Record<string, string> = {
   analysis_already_active: '当前已有分析任务正在执行，请等待完成后再试。',
   analysis_artifact_unavailable: '原视频文件已失效，请重新下载后再分析。',
   analysis_cli_failed: 'AI 分析执行失败，请稍后重试。',
-  analysis_cli_not_authenticated: 'AI 分析服务未登录，请完成登录后重试。',
+  analysis_cli_not_authenticated:
+    'AI 服务凭据无效或已失效，请在 AI 服务配置中检查 API Key。',
   analysis_cli_timeout: 'AI 分析超时，请稍后重试。',
-  analysis_cli_unavailable: 'AI 分析工具暂时不可用，请检查服务后重试。',
-  analysis_cli_unsupported: '当前 AI 分析工具版本不受支持，请更新后重试。',
+  analysis_cli_unavailable:
+    'AI 分析服务或容器 worker 暂时不可用，请检查服务后重试。',
+  analysis_cli_unsupported:
+    '当前 AI 模型或 Skill 配置不支持此分析任务，请检查模型能力后重试。',
   analysis_media_invalid: '视频文件无法用于分析，请重新下载后重试。',
   analysis_provider_rate_limited: 'AI 服务请求过于频繁，请稍后重试。',
   analysis_provider_usage_limited: 'AI 服务额度不足，请恢复可用额度后重试。',
@@ -80,8 +90,7 @@ const localizedErrorMessages: Record<string, string> = {
   rate_limiter_unavailable: '请求限制服务暂时不可用，请稍后重试。',
   request_timeout: '请求处理超时，请稍后重试。',
   request_too_large: '提交内容超过大小限制，请缩小后重试。',
-  reserved_ai_provider_mutation:
-    '本机 Codex 是系统兜底线路，只能修改显示名称和模型。',
+  reserved_ai_provider_mutation: '当前保留配置不支持此修改。',
   resource_expired: '原始媒体解析信息已失效，请重新解析链接。',
   self_admin_change: '管理员不能停用或删除自己的账户。',
   service_unavailable: '服务暂时不可用，请稍后重试。',
@@ -138,16 +147,22 @@ const localizedFailureCauses: Record<string, string> = {
 export function localizedErrorMessage(
   code: string | null | undefined,
   causeCode?: unknown,
+  locale: Locale = currentLocale(),
 ): string | undefined {
   if (!code) return undefined;
-  const cause =
-    typeof causeCode === 'string'
-      ? localizedFailureCauses[`${code}:${causeCode}`]
-      : undefined;
+  const causeKey =
+    typeof causeCode === 'string' ? `${code}:${causeCode}` : undefined;
+  if (locale === 'en-US') return lookupEnglishError(code, causeKey);
+  const cause = causeKey ? localizedFailureCauses[causeKey] : undefined;
   return cause ?? localizedErrorMessages[code];
 }
 
-export function statusErrorMessage(status: number): string {
+export function statusErrorMessage(
+  status: number,
+  locale: Locale = currentLocale(),
+): string {
+  const localized = localizedStatusMessage(status, locale);
+  if (localized) return localized;
   const message = statusErrorMessages[status];
   if (message) return message;
   if (status >= 500) return '服务处理失败，请稍后重试。';

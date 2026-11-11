@@ -10,34 +10,78 @@ declare namespace API {
     provider_key: string;
   };
 
-  type AiModelListResponse = {
-    /** Items */
-    items: AiModelResponse[];
+  type AiProviderAuthMode = "api_key";
+
+  type AiProviderConnectionTestResponse = {
+    /** Ok */
+    ok: boolean;
+    /** Status */
+    status:
+      | "ok"
+      | "models_unsupported_chat_ok"
+      | "auth_failed"
+      | "model_rejected"
+      | "rate_limited"
+      | "upstream_error"
+      | "timeout"
+      | "network_error";
+    /** Http Status */
+    http_status: number | null;
+    /** Preset Id */
+    preset_id: string | null;
+    /** Supports Vision */
+    supports_vision: boolean;
+    /** Structured Output Mode */
+    structured_output_mode: "json_schema" | "json_object";
+    /** Models Endpoint Supported */
+    models_endpoint_supported: boolean;
+    /** Chat Endpoint Reachable */
+    chat_endpoint_reachable: boolean;
+    /** Discovered Models */
+    discovered_models: string[];
+    /** Latency Ms */
+    latency_ms: number | null;
+    /** Vision Notice */
+    vision_notice: string;
+    /** Capability Notice */
+    capability_notice: string;
+    /** Message */
+    message: string;
   };
 
-  type AiModelResponse = {
+  type AiProviderEngine = "volcengine" | "deepseek" | "openai";
+
+  type AiProviderPresetListResponse = {
+    /** Items */
+    items: AiProviderPresetResponse[];
+  };
+
+  type AiProviderPresetResponse = {
     /** Id */
     id: string;
-    /** Name */
-    name: string;
-    /** Context Length */
-    context_length: number;
-    /** Input Modalities */
-    input_modalities: string[];
-    /** Output Modalities */
-    output_modalities: string[];
-    /** Supported Parameters */
-    supported_parameters: string[];
+    engine: AiProviderEngine;
+    /** Display Name */
+    display_name: string;
+    /** Base Url */
+    base_url: string;
+    auth_mode: AiProviderAuthMode;
+    /** Default Model */
+    default_model: string;
+    /** Suggested Models */
+    suggested_models: AiProviderSuggestedModelResponse[];
+    /** Supports Vision */
+    supports_vision: boolean;
+    /** Supports Models Endpoint */
+    supports_models_endpoint: boolean;
+    /** Structured Output Mode */
+    structured_output_mode: "json_schema" | "json_object";
+    /** Endpoint Kind */
+    endpoint_kind: string;
+    /** Supports Custom Model Id */
+    supports_custom_model_id: boolean;
+    /** Key Isolation Notice */
+    key_isolation_notice: string;
   };
-
-  type AiProviderAuthMode = "host_login" | "api_key";
-
-  type AiProviderEngine =
-    | "codex"
-    | "claude"
-    | "deepseek"
-    | "openrouter"
-    | "openai";
 
   type AiProviderProfileListResponse = {
     /** Items */
@@ -61,10 +105,31 @@ declare namespace API {
     credential_configured: boolean;
     /** Is Active */
     is_active: boolean;
+    /** Is Fallback */
+    is_fallback: boolean;
+    /** Preset Id */
+    preset_id: string | null;
+    /** Supports Vision */
+    supports_vision: boolean;
+    /** Supports Models Endpoint */
+    supports_models_endpoint: boolean;
+    /** Structured Output Mode */
+    structured_output_mode: "json_schema" | "json_object";
     /** Created At */
     created_at: string;
     /** Updated At */
     updated_at: string;
+  };
+
+  type AiProviderSuggestedModelResponse = {
+    /** Id */
+    id: string;
+    /** Label */
+    label: string;
+    /** Supports Vision */
+    supports_vision: boolean;
+    /** Notes */
+    notes?: string;
   };
 
   type AnalysisAnalyticsDailyResponse = {
@@ -306,13 +371,22 @@ declare namespace API {
     | "failed"
     | "cancelled";
 
-  type ApiResponseAiModelListResponse_ = {
+  type ApiResponseAiProviderConnectionTestResponse_ = {
     /** 稳定的业务结果码。 */
     code: ErrorCode;
     /** Message 安全的结果说明。 */
     message: string;
     /** 成功时为业务数据，错误时为 null。 */
-    data: AiModelListResponse;
+    data: AiProviderConnectionTestResponse;
+  };
+
+  type ApiResponseAiProviderPresetListResponse_ = {
+    /** 稳定的业务结果码。 */
+    code: ErrorCode;
+    /** Message 安全的结果说明。 */
+    message: string;
+    /** 成功时为业务数据，错误时为 null。 */
+    data: AiProviderPresetListResponse;
   };
 
   type ApiResponseAiProviderProfileListResponse_ = {
@@ -691,6 +765,10 @@ declare namespace API {
 
   type cancelWatermarkTaskParams = {
     task_id: string;
+  };
+
+  type clearFallbackAiProviderProfileParams = {
+    provider_key: string;
   };
 
   type CompatibilityProfile = "balanced" | "quality" | "smallest";
@@ -1482,7 +1560,6 @@ declare namespace API {
     | "refresh_in_progress"
     | "request_timeout"
     | "request_too_large"
-    | "reserved_ai_provider_mutation"
     | "resource_expired"
     | "self_admin_change"
     | "service_unavailable"
@@ -2497,6 +2574,10 @@ declare namespace API {
     compatibility_profile: CompatibilityProfile;
   };
 
+  type setFallbackAiProviderProfileParams = {
+    provider_key: string;
+  };
+
   type ShotResponse = {
     /** Id */
     id: string;
@@ -2761,6 +2842,19 @@ declare namespace API {
     evidence: VideoArticleEvidenceResponse[];
     /** Citations */
     citations?: StructuredReportCitationResponse[];
+  };
+
+  type TestAiProviderConnectionRequest = {
+    /** Provider Key */
+    provider_key?: string | null;
+    engine?: AiProviderEngine | null;
+    auth_mode?: AiProviderAuthMode | null;
+    /** Base Url */
+    base_url?: string | null;
+    /** Model */
+    model?: string | null;
+    /** Api Key */
+    api_key?: string | null;
   };
 
   type updateAiProviderProfileParams = {

@@ -1,7 +1,6 @@
 import {
   ArrowRight,
   Cloud,
-  Key,
   PencilSimple,
   Robot,
   TerminalWindow,
@@ -21,38 +20,36 @@ import {
   ItemMedia,
   ItemTitle,
 } from '@/components/ui/item';
-import {
-  isDirectApiEngine,
-  isLocalCodexProvider,
-  providerEngineLabel,
-} from './model';
+import { providerApiBaseUrl, providerEngineLabel } from './model';
 
 export function ExecutionRoute({
   active,
+  fallback,
 }: {
   active: API.AiProviderProfileResponse;
+  fallback?: API.AiProviderProfileResponse;
 }) {
   return (
-    <div className="mt-5 flex flex-wrap items-center gap-2">
-      <RouteNode icon={<Robot />} label="本机 Agent" />
-      <ArrowRight aria-hidden />
-      <RouteNode
-        icon={<TerminalWindow />}
-        label={
-          isDirectApiEngine(active.engine)
-            ? providerEngineLabel(active.engine)
-            : `${providerEngineLabel(active.engine)} CLI`
-        }
-      />
-      <ArrowRight aria-hidden />
-      <RouteNode
-        icon={active.auth_mode === 'api_key' ? <Cloud /> : <Key />}
-        label={
-          active.auth_mode === 'api_key'
-            ? active.base_url || 'API 服务'
-            : '当前用户登录'
-        }
-      />
+    <div className="mt-5 flex flex-col gap-3">
+      <div className="flex flex-wrap items-center gap-2">
+        <RouteNode icon={<Robot />} label="容器 Worker (analysis-worker)" />
+        <ArrowRight aria-hidden />
+        <RouteNode
+          icon={<TerminalWindow />}
+          label={providerEngineLabel(active.engine)}
+        />
+        <ArrowRight aria-hidden />
+        <RouteNode
+          icon={<Cloud />}
+          label={active.base_url || providerApiBaseUrl(active.engine)}
+        />
+      </div>
+      {fallback ? (
+        <ItemDescription className="line-clamp-none break-all">
+          自动切换备用：{fallback.display_name}（
+          {providerEngineLabel(fallback.engine)} · {fallback.model}）
+        </ItemDescription>
+      ) : null}
     </div>
   );
 }
@@ -61,6 +58,8 @@ function ProviderRowColumns(
   onActivate: (item: API.AiProviderProfileResponse) => void,
   onDelete: (item: API.AiProviderProfileResponse) => void,
   onEdit: (item: API.AiProviderProfileResponse) => void,
+  onSetFallback?: (item: API.AiProviderProfileResponse) => void,
+  onClearFallback?: (item: API.AiProviderProfileResponse) => void,
 ): DataColumn<API.AiProviderProfileResponse>[] {
   return [
     {
@@ -69,7 +68,6 @@ function ProviderRowColumns(
       hideable: false,
       className: 'w-full whitespace-normal [overflow-wrap:anywhere] lg:w-1/3',
       cell: (item) => {
-        const localCodex = isLocalCodexProvider(item.key);
         return (
           <div className="flex min-w-0 flex-col gap-2">
             <div className="flex flex-wrap items-center gap-2">
@@ -79,13 +77,16 @@ function ProviderRowColumns(
               {item.is_active ? (
                 <Badge variant="default">当前线路</Badge>
               ) : null}
-              {localCodex ? <Badge variant="secondary">系统兜底</Badge> : null}
+              {item.is_fallback ? (
+                <Badge variant="secondary">备用兜底</Badge>
+              ) : null}
             </div>
             <ItemDescription className="line-clamp-none break-all">
               {item.key}
             </ItemDescription>
             <ItemDescription className="line-clamp-none break-all lg:hidden">
               {providerEngineLabel(item.engine)} · {item.model} ·{' '}
+              {item.supports_vision ? '多模态' : '纯文本'} ·{' '}
               {connectionLabel(item)}
             </ItemDescription>
           </div>
@@ -100,15 +101,22 @@ function ProviderRowColumns(
       cell: (item) => {
         return (
           <div className="flex min-w-0 flex-col gap-1">
-            <span className="break-all">{item.model}</span>
-            <span className="break-all">{connectionLabel(item)}</span>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="break-all">{item.model}</span>
+              <Badge variant={item.supports_vision ? 'secondary' : 'outline'}>
+                {item.supports_vision ? '多模态' : '纯文本'}
+              </Badge>
+            </div>
+            <ItemDescription className="line-clamp-none break-all">
+              {connectionLabel(item)}
+            </ItemDescription>
           </div>
         );
       },
     },
     {
-      id: '执行引擎',
-      header: '执行引擎',
+      id: '官方渠道',
+      header: '官方渠道',
       className: 'hidden whitespace-nowrap lg:table-cell',
       cell: (item) => {
         return (
@@ -122,7 +130,7 @@ function ProviderRowColumns(
       hideable: false,
       className: 'text-right whitespace-nowrap',
       cell: (item) => {
-        const localCodex = isLocalCodexProvider(item.key);
+        const lockedDelete = item.is_active || item.is_fallback;
         return (
           <div className="flex flex-wrap items-center justify-end gap-2">
             {!item.is_active ? (
@@ -132,6 +140,24 @@ function ProviderRowColumns(
                 variant="outline"
               >
                 启用
+              </Button>
+            ) : null}
+            {!item.is_active && item.is_fallback && onClearFallback ? (
+              <Button
+                onClick={() => onClearFallback(item)}
+                size="default"
+                variant="ghost"
+              >
+                取消备用
+              </Button>
+            ) : null}
+            {!item.is_active && !item.is_fallback && onSetFallback ? (
+              <Button
+                onClick={() => onSetFallback(item)}
+                size="default"
+                variant="ghost"
+              >
+                设为备用
               </Button>
             ) : null}
             <Button
@@ -144,10 +170,16 @@ function ProviderRowColumns(
             </Button>
             <Button
               aria-label={`删除 ${item.display_name}`}
-              disabled={item.is_active || localCodex}
+              disabled={lockedDelete}
               onClick={() => onDelete(item)}
               size="icon"
-              title={localCodex ? '系统兜底线路不可删除' : undefined}
+              title={
+                item.is_active
+                  ? '当前启用的线路不可删除'
+                  : item.is_fallback
+                    ? '备用兜底线路请先取消备用后再删除'
+                    : undefined
+              }
               variant="ghost"
             >
               <Trash aria-hidden />
@@ -160,28 +192,30 @@ function ProviderRowColumns(
 }
 
 function connectionLabel(item: API.AiProviderProfileResponse) {
-  return item.auth_mode === 'host_login'
-    ? '本机账号登录'
-    : `${item.base_url || '未配置地址'} · ${item.credential_configured ? '凭据已配置' : '缺少凭据'}`;
+  return `${item.base_url || providerApiBaseUrl(item.engine)} · ${item.credential_configured ? '凭据已配置' : '缺少凭据'}`;
 }
 
 export function ProviderTable({
   bulk,
   items,
   onActivate,
+  onClearFallback,
   onDelete,
   onEdit,
+  onSetFallback,
 }: {
   bulk?: BulkDeleteOptions;
   items: API.AiProviderProfileResponse[];
   onActivate: (item: API.AiProviderProfileResponse) => void;
+  onClearFallback?: (item: API.AiProviderProfileResponse) => void;
   onDelete: (item: API.AiProviderProfileResponse) => void;
   onEdit: (item: API.AiProviderProfileResponse) => void;
+  onSetFallback?: (item: API.AiProviderProfileResponse) => void;
 }) {
   return (
     <BulkDeleteSelection
       ids={items
-        .filter((item) => !item.is_active && !isLocalCodexProvider(item.key))
+        .filter((item) => !item.is_active && !item.is_fallback)
         .map((item) => item.key)}
       options={bulk}
     >
@@ -190,7 +224,13 @@ export function ProviderTable({
         getRowId={(item) => item.key}
         getRowLabel={(item) => item.display_name}
         caption="AI Provider 配置列表"
-        columns={ProviderRowColumns(onActivate, onDelete, onEdit)}
+        columns={ProviderRowColumns(
+          onActivate,
+          onDelete,
+          onEdit,
+          onSetFallback,
+          onClearFallback,
+        )}
       />
     </BulkDeleteSelection>
   );

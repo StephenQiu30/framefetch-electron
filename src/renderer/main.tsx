@@ -27,9 +27,9 @@ import HistoryPage, { metadata as historyMetadata } from '@/app/history/page';
 import NotFound from '@/app/not-found';
 import ProvidersPage, { metadata as providersMetadata } from '@/app/providers/page';
 import SelfHostingPage, { metadata as selfHostingMetadata } from '@/app/self-hosting/page';
-import LoginPage, { metadata as loginMetadata } from '@/app/user/login/page';
-import RegisterPage, { metadata as registerMetadata } from '@/app/user/register/page';
 import { AuthProvider, useAuth } from '@/components/auth/auth-provider';
+import { LoginView } from '@/components/auth/login-view';
+import { RegisterView } from '@/components/auth/register-view';
 import { HomeExperience } from '@/components/intake/home-experience';
 import { IntakeDraftProvider } from '@/components/intake/intake-draft-provider';
 import { PublicHome } from '@/components/intake/public-home';
@@ -53,8 +53,8 @@ const routes = {
   '/providers': { Page: ProvidersPage, metadata: providersMetadata },
   '/documents': { Page: DocumentsPage, metadata: documentsMetadata },
   '/history': { Page: HistoryPage, metadata: historyMetadata },
-  '/user/login': { Page: LoginPage, metadata: loginMetadata },
-  '/user/register': { Page: RegisterPage, metadata: registerMetadata },
+  '/user/login': { Page: LoginView, metadata: { title: '登录' } },
+  '/user/register': { Page: RegisterView, metadata: { title: '注册' } },
   '/history/activity': { Page: ActivityPage, metadata: activityMetadata },
   '/documents/detail': { Page: DocumentDetailPage, metadata: documentDetailMetadata },
   '/downloads/detail': { Page: DownloadDetailPage, metadata: downloadDetailMetadata },

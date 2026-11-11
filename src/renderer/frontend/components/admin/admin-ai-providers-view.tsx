@@ -4,9 +4,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import {
   activateAiProviderProfile,
+  clearFallbackAiProviderProfile,
   createAiProviderProfile,
   deleteAiProviderProfile,
+  listAiProviderPresets,
   listAiProviderProfiles,
+  setFallbackAiProviderProfile,
+  testAiProviderConnection,
   updateAiProviderProfile,
 } from '@/api/admin';
 import { AiProviderDelete } from '@/components/admin/admin-ai-providers/ai-provider-delete';
@@ -15,12 +19,17 @@ import { AiProviderScreen } from '@/components/admin/admin-ai-providers/ai-provi
 import {
   type AiProviderEditorState,
   EMPTY_AI_PROVIDER_EDITOR,
-  isLocalCodexProvider,
+  OFFICIAL_PROVIDER_PRESET_DEFAULTS,
+  providerApiBaseUrl,
+  providerEngineDefaults,
 } from '@/components/admin/admin-ai-providers/model';
 import { displayError } from '@/lib/request-error';
 
 export function AdminAiProvidersView() {
   const [items, setItems] = useState<API.AiProviderProfileResponse[]>([]);
+  const [presets, setPresets] = useState<
+    readonly API.AiProviderPresetResponse[]
+  >(OFFICIAL_PROVIDER_PRESET_DEFAULTS);
   const [agentAvailable, setAgentAvailable] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -38,13 +47,23 @@ export function AdminAiProvidersView() {
     setLoading(true);
     setError('');
     try {
-      const result = await listAiProviderProfiles();
-      if (current === requestId.current) {
-        setItems(result.items);
-        setAgentAvailable(result.agent_available);
+      const [profileResult, presetResult] = await Promise.allSettled([
+        listAiProviderProfiles(),
+        listAiProviderPresets(),
+      ]);
+      if (current !== requestId.current) return;
+      if (profileResult.status === 'rejected') {
+        setError(displayError(profileResult.reason));
+        return;
       }
-    } catch (reason) {
-      if (current === requestId.current) setError(displayError(reason));
+      setItems(profileResult.value.items);
+      setAgentAvailable(profileResult.value.agent_available);
+      if (
+        presetResult.status === 'fulfilled' &&
+        presetResult.value?.items?.length > 0
+      ) {
+        setPresets(presetResult.value.items);
+      }
     } finally {
       if (current === requestId.current) setLoading(false);
     }
@@ -62,7 +81,11 @@ export function AdminAiProvidersView() {
       document.activeElement instanceof HTMLElement
         ? document.activeElement
         : null;
-    setEditor({ ...EMPTY_AI_PROVIDER_EDITOR, mode: 'create' });
+    setEditor({
+      ...EMPTY_AI_PROVIDER_EDITOR,
+      ...providerEngineDefaults('volcengine', presets),
+      mode: 'create',
+    });
   }
 
   function openEdit(item: API.AiProviderProfileResponse) {
@@ -76,13 +99,61 @@ export function AdminAiProvidersView() {
       displayName: item.display_name,
       engine: item.engine,
       authMode: item.auth_mode,
-      baseUrl: item.base_url || '',
+      baseUrl: item.base_url || providerApiBaseUrl(item.engine),
       model: item.model,
       apiKey: '',
       credentialConfigured: item.credential_configured,
       error: '',
       saving: false,
+      testing: false,
+      testResult: null,
+      testError: '',
     });
+  }
+
+  async function testConnection() {
+    if (!editor.mode) return;
+    const baseUrl = editor.baseUrl.trim();
+    const model = editor.model.trim();
+    const apiKey = editor.apiKey.trim();
+    const key = editor.key.trim();
+    if (!baseUrl || !model || (!apiKey && !editor.credentialConfigured)) {
+      setEditor((current) => ({
+        ...current,
+        testResult: null,
+        testError: '测试连接前请填写模型、服务地址与所需 API Key。',
+      }));
+      return;
+    }
+    setEditor((current) => ({
+      ...current,
+      testing: true,
+      testResult: null,
+      testError: '',
+    }));
+    try {
+      const result = await testAiProviderConnection({
+        ...(editor.mode === 'edit' && key ? { provider_key: key } : {}),
+        engine: editor.engine,
+        auth_mode: editor.authMode,
+        base_url: baseUrl,
+        model,
+        ...(apiKey ? { api_key: apiKey } : {}),
+      });
+      setEditor((current) => ({
+        ...current,
+        testing: false,
+        testResult: result,
+        testError: '',
+      }));
+    } catch (reason) {
+      setEditor((current) => ({
+        ...current,
+        testing: false,
+        testResult: null,
+        testError: displayError(reason),
+      }));
+    }
   }
 
   async function saveEditor() {
@@ -96,8 +167,8 @@ export function AdminAiProvidersView() {
       !key ||
       !displayName ||
       !model ||
-      (editor.authMode === 'api_key' &&
-        (!baseUrl || (!apiKey && !editor.credentialConfigured)))
+      !baseUrl ||
+      (!apiKey && !editor.credentialConfigured)
     ) {
       setEditor((current) => ({
         ...current,
@@ -113,7 +184,7 @@ export function AdminAiProvidersView() {
           display_name: displayName,
           engine: editor.engine,
           auth_mode: editor.authMode,
-          base_url: editor.authMode === 'api_key' ? baseUrl : null,
+          base_url: baseUrl,
           model,
           api_key: apiKey || null,
         });
@@ -121,16 +192,14 @@ export function AdminAiProvidersView() {
       } else {
         await updateAiProviderProfile(
           { provider_key: encodeURIComponent(key) },
-          isLocalCodexProvider(key)
-            ? { display_name: displayName, model }
-            : {
-                display_name: displayName,
-                engine: editor.engine,
-                auth_mode: editor.authMode,
-                base_url: editor.authMode === 'api_key' ? baseUrl : null,
-                model,
-                ...(apiKey ? { api_key: apiKey } : {}),
-              },
+          {
+            display_name: displayName,
+            engine: editor.engine,
+            auth_mode: editor.authMode,
+            base_url: baseUrl,
+            model,
+            ...(apiKey ? { api_key: apiKey } : {}),
+          },
         );
         toast.success(`已更新 AI Provider“${displayName}”。`);
       }
@@ -149,6 +218,32 @@ export function AdminAiProvidersView() {
         provider_key: encodeURIComponent(item.key),
       });
       toast.success(`“${item.display_name}”已成为当前分析线路。`);
+      await load();
+    } catch (reason) {
+      toast.error('操作未完成', { description: displayError(reason) });
+    }
+  }
+
+  async function setFallback(item: API.AiProviderProfileResponse) {
+    setError('');
+    try {
+      await setFallbackAiProviderProfile({
+        provider_key: encodeURIComponent(item.key),
+      });
+      toast.success(`已将“${item.display_name}”设为备用兜底线路。`);
+      await load();
+    } catch (reason) {
+      toast.error('操作未完成', { description: displayError(reason) });
+    }
+  }
+
+  async function clearFallback(item: API.AiProviderProfileResponse) {
+    setError('');
+    try {
+      await clearFallbackAiProviderProfile({
+        provider_key: encodeURIComponent(item.key),
+      });
+      toast.success(`已取消“${item.display_name}”的备用兜底状态。`);
       await load();
     } catch (reason) {
       toast.error('操作未完成', { description: displayError(reason) });
@@ -183,7 +278,7 @@ export function AdminAiProvidersView() {
             Boolean(editor.mode) ||
             Boolean(deleteTarget),
           description:
-            '所选 AI 配置与凭据将永久删除。当前线路和系统兜底线路不可删除。',
+            '所选 AI 配置与凭据将永久删除。当前主线路和备用兜底线路不可批量删除。',
           remove: (id) =>
             deleteAiProviderProfile({ provider_key: encodeURIComponent(id) }),
           onComplete: () => load(),
@@ -193,10 +288,12 @@ export function AdminAiProvidersView() {
         items={items}
         loading={loading}
         onActivate={(item) => void activate(item)}
+        onClearFallback={(item) => void clearFallback(item)}
         onCreate={openCreate}
         onDelete={setDeleteTarget}
         onEdit={openEdit}
         onRetry={() => void load()}
+        onSetFallback={(item) => void setFallback(item)}
       />
       <AiProviderEditor
         editor={editor}
@@ -206,6 +303,8 @@ export function AdminAiProvidersView() {
         onClose={() => setEditor(EMPTY_AI_PROVIDER_EDITOR)}
         onRestoreFocus={() => editorTrigger.current?.focus()}
         onSave={() => void saveEditor()}
+        onTest={() => void testConnection()}
+        presets={presets}
       />
       <AiProviderDelete
         deleting={deleting}
